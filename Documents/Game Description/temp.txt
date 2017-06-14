@@ -1,0 +1,44 @@
+”Can” Feature List
+
+The game can have the following features if additional time is available at the end of the course:
+
+Player
+•	The player can play sound effects for each animation.
+•	Can create more characters to choose from.
+•	The player can collect money.
+•	The player can buy items.
+•	The player can use bought items.
+
+Store
+•	Can have a store on map where items can be bought.
+
+Item
+•	Can add extra lifes
+•	Can add health potions
+•	Can add energy potions
+
+Shrines
+•	Can add a health regeneration shrine on map.
+•	Can add a energy regeneration shrine on map.
+
+Enemy
+•	Can create more different types of enemies.
+•	Enemies can drop money.
+•	Enemies can drop powerups.
+
+Meny
+•	Meny can have options to change resolution, level of detail and shadows.
+•	Can choose between different gamemodes. Example number of matches per game and number of opponents.
+•	Add sound effects on buttons pressed.
+
+Game Meny
+•	Pause game and exit or continue.
+
+Game Controller
+•	The game is originally a multiplayer game. This could be developed with both coop and competative modes. For both LAN and Internet.
+•	Send bought attacks on opponents.
+
+Camera
+•	Scroll camera in and out with mouse scroll.
+
+
