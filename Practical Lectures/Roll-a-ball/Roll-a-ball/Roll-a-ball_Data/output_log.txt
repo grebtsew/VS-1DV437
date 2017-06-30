@@ -19,14 +19,20 @@ Platform assembly: D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-b
 Loading D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-ball\Roll-a-ball\Roll-a-ball_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-ball\Roll-a-ball\Roll-a-ball_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-ball\Roll-a-ball\Roll-a-ball_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.122 seconds
+- Completed reload, in  0.027 seconds
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-ball\Roll-a-ball\Roll-a-ball_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\Practical Lectures\Roll-a-ball\Roll-a-ball\Roll-a-ball_Data\Managed\System.dll (this message is harmless)
 desktop: 3840x2160 60Hz; virtual: 12000x2160 at -2400,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 4.182784 ms
+UnloadTime: 3.604992 ms
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 8bc -> priority: 1 
-  Thread -> id: 21dc -> priority: 1 
+  Thread -> id: 23a0 -> priority: 1 
+  Thread -> id: 35e8 -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 11.344895 ms
+
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 480.
+Total: 0.501504 ms (FindLiveObjects: 0.077824 ms CreateObjectMapping: 0.034816 ms MarkObjects: 0.377856 ms  DeleteObjects: 0.010240 ms)
+
