@@ -5,7 +5,7 @@ using UnityEngine;
 public class slime : Enemy {
 
 	// Use this for initialization
-	void Start () {
+	void  Start () {
 		
 	}
 	

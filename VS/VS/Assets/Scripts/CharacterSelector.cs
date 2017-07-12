@@ -13,7 +13,7 @@ public class CharacterSelector : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        GameObject[] characters = Resources.LoadAll<GameObject>("Prefabs/Enemies");
+        GameObject[] characters = Resources.LoadAll<GameObject>("Prefabs/Players");
         foreach(GameObject c in characters)
         {
             GameObject _char = Instantiate(c) as GameObject;
