@@ -19,12 +19,14 @@ public class Enemy : MonoBehaviour {
     public Texture normTexture;
     private Texture mainTexture;
 
+    public float powerupspawnchance = 10;
+
     private int fontsize = 10;
    
 
     public float experience = 5;
 
-    public float attackspeed = 4;
+    public float attackspeed = 2;
     public float attackdelay;
 
     public Slider health_slider;
@@ -34,8 +36,12 @@ public class Enemy : MonoBehaviour {
     private Color startcolor;
     private SkinnedMeshRenderer renderer;
 
+    private GameObject[] powerups;
+
     public virtual void Start()
     {
+         powerups = Resources.LoadAll<GameObject>("PowerUps");
+        attackdelay = Time.time;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         mainTexture = renderer.material.mainTexture;
@@ -73,24 +79,36 @@ public class Enemy : MonoBehaviour {
         }
     }
 
+    public void Dead()
+    {
+        player.disableTargetMarker();
+        animator.SetTrigger("Dead");
+        isdead = true;
+        player.addXP(experience);
+        FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform);
+       
+        if (Random.Range(0, 100) < powerupspawnchance)
+        {
+            Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
+        }
+        Destroy(gameObject);
+        gc.addScore();
+    }
+
     // Each frame, rotate and move towards player, attack
     public virtual void Update()
     {
 
+        if(transform.position.y <= -10)
+        {
+            TakeDamage(100);
+        }
+
         if (health <= 0)
         {
-            player.disableTargetMarker();
-            animator.SetTrigger("Dead");
-            isdead = true;
-            player.addXP(experience);
-            FloatingTextController.CreateFloatingText("+ "+ experience.ToString() + " xp",  transform);
-            Destroy(this.gameObject);
-            gc.addScore();
-           
+            Dead();
         }
-        
-        
-
+ 
 
         transform.LookAt(player.transform);
 
@@ -98,6 +116,7 @@ public class Enemy : MonoBehaviour {
         {
             if(Time.time >= attackdelay)
             {
+                attackdelay = Time.time;
                 attackdelay += attackspeed;
                 player.TakeDamage(damage);
             }

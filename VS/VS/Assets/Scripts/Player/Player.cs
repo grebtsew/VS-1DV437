@@ -11,6 +11,10 @@ public class Player : MonoBehaviour {
     public float level = 1;
     private float level_experience = 20;
 
+    public global_game_controller global_game_controller;
+
+    private bool gameOver = false;
+
     public float base_damage = 10;
 
     public float speed = 1;
@@ -27,6 +31,8 @@ public class Player : MonoBehaviour {
     private bool isdead = false;
     private float lastFireTime = 0;
 
+    public float attackRange = 5;
+
     public Text available_levelup_label;
 
     public int level_ability_points = 0;
@@ -39,7 +45,10 @@ public class Player : MonoBehaviour {
     public Text level_label;
 
     private int fontsize = 10;
-    
+
+    public string Name = "The Mage";
+    public string Background = "A combat mage with alot of damage, might be a little squishy tought!";
+
 
     private Target_Follow_Enemy target_follower;
 
@@ -48,7 +57,25 @@ public class Player : MonoBehaviour {
 
     }
 
-    delegate void TakeDamage_delegate(float damage);
+    public void PowerUpTaken(PowerUp bonus, float value)
+    {
+      
+        switch (bonus)
+        {
+            case PowerUp.Energy:
+                energy += value;
+                energyslider.value = energy;
+                break;
+            case PowerUp.Health:
+                health += value;
+                healthslider.value = health;
+                break;
+            case PowerUp.Damage:
+                base_damage += value;
+                break;
+        }
+    }
+
     public void TakeDamage(float damage)
     {
      
@@ -98,9 +125,8 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     public virtual void Start()
     {
-
-       
-        target_follower = Resources.Load("Prefabs/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
+        attackdelay = Time.time;
+        target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
         target_follower = Instantiate(target_follower);
         
 
@@ -179,22 +205,57 @@ public class Player : MonoBehaviour {
 
     }
 
+    private void checkOutOfBounds()
+    {
+        if (transform.position.y <= -10)
+        {
+            TakeDamage(100);
+        }
+    }
+
+    private void checkIsDead()
+    {
+        if (health <= 0)
+        {
+            isdead = true;
+            // game over
+            gameOver = true;
+
+
+            global_game_controller.GameOver();
+            //Debug.Break();
+        }
+    }
+
+    private void checkToMuchResources()
+    {
+        if (health > 100)
+        {
+            health = 100;
+        }
+
+        if (energy > 100)
+        {
+            energy = 100;
+        }
+    }
+
 
     // Update is called once per frame
     public virtual void Update()
     {
         
         HandleKeyMovement();
-       
-        if(health <= 0)
-        {
-            isdead = true;
-            // game over
-            Debug.Break();
-        }
 
-        
-        if(autoattacking && Time.time >= attackdelay)
+        checkOutOfBounds();
+
+        checkIsDead();
+
+        checkToMuchResources();
+
+
+
+        if (autoattacking && Time.time >= attackdelay )
         {
             if (target.isdead)
             {
@@ -214,12 +275,22 @@ public class Player : MonoBehaviour {
                     autoattacking = false;
                 }
 
-            }
+            } 
+            if(target != null)
+            {
 
-            attackdelay += attackspeed;
-             
-            target.TakeDamage(base_damage);
-            
+          
+            if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+            {
+                attackdelay = Time.time;
+                attackdelay += attackspeed;
+
+                target.TakeDamage(base_damage);
+            } else
+                {
+                    autoattacking = false;
+                }
+            }
         }
     }
 
