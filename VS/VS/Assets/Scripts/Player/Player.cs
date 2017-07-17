@@ -11,11 +11,18 @@ public class Player : MonoBehaviour {
     public float level = 1;
     private float level_experience = 20;
 
+    private GameObject abilityaim;
+    private GameObject ability;
+
     public global_game_controller global_game_controller;
 
     private bool gameOver = false;
 
     public float base_damage = 10;
+
+    private bool doonce = false;
+
+    private bool ability_mode = false;
 
     public float speed = 1;
     private Rigidbody rb;
@@ -27,7 +34,7 @@ public class Player : MonoBehaviour {
     private Enemy target;
     private RaycastHit hit;
 
-    private bool abilityaim = false;
+   // private bool abilityaim = false;
     private bool isdead = false;
     private float lastFireTime = 0;
 
@@ -324,7 +331,13 @@ public class Player : MonoBehaviour {
             transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
         }
 
-    }
+        if (Input.GetKey("1"))
+        {
+            FirstAbility();
+        }
+        
+
+        }
     private void HandleMouseMovement()
     {
         if (abilityaim)
@@ -355,8 +368,18 @@ public class Player : MonoBehaviour {
             }
         }
 
+        if (Input.GetMouseButton(0))
+        {
 
-        if (Input.GetMouseButton(1))
+            if (ability_mode)
+            {
+                FirstAbility();
+            }
+
+            }
+
+
+            if (Input.GetMouseButton(1))
         {
             mouseMovement = true;
 
@@ -418,5 +441,95 @@ public class Player : MonoBehaviour {
 
         }
     }
+
+    private bool gotEnoughtEnergy(float cost)
+    {
+        return energy >= cost; 
+    }
+
+    private void useEnergy(float useamount)
+    {
+        if(energy >= useamount)
+        {
+            energy -= useamount;
+            energyslider.value = energy;
+        }
+    }
+
+    public virtual void FirstAbility()
+    {
+        
+        if (ability_mode)
+        {
+           
+
+            
+            
+            // do ability
+
+            if (gotEnoughtEnergy(30)) { 
+            GameObject temp = Resources.Load("Players/Mage/MageFirstAbility", typeof(GameObject)) as GameObject;
+            Instantiate(temp, abilityaim.transform.position, transform.rotation);
+            
+            }
+            ability_mode = false;
+
+
+            // cost energy
+            useEnergy(30);
+        }
+        else
+        {
+            
+                ability_mode = true;
+                // start aim
+                abilityaim = Resources.Load("Players/Mage/MageFirstAbilityAim", typeof(GameObject)) as GameObject;
+                Instantiate(abilityaim);
+               
+            
+        }
+    }
+
+    public virtual void SecondAbility()
+    {
+
+        if (ability_mode)
+        {
+            ability_mode = false;
+        }
+        else
+        {
+            ability_mode = true;
+        }
+
+    }
+    public virtual void ThirdAbility()
+    {
+
+        if (ability_mode)
+        {
+            ability_mode = false;
+        }
+        else
+        {
+            ability_mode = true;
+        }
+
+    }
+    public virtual void FourthAbility()
+    {
+
+        if (ability_mode)
+        {
+            ability_mode = false;
+        }
+        else
+        {
+            ability_mode = true;
+        }
+
+    }
+
+    
 
 }

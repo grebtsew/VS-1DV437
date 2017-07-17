@@ -23,7 +23,7 @@ public class CharacterSelector : MonoBehaviour {
         {
             
             player = c.GetComponent(typeof(Player)) as Player;
-            name.text = c.name;//player.Name;
+           
            
 
 
@@ -32,6 +32,8 @@ public class CharacterSelector : MonoBehaviour {
 
             characterList.Add(_char);
             _char.SetActive(false);
+
+            name.text = characterList[index].name.Replace("(Clone)", "");
             characterList[index].SetActive(true);
         }
 
@@ -47,7 +49,7 @@ public class CharacterSelector : MonoBehaviour {
         {
             index++;
         }
-        name.text = characterList[index].name;
+        name.text = characterList[index].name.Replace("(Clone)", "");
         characterList[index].SetActive(true);
     }
 
@@ -62,7 +64,7 @@ public class CharacterSelector : MonoBehaviour {
         {
             index--;
         }
-        name.text = characterList[index].name;
+        name.text = characterList[index].name.Replace("(Clone)", "");
         characterList[index].SetActive(true);
     }
 

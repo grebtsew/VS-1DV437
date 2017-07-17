@@ -40,7 +40,7 @@ public class Game_Controller : MonoBehaviour {
     void Start () {
 
         enemyParent = GameObject.FindGameObjectWithTag("EnemyParent");
-        Instantiate(Resources.Load("Followers/MouseFollower"));
+      //  Instantiate(Resources.Load("Followers/MouseFollower"));
 
         
         gamelist = Game_Controller.FindObjectsOfType<Game_Controller>();
