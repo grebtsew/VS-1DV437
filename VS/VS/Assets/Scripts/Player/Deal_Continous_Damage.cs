@@ -21,8 +21,6 @@ public class Deal_Continous_Damage : MonoBehaviour {
     {
         if(other.tag == "Enemy")
         {
-
-       
         InRangeEnemyList.Add(other.GetComponent<Enemy>());
         }
     }
@@ -37,21 +35,22 @@ public class Deal_Continous_Damage : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        if(time <= Time.time)
+        {
+            time = Time.time + damagedelay;
+       
         foreach(Enemy e in InRangeEnemyList)
         {
             if(e == null)
             {
                 continue;
-            }
+            } else
+                {
+                    e.TakeDamage(damage);
+                }
 
-       
-        if (time <= Time.time && Vector3.Distance(transform.position, e.transform.position) <= range)
-        {
-
-                e.TakeDamage(damage);
-            time = Time.time + damagedelay;
         }
+
         }
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class abilitybutton : MonoBehaviour {
 
+    public Buttons b;
     private Text level_label;
     private float level;
     public LevelUpPanel_Controller lup;
@@ -21,7 +22,7 @@ public class abilitybutton : MonoBehaviour {
         if (lup.isEnabled() && player.got_ability_point()) { 
         level++;
         level_label.text = level.ToString();
-        player.use_ability_point();
+        player.use_ability_point(b);
         lup.disable();
         }
     }

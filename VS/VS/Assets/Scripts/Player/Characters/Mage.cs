@@ -40,21 +40,66 @@ public class Mage : Player {
 
     private void HandleKeyAbilities()
     {
-        if (Input.GetKey("1"))
+        if (Input.GetKeyDown("1"))
         {
-            Debug.Log("Ability 1");
+            FirstAbility();
         }
-        if (Input.GetKey("2"))
+        if (Input.GetKeyDown("2"))
         {
-            Debug.Log("Ability 2");
+            SecondAbility();
         }
-        if (Input.GetKey("3"))
+        if (Input.GetKeyDown("3"))
         {
             Debug.Log("Ability 3");
         }
-        if (Input.GetKey("4"))
+        if (Input.GetKeyDown("4"))
         {
             Debug.Log("Ability 4");
+        }
+    }
+
+
+    public override void  FirstAbility()
+    {
+        if(a1_level > 0) { 
+        if (ability_mode == false)
+        {
+
+            Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
+            ability_mode = true;
+        }
+        }
+    }
+
+    public override void SecondAbility()
+    {
+        if (a2_level > 0)
+        {
+            if (ability_mode == false)
+            {
+
+                Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim"));
+                ability_mode = true;
+            }
+        }
+
+    }
+
+    public override void ThirdAbility()
+    {
+        if (a3_level > 0)
+        {
+
+
+        }
+    }
+
+    public override void FourthAbility()
+    {
+        if (a4_level > 0)
+        {
+
+
         }
     }
 }

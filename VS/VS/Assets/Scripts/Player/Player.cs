@@ -11,8 +11,15 @@ public class Player : MonoBehaviour {
     public float level = 1;
     private float level_experience = 20;
 
+    public float energyreg_speed = 0.5f;
+    public float healthreg_speed = 0.5f;
+    private float energytime;
+    private float healthtime;
+
     private GameObject abilityaim;
     private GameObject ability;
+
+    private float currentability = 0; //0 == null 1== 1 ....
 
     public global_game_controller global_game_controller;
 
@@ -22,7 +29,7 @@ public class Player : MonoBehaviour {
 
     private bool doonce = false;
 
-    private bool ability_mode = false;
+    public bool ability_mode = false;
 
     public float speed = 1;
     private Rigidbody rb;
@@ -50,6 +57,13 @@ public class Player : MonoBehaviour {
     public Slider experienceslider;
     public Slider energyslider;
     public Text level_label;
+
+    public int a1_level = 0;
+    public int a2_level = 0;
+    public int a3_level = 0;
+    public int a4_level = 0;
+    public int passive = 0;
+    public int potion_level = 0;
 
     private int fontsize = 10;
 
@@ -94,8 +108,35 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void use_ability_point()
+    public virtual void passiveAction()
     {
+        
+    }
+
+    public void use_ability_point(Buttons b)
+    {
+        switch (b)
+        {
+            case Buttons.ability1:
+                a1_level++;
+                break;
+            case Buttons.ability2:
+                a2_level++;
+                break;
+            case Buttons.ability3:
+                a3_level++;
+                break;
+            case Buttons.ability4:
+                a4_level++;
+                break;
+            case Buttons.potion:
+                potion_level++;
+                break;
+            case Buttons.passive:
+                passive++;
+                break;
+        }
+
         level_ability_points--;
         available_levelup_label.text = level_ability_points.ToString();
     }
@@ -164,14 +205,24 @@ public class Player : MonoBehaviour {
 
     }
 
+    public void potionClicked()
+    {
+        if (potion_level > 0)
+        {
+            health += 20 * potion_level;
+            healthslider.value = health;
+        }
+    }
+
     private void updateTarget( Enemy target)
     {
         autoattacking = true;
        
         target_follower.setCurrentTarget(target);
-      
+      if(target != null) { 
         transform.LookAt(target.transform);
-        //transform.rotation = new Quaternion(0, transform.rotation.y, 0, 1);
+        }
+       
     }
 
     public virtual void OnTriggerExit(Collider other)
@@ -247,11 +298,41 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void energyRegeneration()
+    {
+        if (energy < 100)
+        {
+            if (Time.time >= energytime)
+        {
+            energytime = Time.time + energyreg_speed;
+       
+
+            energy++;
+                energyslider.value = energy;
+        }
+        }
+    }
+
+    private void healthRegeneration()
+    {
+        if (health < 100)
+        {
+            if (Time.time >= healthtime)
+            {
+                healthtime = Time.time + healthreg_speed;
+
+                health++;
+                healthslider.value = health;
+            }
+        }
+    }
 
     // Update is called once per frame
     public virtual void Update()
     {
-        
+
+        passiveAction();
+
         HandleKeyMovement();
 
         checkOutOfBounds();
@@ -260,11 +341,12 @@ public class Player : MonoBehaviour {
 
         checkToMuchResources();
 
-
+        healthRegeneration();
+        energyRegeneration();
 
         if (autoattacking && Time.time >= attackdelay )
         {
-            if (target.isdead)
+            if (target == null)
             {
                 
 
@@ -304,6 +386,22 @@ public class Player : MonoBehaviour {
     private void HandleKeyMovement()
     {
 
+        if (Input.GetKeyDown("1")){
+            FirstAbility();
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            SecondAbility();
+        }
+        if (Input.GetKeyDown("3"))
+        {
+         
+        }
+        if (Input.GetKeyDown("4"))
+        {
+            
+        }
+
         if (Input.GetKey("w"))
         {
             mouseMovement = false;
@@ -331,13 +429,9 @@ public class Player : MonoBehaviour {
             transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
         }
 
-        if (Input.GetKey("1"))
-        {
-            FirstAbility();
-        }
-        
 
         }
+
     private void HandleMouseMovement()
     {
         if (abilityaim)
@@ -395,9 +489,6 @@ public class Player : MonoBehaviour {
                 if (Physics.Raycast(ray2, out hit))
             {
 
-                //mousePos = hit.point;
-                //target_follower.setPosition(hit.point);
-
                 if (hit.transform.tag == "Enemy")
                 {
                     mouseMovement = false;
@@ -409,8 +500,10 @@ public class Player : MonoBehaviour {
                 {
                     if (playerPlane2.Raycast(ray2, out hitdist2))
                     {
+                        
                         mousePos = ray2.GetPoint(hitdist2);
                         target_follower.setPosition(mousePos);
+                       
                     }
                 }
 
@@ -442,12 +535,12 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private bool gotEnoughtEnergy(float cost)
+    public bool gotEnoughtEnergy(float cost)
     {
         return energy >= cost; 
     }
 
-    private void useEnergy(float useamount)
+    public void useEnergy(float useamount)
     {
         if(energy >= useamount)
         {
@@ -458,78 +551,29 @@ public class Player : MonoBehaviour {
 
     public virtual void FirstAbility()
     {
-        
-        if (ability_mode)
-        {
-           
+     
 
-            
-            
-            // do ability
-
-            if (gotEnoughtEnergy(30)) { 
-            GameObject temp = Resources.Load("Players/Mage/MageFirstAbility", typeof(GameObject)) as GameObject;
-            Instantiate(temp, abilityaim.transform.position, transform.rotation);
-            
-            }
-            ability_mode = false;
-
-
-            // cost energy
-            useEnergy(30);
-        }
-        else
-        {
-            
-                ability_mode = true;
-                // start aim
-                abilityaim = Resources.Load("Players/Mage/MageFirstAbilityAim", typeof(GameObject)) as GameObject;
-                Instantiate(abilityaim);
-               
-            
-        }
     }
 
     public virtual void SecondAbility()
     {
 
-        if (ability_mode)
-        {
-            ability_mode = false;
-        }
-        else
-        {
-            ability_mode = true;
-        }
+       
 
     }
+
     public virtual void ThirdAbility()
     {
 
-        if (ability_mode)
-        {
-            ability_mode = false;
-        }
-        else
-        {
-            ability_mode = true;
-        }
+        
 
     }
+
     public virtual void FourthAbility()
     {
 
-        if (ability_mode)
-        {
-            ability_mode = false;
-        }
-        else
-        {
-            ability_mode = true;
-        }
+       
 
     }
-
-    
 
 }
