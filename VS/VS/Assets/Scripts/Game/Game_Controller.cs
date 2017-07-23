@@ -9,7 +9,7 @@ public class Game_Controller : MonoBehaviour {
     public Text score_label;
     public Text enemies_label;
     public Text opponents_label;
-    private bool gameOver = false;
+    public bool gameOver = false;
     private bool ready = false;
 
     public Player player;
@@ -74,7 +74,11 @@ public class Game_Controller : MonoBehaviour {
         {
             spawnTime += spawnDelay;
             spawnEnemy();
-        }
+
+                if(spawnDelay > 0.5f) { 
+            spawnDelay -= 0.02f;
+                }
+            }
         }
     }
 

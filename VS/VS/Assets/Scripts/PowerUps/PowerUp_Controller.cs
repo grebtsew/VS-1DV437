@@ -44,9 +44,11 @@ public class PowerUp_Controller : MonoBehaviour {
 
         if (other.tag == "Player")
         {
+            if(other == player.GetComponent<BoxCollider>()) { 
             player.PowerUpTaken(powerup, value);
             FloatingTextController.CreateFloatingText("+"+value + " " + powerup.ToString(), transform);
             Destroy(gameObject);
+            }
         }
 
     }

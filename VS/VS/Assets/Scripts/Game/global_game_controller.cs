@@ -95,6 +95,7 @@ public class global_game_controller : MonoBehaviour {
         Text text = inGameMenu.GetComponentInChildren<Text>();
         text.text = "Game Over!";
         inGameMenu.enabled = true;
+        game.gameOver = true;
     }
 
     // Update is called once per frame

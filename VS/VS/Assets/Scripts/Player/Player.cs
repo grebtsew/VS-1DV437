@@ -10,6 +10,7 @@ public class Player : MonoBehaviour {
     public float experience = 0;
     public float level = 1;
     private float level_experience = 20;
+    public float resist = 0;
 
     public float energyreg_speed = 0.5f;
     public float healthreg_speed = 0.5f;
@@ -22,6 +23,11 @@ public class Player : MonoBehaviour {
     private float currentability = 0; //0 == null 1== 1 ....
 
     public global_game_controller global_game_controller;
+
+    public Text damage_label;
+    public Text resist_label;
+
+    
 
     private bool gameOver = false;
 
@@ -92,15 +98,26 @@ public class Player : MonoBehaviour {
                 healthslider.value = health;
                 break;
             case PowerUp.Damage:
+                updateDamage();
                 base_damage += value;
                 break;
         }
     }
 
+    public void updateResist()
+    {
+       resist_label.text = resist.ToString();
+    }
+
+    public void updateDamage()
+    {
+        damage_label.text = base_damage.ToString();
+    }
+
     public void TakeDamage(float damage)
     {
      
-        health -= damage;
+        health -= damage - (damage/100)*resist*4;
         healthslider.value = health;
         if (!isdead)
         {
@@ -108,7 +125,12 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public virtual void passiveAction()
+    public virtual void passiveStatic()
+    {
+
+    }
+
+    public virtual void passiveUpdate()
     {
         
     }
@@ -134,6 +156,7 @@ public class Player : MonoBehaviour {
                 break;
             case Buttons.passive:
                 passive++;
+                passiveStatic();
                 break;
         }
 
@@ -154,15 +177,26 @@ public class Player : MonoBehaviour {
         if (experienceslider.value >= 100)
         {
             //level up
-
-            level++;
-            level_ability_points++;
-            available_levelup_label.text = level_ability_points.ToString();
-            level_experience = level * 20f;
-            experience = 0;
-            experienceslider.value = 0;
-            level_label.text = level.ToString();
+            levelUp();
         }
+    }
+
+    private void levelUp()
+    {
+
+        level++;
+        level_ability_points++;
+        available_levelup_label.text = level_ability_points.ToString();
+        level_experience = level * 20f;
+        experience = 0;
+        experienceslider.value = 0;
+        level_label.text = level.ToString();
+
+        resist++;
+        base_damage++;
+        updateResist();
+        updateDamage();
+
     }
 
     public void disableTargetMarker()
@@ -173,6 +207,9 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     public virtual void Start()
     {
+        updateDamage();
+        updateResist();
+
         attackdelay = Time.time;
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
         target_follower = Instantiate(target_follower);
@@ -209,6 +246,7 @@ public class Player : MonoBehaviour {
     {
         if (potion_level > 0)
         {
+            FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform);
             health += 20 * potion_level;
             healthslider.value = health;
         }
@@ -326,12 +364,12 @@ public class Player : MonoBehaviour {
             }
         }
     }
-
+ 
     // Update is called once per frame
     public virtual void Update()
     {
 
-        passiveAction();
+        passiveUpdate();
 
         HandleKeyMovement();
 
@@ -402,7 +440,7 @@ public class Player : MonoBehaviour {
             
         }
 
-        if (Input.GetKey("w"))
+     /*   if (Input.GetKey("w"))
         {
             mouseMovement = false;
             animator.SetBool("Run", true);
@@ -428,7 +466,7 @@ public class Player : MonoBehaviour {
             animator.SetBool("Run", true);
             transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
         }
-
+        */
 
         }
 

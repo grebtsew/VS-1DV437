@@ -30,6 +30,8 @@ public class Mage : Player {
         base.LateUpdate();
     }
 
+   
+
     // Update is called once per frame
     void Update()
     {
@@ -101,5 +103,27 @@ public class Mage : Player {
 
 
         }
+    }
+
+
+
+
+    public override void passiveUpdate()
+    {
+        base.passiveUpdate();
+        
+
+    }
+    public override void passiveStatic()
+    {
+        base.passiveStatic();
+        // Mage Passive ability is extra damage and mana reg
+
+        base.energyreg_speed -= 0.01f;
+        base.base_damage += 5;
+
+        updateDamage();
+        updateResist();
+
     }
 }
