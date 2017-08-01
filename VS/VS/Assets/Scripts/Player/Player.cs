@@ -27,7 +27,10 @@ public class Player : MonoBehaviour {
     public Text damage_label;
     public Text resist_label;
 
-    
+    public cooldown_slider cooldownslider_1;
+    public cooldown_slider cooldownslider_2;
+    public cooldown_slider cooldownslider_3;
+    public cooldown_slider cooldownslider_4;
 
     private bool gameOver = false;
 
@@ -207,6 +210,9 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     public virtual void Start()
     {
+
+        
+
         updateDamage();
         updateResist();
 

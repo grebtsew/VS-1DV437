@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour {
 
     private int fontsize = 10;
    
-
+    
 
     public float experience = 5;
 

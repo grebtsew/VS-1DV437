@@ -64,9 +64,9 @@ public class Mage : Player {
     public override void  FirstAbility()
     {
         if(a1_level > 0) { 
-        if (ability_mode == false)
+        if (ability_mode == false )
         {
-
+            
             Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
             ability_mode = true;
         }
@@ -77,9 +77,9 @@ public class Mage : Player {
     {
         if (a2_level > 0)
         {
-            if (ability_mode == false)
+            if (ability_mode == false )
             {
-
+           
                 Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim"));
                 ability_mode = true;
             }
@@ -91,7 +91,7 @@ public class Mage : Player {
     {
         if (a3_level > 0)
         {
-
+            cooldownslider_3.StartCooldown();
 
         }
     }
@@ -100,7 +100,7 @@ public class Mage : Player {
     {
         if (a4_level > 0)
         {
-
+            cooldownslider_4.StartCooldown();
 
         }
     }
