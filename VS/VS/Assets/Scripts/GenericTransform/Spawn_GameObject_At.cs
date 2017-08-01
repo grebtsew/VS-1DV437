@@ -7,8 +7,11 @@ public class Spawn_GameObject_At : MonoBehaviour {
     public string prefab = "Abilities/Mage/MageFirstAbility";
     public Player player;
     public float energycost = 30;
-    public string keypress = "1";
+    public Buttons ability = Buttons.ability1;
     private cooldown_slider cs;
+    private string keypress;
+
+  
 
     public void Spawn()
     {
@@ -24,27 +27,33 @@ public class Spawn_GameObject_At : MonoBehaviour {
     void Start () {
         player = FindObjectOfType<Player>();
 
-        switch (keypress)
+        // get correct slider
+        foreach(cooldown_slider c in FindObjectsOfType<cooldown_slider>())
         {
-            case "1":
-                cs = FindObjectsOfType<cooldown_slider>()[3];
-                break;
-
-            case "2":
-                cs = FindObjectsOfType<cooldown_slider>()[2];
-                break;
-
-            case "3":
-                cs = FindObjectsOfType<cooldown_slider>()[1];
-                break;
-
-            case "4":
-                cs = FindObjectsOfType<cooldown_slider>()[0];
-                break;
-
-            
+           if(c.ability == ability)
+            {
+                cs = c;
+               
+            }
         }
-        
+
+        // set keypress
+        switch (ability)
+        {
+            case Buttons.ability1:
+                keypress = "1";
+                break;
+            case Buttons.ability2:
+                keypress = "2";
+                break;
+            case Buttons.ability3:
+                keypress = "3";
+                break;
+            case Buttons.ability4:
+                keypress = "4";
+                break;
+        }
+
     }
 	
 	// Update is called once per frame
@@ -52,11 +61,11 @@ public class Spawn_GameObject_At : MonoBehaviour {
         if (Input.GetKeyDown(keypress) || Input.GetMouseButtonDown(0))
         {
 
-            Debug.Log(cs.OnCooldown());
+           
 
             if (player.gotEnoughtEnergy(energycost) && !cs.OnCooldown())
             {
-
+                player.ability_animation(ability);
 
                 cs.StartCooldown();
                 player.useEnergy(energycost);

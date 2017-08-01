@@ -48,9 +48,7 @@ public class Deal_Continous_Damage : MonoBehaviour {
                 {
                     e.TakeDamage(damage);
                 }
-
         }
-
         }
     }
 }

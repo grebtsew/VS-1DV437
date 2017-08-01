@@ -8,6 +8,7 @@ public class cooldown_slider : MonoBehaviour {
     public Canvas shower;
     public Slider slider;
     public float cooldown;
+    public Buttons ability = Buttons.ability1;
 
     private float temp = 100;
     private float slider_max = 100;

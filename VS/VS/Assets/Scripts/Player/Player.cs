@@ -12,13 +12,20 @@ public class Player : MonoBehaviour {
     private float level_experience = 20;
     public float resist = 0;
 
+    private bool keymovement = false;
+    private Vector3 previousLocation;
+    private Vector3 currentLocation;
+
     public float energyreg_speed = 0.5f;
     public float healthreg_speed = 0.5f;
     private float energytime;
     private float healthtime;
 
-    private GameObject abilityaim;
-    private GameObject ability;
+    private Buttons abilityinusage;
+
+    public bool usingabilty = false;
+
+    private bool abilityaim;
 
     private float currentability = 0; //0 == null 1== 1 ....
 
@@ -26,11 +33,15 @@ public class Player : MonoBehaviour {
 
     public Text damage_label;
     public Text resist_label;
+    public Text attackspeed_label;
+    public Text EnergyReg_label;
+    public Text HealthReg_label;
 
     public cooldown_slider cooldownslider_1;
     public cooldown_slider cooldownslider_2;
     public cooldown_slider cooldownslider_3;
     public cooldown_slider cooldownslider_4;
+    public cooldown_slider potioncooldown;
 
     private bool gameOver = false;
 
@@ -109,12 +120,37 @@ public class Player : MonoBehaviour {
 
     public void updateResist()
     {
+        if(resist_label != null) { 
        resist_label.text = resist.ToString();
+        }
     }
 
     public void updateDamage()
     {
+        if(damage_label != null) { 
         damage_label.text = base_damage.ToString();
+        }
+    }
+    public void updateAttackdamage()
+    {
+        if (damage_label != null)
+        {
+            attackspeed_label.text = attackspeed.ToString();
+        }
+    }
+    public void updateHealthReg()
+    {
+        if (damage_label != null)
+        {
+            HealthReg_label.text = healthreg_speed.ToString();
+        }
+    }
+    public void updateEnergyReg()
+    {
+        if (damage_label != null)
+        {
+            EnergyReg_label.text = energyreg_speed.ToString();
+        }
     }
 
     public void TakeDamage(float damage)
@@ -136,6 +172,76 @@ public class Player : MonoBehaviour {
     public virtual void passiveUpdate()
     {
         
+    }
+
+    public void ability_animation(Buttons ability)
+    {
+        abilityinusage = ability;
+        // remove target
+        target = null;
+
+        switch (ability)
+        {
+            case Buttons.ability1:
+                ability_animation_1();
+                break;
+            case Buttons.ability2:
+                ability_animation_2();
+                break;
+            case Buttons.ability3:
+                ability_animation_3();
+                break;
+            case Buttons.ability4:
+                ability_animation_4();
+                break;
+
+        }
+    }
+
+    public void ability_animation_1()
+    {
+        if (usingabilty)
+        {
+            usingabilty = false;
+        } else
+        {
+           
+        }
+    }
+    public void ability_animation_2()
+    {
+        if (usingabilty)
+        {
+            usingabilty = false;
+            abilityaim = false;
+        }
+        else
+        {
+            abilityaim = true;
+            usingabilty = true;
+        }
+    }
+    public void ability_animation_3()
+    {
+        if (usingabilty)
+        {
+            usingabilty = false;
+        }
+        else
+        {
+
+        }
+    }
+    public void ability_animation_4()
+    {
+        if (usingabilty)
+        {
+            usingabilty = false;
+        }
+        else
+        {
+
+        }
     }
 
     public void use_ability_point(Buttons b)
@@ -211,10 +317,11 @@ public class Player : MonoBehaviour {
     public virtual void Start()
     {
 
-        
-
         updateDamage();
         updateResist();
+        updateAttackdamage();
+        updateEnergyReg();
+        updateHealthReg();
 
         attackdelay = Time.time;
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
@@ -228,30 +335,27 @@ public class Player : MonoBehaviour {
 
     public virtual void OnTriggerEnter(Collider other)
     {
-
-
         if (other.tag == "Enemy")
         {
-
+            
             InRangeEnemyList.Add(other.GetComponent<Enemy>());
            
+            
             if (!autoattacking)
             {
-                
                 target = other.GetComponent<Enemy>();
-                updateTarget(target);
+             
+                    updateTarget(target);
 
             } 
-
-
         }
-
     }
 
     public void potionClicked()
     {
-        if (potion_level > 0)
+        if (potion_level > 0 && !potioncooldown.OnCooldown())
         {
+            potioncooldown.StartCooldown();
             FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform);
             health += 20 * potion_level;
             healthslider.value = health;
@@ -263,10 +367,6 @@ public class Player : MonoBehaviour {
         autoattacking = true;
        
         target_follower.setCurrentTarget(target);
-      if(target != null) { 
-        transform.LookAt(target.transform);
-        }
-       
     }
 
     public virtual void OnTriggerExit(Collider other)
@@ -288,16 +388,12 @@ public class Player : MonoBehaviour {
         if (autoattacking)
         {
 
-
-            animator.SetTrigger("Attack");
-
             if (Time.deltaTime - 1f > lastFireTime)
             {
                 lastFireTime = Time.deltaTime;
 
                 //make a projectile fly towards him
             }
-
         }
     }
   
@@ -322,7 +418,6 @@ public class Player : MonoBehaviour {
             isdead = true;
             // game over
             gameOver = true;
-
 
             global_game_controller.GameOver();
             //Debug.Break();
@@ -371,6 +466,99 @@ public class Player : MonoBehaviour {
         }
     }
  
+    public void rotate_towards_transform(Transform t)
+    {
+        if (t != null)
+        {
+            if (t.position - transform.position != new Vector3(0, 0, 0))
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(t.position - transform.position), Time.fixedDeltaTime * speed);
+
+            }
+        }
+    }
+
+    public void Target_isDead(Enemy t)
+    {
+        if (t == null)
+        {
+
+            InRangeEnemyList.Remove(t);
+
+            if (InRangeEnemyList.Count > 0)
+            {
+                target = InRangeEnemyList[0];
+
+                updateTarget(target);
+
+            }
+            else
+            {
+                autoattacking = false;
+            }
+
+        }
+    }
+
+    private void autoattack()
+    {
+        if (autoattacking && Time.time >= attackdelay && !usingabilty)
+        {
+            if (target == null)
+            {
+
+                InRangeEnemyList.Remove(target);
+
+                if (InRangeEnemyList.Count > 0)
+                {
+                    target = InRangeEnemyList[0];
+
+                    updateTarget(target);
+                    
+                }
+                else
+                {
+                    autoattacking = false;
+                }
+            }
+
+
+            if (target != null)
+            {
+                if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
+                {
+
+                    if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    {
+                        if (!target.isdead) { 
+                        StartCoroutine(attackwait(0.5f));
+                        }else
+                        {
+                            target = null;
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    autoattacking = false;
+                }
+            }
+        }
+    }
+
+    IEnumerator attackwait(float time)
+    {   
+        animator.SetTrigger("Attack1Trigger");
+        attackdelay = Time.time;
+        attackdelay += attackspeed;
+        yield return new WaitForSeconds(time);
+        if(target != null) { 
+        target.TakeDamage(base_damage);
+        }
+    }
+
     // Update is called once per frame
     public virtual void Update()
     {
@@ -388,47 +576,38 @@ public class Player : MonoBehaviour {
         healthRegeneration();
         energyRegeneration();
 
-        if (autoattacking && Time.time >= attackdelay )
+        if(target != null) { 
+        rotate_towards_transform(target.transform);
+        }
+
+        autoattack();
+
+    }
+
+ 
+
+    private void movementkeypressed()
+    {
+        if (target_follower != null)
         {
-            if (target == null)
-            {
-                
-
-                InRangeEnemyList.Remove(target);
-                if(InRangeEnemyList.Count > 0)
-                {
-                    target = InRangeEnemyList[0];
-
-                    updateTarget(target);
-
-                   // transform.LookAt(target.transform.position);
-                }
-                else
-                {
-                    autoattacking = false;
-                }
-
-            } 
-            if(target != null)
-            {
-
-          
-            if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
-            {
-                attackdelay = Time.time;
-                attackdelay += attackspeed;
-
-                target.TakeDamage(base_damage);
-            } else
-                {
-                    autoattacking = false;
-                }
-            }
+            target_follower.resetTarget();
+        }
+        keymovement = true;
+        target = null;
+        mouseMovement = false;
+        animator.SetBool("Moving", true);
+        animator.SetBool("Running", true);
+        transform.position = currentLocation;
+        if(transform.position - previousLocation != new Vector3(0,0,0)) { 
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(transform.position - previousLocation), Time.fixedDeltaTime * speed);
         }
     }
 
     private void HandleKeyMovement()
     {
+        previousLocation = currentLocation;
+        currentLocation = transform.position;
+
 
         if (Input.GetKeyDown("1")){
             FirstAbility();
@@ -446,35 +625,48 @@ public class Player : MonoBehaviour {
             
         }
 
-     /*   if (Input.GetKey("w"))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            mouseMovement = false;
-            animator.SetBool("Run", true);
+            // potion
+            potionClicked();
+        }
+
+        if (!usingabilty) { 
+            if (Input.GetKey("w"))
+        {
+            movementkeypressed();
             transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.World);
 
         }
+        else
         if (Input.GetKey("s"))
         {
-            mouseMovement = false;
-            animator.SetBool("Run", true);
-            // rb.AddForce(Vector3.back * speed * Time.deltaTime);
+            movementkeypressed();
             transform.Translate(Vector3.back * speed * Time.deltaTime, Space.World);
         }
+        else
         if (Input.GetKey("d"))
         {
-            mouseMovement = false;
-            animator.SetBool("Run", true);
+            movementkeypressed();
             transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
         }
+        else
         if (Input.GetKey("a"))
         {
-            mouseMovement = false;
-            animator.SetBool("Run", true);
+            movementkeypressed();
             transform.Translate(Vector3.left * speed * Time.deltaTime, Space.World);
         }
-        */
+        else
+        if (!mouseMovement)
+        {
+            keymovement = false;
+            animator.SetBool("Moving", false);
+            animator.SetBool("Running", false);
+        }
 
         }
+
+    }
 
     private void HandleMouseMovement()
     {
@@ -506,16 +698,7 @@ public class Player : MonoBehaviour {
             }
         }
 
-        if (Input.GetMouseButton(0))
-        {
-
-            if (ability_mode)
-            {
-                FirstAbility();
-            }
-
-            }
-
+        if (!usingabilty) { 
 
             if (Input.GetMouseButton(1))
         {
@@ -527,8 +710,6 @@ public class Player : MonoBehaviour {
             
 
             float hitdist2 = 0.0f;
-
-            
 
                 if (Physics.Raycast(ray2, out hit))
             {
@@ -544,19 +725,26 @@ public class Player : MonoBehaviour {
                 {
                     if (playerPlane2.Raycast(ray2, out hitdist2))
                     {
-                        
+
                         mousePos = ray2.GetPoint(hitdist2);
-                        target_follower.setPosition(mousePos);
-                       
+                        if (Vector3.Distance(mousePos, transform.position) > 1)
+                        {
+                            
+                            target_follower.setPosition(mousePos);
+                        } else
+                        {
+                            mouseMovement = false;
+                        }
+
                     }
                 }
 
-            } 
-
+            }
+            }
 
         }
 
-        if (mouseMovement)
+        if (mouseMovement && !keymovement)
         {
 
             if (Vector3.Distance(transform.position, mousePos) < 1)
@@ -573,9 +761,15 @@ public class Player : MonoBehaviour {
             Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
-
             transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
 
+            animator.SetBool("Moving", true);
+            animator.SetBool("Running", true);
+
+        } else
+        {
+            animator.SetBool("Moving", false);
+            animator.SetBool("Running", false);
         }
     }
 

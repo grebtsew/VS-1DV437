@@ -21,10 +21,6 @@ public class Enemy : MonoBehaviour {
 
     public float powerupspawnchance = 10;
 
-    private int fontsize = 10;
-   
-    
-
     public float experience = 5;
 
     public float attackspeed = 2;
@@ -39,9 +35,14 @@ public class Enemy : MonoBehaviour {
 
     private GameObject[] powerups;
 
+    private GameObject blooddamage;
+    private GameObject blooddead;
+
     public virtual void Start()
     {
-         powerups = Resources.LoadAll<GameObject>("PowerUps");
+        blooddamage = Resources.Load<GameObject>("Enemies/DamageEffects/BloodSprayEffect");
+        blooddead = Resources.Load<GameObject>("Enemies/DamageEffects/BloodStreamEffect");
+        powerups = Resources.LoadAll<GameObject>("PowerUps");
         attackdelay = Time.time;
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -49,6 +50,7 @@ public class Enemy : MonoBehaviour {
 
         gc = Game_Controller.FindObjectOfType<Game_Controller>();
         animator = GetComponent<Animator>();
+
         animator.SetBool("Withinrange", false);
 
         
@@ -63,27 +65,31 @@ public class Enemy : MonoBehaviour {
     {
         renderer.material.mainTexture  = normTexture ;
     }
+
     void OnMouseExit()
     {
         renderer.material.mainTexture = mainTexture;
     }
 
-
     public void TakeDamage(float damage)
     {
         health -= damage;
         health_slider.value = health;
-        if (!isdead) {
-           
 
+
+        GameObject go = Instantiate(blooddamage, transform.position + transform.up * 0.8f, transform.rotation);
+        go.transform.SetParent(gameObject.transform.parent);
+
+        if (!isdead) {
         FloatingTextController.CreateFloatingText(damage.ToString(),  transform);
         }
     }
 
     public void Dead()
     {
+        
         player.disableTargetMarker();
-        animator.SetTrigger("Dead");
+        
         isdead = true;
         player.addXP(experience);
         FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform);
@@ -92,6 +98,20 @@ public class Enemy : MonoBehaviour {
         {
             Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
         }
+
+        // Random.Range(0,1) > 0.5)
+        GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, transform.rotation);
+        go.transform.SetParent(gameObject.transform.parent);
+
+        StartCoroutine(deathwait(1));
+
+    }
+
+    IEnumerator deathwait(int time)
+    {
+       
+        
+        yield return new WaitForSeconds(time);
         Destroy(gameObject);
         gc.addScore();
     }
@@ -100,14 +120,21 @@ public class Enemy : MonoBehaviour {
     public virtual void Update()
     {
 
-        if(transform.position.y <= -10)
+        if (!isdead) { 
+
+        if (transform.position.y <= -10)
         {
             TakeDamage(100);
         }
 
         if (health <= 0)
         {
-            Dead();
+                health_slider.transform.position = new Vector3(0,-2,0);
+                animator.SetBool("isdead", true);
+                animator.SetTrigger("Dead");
+                player.Target_isDead(this);
+                Dead();
+                return;
         }
  
 
@@ -115,14 +142,15 @@ public class Enemy : MonoBehaviour {
 
         if (attack)
         {
-            if(Time.time >= attackdelay)
-            {
+            if(Time.time >= attackdelay && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {   
+                animator.SetTrigger("Attack");
                 attackdelay = Time.time;
                 attackdelay += attackspeed;
                 player.TakeDamage(damage);
             }
+           
 
-            animator.SetTrigger("Attack");
         }
 
         if(Vector3.Distance(transform.position, player.transform.position) <= attackRange)
@@ -138,11 +166,10 @@ public class Enemy : MonoBehaviour {
         if (!inPlayerRange)
         {
             playerpos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-            //Here, the zombie's will follow the waypoint.
-
             transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
-            // rb.AddForce((playerpos - transform.position) * speed * Time.deltaTime);  
+       
         }
+    }
     }
 
 
@@ -152,12 +179,9 @@ public class Enemy : MonoBehaviour {
 
         if (other.tag == "Player")
         {
-            
-
+            animator.SetBool("Withinrange", true);
             inPlayerRange = true;
-            // Attack Player here
             attack = true;
-
         }
 
     }
@@ -168,7 +192,7 @@ public class Enemy : MonoBehaviour {
         if (other.tag == "Player")
         {
             inPlayerRange = false;
-
+            animator.SetBool("Withinrange", false);
             attack = false;
         }
 

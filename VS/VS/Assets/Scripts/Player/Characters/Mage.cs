@@ -52,11 +52,11 @@ public class Mage : Player {
         }
         if (Input.GetKeyDown("3"))
         {
-            Debug.Log("Ability 3");
+         //   Debug.Log("Ability 3");
         }
         if (Input.GetKeyDown("4"))
         {
-            Debug.Log("Ability 4");
+          //  Debug.Log("Ability 4");
         }
     }
 
@@ -68,6 +68,7 @@ public class Mage : Player {
         {
             
             Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
+            
             ability_mode = true;
         }
         }
@@ -124,6 +125,6 @@ public class Mage : Player {
 
         updateDamage();
         updateResist();
-
+        updateEnergyReg();
     }
 }
