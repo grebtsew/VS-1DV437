@@ -65,8 +65,6 @@ public class Spawn_GameObject_At : MonoBehaviour {
         if (Input.GetKeyDown(keypress) || Input.GetMouseButtonDown(0))
         {
 
-           
-
             if (player.gotEnoughtEnergy(energycost) && !cs.OnCooldown())
             {
                 player.ability_animation(ability);

@@ -25,6 +25,7 @@ public class Deal_Continous_Damage : MonoBehaviour {
         damage = player.base_damage + 2*player.level;
         range = range + (player.level / 10);
         damagedelay *= player.attackspeed;
+        transform.localScale += new Vector3(player.level*0.1f, 0, player.level*0.1f);
     }
 
     void OnTriggerEnter(Collider other)

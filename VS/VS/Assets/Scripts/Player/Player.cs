@@ -559,6 +559,23 @@ public class Player : MonoBehaviour {
         }
     }
 
+   private void rotate_y_towards_transform(Transform t)
+    {
+        if (t != null)
+        {
+            var lookPos = t.position - transform.position;
+            lookPos.y = 0;
+            if (lookPos != new Vector3(0, 0, 0))
+            {
+               // transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(t.position - transform.position), Time.fixedDeltaTime * speed);
+
+                
+                var rotation = Quaternion.LookRotation(lookPos);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
+            }
+        }
+    }
+
     // Update is called once per frame
     public virtual void Update()
     {
@@ -576,15 +593,13 @@ public class Player : MonoBehaviour {
         healthRegeneration();
         energyRegeneration();
 
-        if(target != null) { 
-        rotate_towards_transform(target.transform);
+        if(target != null) {
+        rotate_y_towards_transform(target.transform);
         }
 
         autoattack();
 
     }
-
- 
 
     private void movementkeypressed()
     {
@@ -762,6 +777,8 @@ public class Player : MonoBehaviour {
 
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, speed * Time.deltaTime);
             transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
+
+            target = null;
 
             animator.SetBool("Moving", true);
             animator.SetBool("Running", true);
