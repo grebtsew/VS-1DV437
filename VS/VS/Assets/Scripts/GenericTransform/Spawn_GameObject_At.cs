@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spawn_GameObject_At : MonoBehaviour {
 
@@ -8,8 +9,11 @@ public class Spawn_GameObject_At : MonoBehaviour {
     public Player player;
     public float energycost = 30;
     public Buttons ability = Buttons.ability1;
+   
+
     private cooldown_slider cs;
     private string keypress;
+   
 
   
 

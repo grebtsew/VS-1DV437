@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LifeTime : MonoBehaviour {
 
@@ -8,11 +9,22 @@ public class LifeTime : MonoBehaviour {
     public bool Notify_player_on_Destroy = false;
     public Buttons ability;
     private float time;
+    public bool leveldependent = false;
+    public bool labeltime = false;
+    public Text label;
+    
 
-	// Use this for initialization
-	void Start () {
-        time = Time.time+lifetime;
-	}
+    // Use this for initialization
+    void Start () {
+
+        if (leveldependent)
+        {
+            Player player = FindObjectOfType<Player>();
+            lifetime += player.level; 
+        }
+
+        time = Time.time + lifetime;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -26,5 +38,16 @@ public class LifeTime : MonoBehaviour {
             }
             Destroy(gameObject);
         }
+
+        if (labeltime)
+        {
+            lifetime -= Time.deltaTime;
+            updatelabel();
+        }
 	}
+
+    private void updatelabel()
+    {
+        label.text = lifetime.ToString();
+    }
 }

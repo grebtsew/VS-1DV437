@@ -56,7 +56,7 @@ public class Player : MonoBehaviour {
     private Animator animator;
     private List<Enemy> InRangeEnemyList = new List<Enemy>();
     private bool autoattacking = false;
-    private float attackspeed = 1;
+    public float attackspeed = 1;
     private float attackdelay = 1;
     private Enemy target;
     private RaycastHit hit;
@@ -213,11 +213,11 @@ public class Player : MonoBehaviour {
         if (usingabilty)
         {
             usingabilty = false;
-            abilityaim = false;
+          //  abilityaim = false;
         }
         else
         {
-            abilityaim = true;
+            //abilityaim = true;
             usingabilty = true;
         }
     }

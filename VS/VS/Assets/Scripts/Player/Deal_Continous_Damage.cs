@@ -15,7 +15,17 @@ public class Deal_Continous_Damage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         time = Time.time + damagedelay;
+
+        setlevel();
 	}
+
+    private void setlevel()
+    {
+        Player player = FindObjectOfType<Player>();
+        damage = player.base_damage + 2*player.level;
+        range = range + (player.level / 10);
+        damagedelay *= player.attackspeed;
+    }
 
     void OnTriggerEnter(Collider other)
     {

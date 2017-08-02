@@ -66,8 +66,8 @@ public class Mage : Player {
         if(a1_level > 0) { 
         if (ability_mode == false )
         {
-            
-            Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
+                
+                Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
             
             ability_mode = true;
         }
@@ -80,7 +80,7 @@ public class Mage : Player {
         {
             if (ability_mode == false )
             {
-           
+               
                 Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim"));
                 ability_mode = true;
             }

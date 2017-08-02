@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour {
         health_slider.value = health;
 
 
-        GameObject go = Instantiate(blooddamage, transform.position + transform.up * 0.8f, transform.rotation);
+        GameObject go = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
         go.transform.SetParent(gameObject.transform.parent);
 
         if (!isdead) {
@@ -100,7 +100,8 @@ public class Enemy : MonoBehaviour {
         }
 
         // Random.Range(0,1) > 0.5)
-        GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, transform.rotation);
+        
+        GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
         go.transform.SetParent(gameObject.transform.parent);
 
         StartCoroutine(deathwait(1));
