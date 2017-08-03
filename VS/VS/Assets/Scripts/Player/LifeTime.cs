@@ -34,7 +34,7 @@ public class LifeTime : MonoBehaviour {
             {
                 GameObject go = GameObject.FindGameObjectWithTag("Player");
                 Player player = go.GetComponent<Player>();
-                player.ability_animation(ability);
+                player.player_controller.ability_animation(ability, false);
             }
             Destroy(gameObject);
         }

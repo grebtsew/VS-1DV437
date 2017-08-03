@@ -23,6 +23,7 @@ public class global_game_controller : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
         // init menu
         inGameMenu.enabled = false;
         extraQuestion.enabled = false;

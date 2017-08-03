@@ -15,7 +15,6 @@ public class Deal_Continous_Damage : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         time = Time.time + damagedelay;
-
         setlevel();
 	}
 

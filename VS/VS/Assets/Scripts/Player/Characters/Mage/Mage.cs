@@ -9,29 +9,6 @@ public class Mage : Player {
         base.Start();
 	}	
 
-    void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        base.OnTriggerExit(other);
-    }
-
-
-    void FixedUpdate()
-    {
-        base.FixedUpdate();
-    }
-
-    void LateUpdate()
-    {
-        base.LateUpdate();
-    }
-
-   
-
     // Update is called once per frame
     void Update()
     {
@@ -61,14 +38,12 @@ public class Mage : Player {
     }
 
 
-    public override void  FirstAbility()
+    public override void FirstAbility()
     {
         if(a1_level > 0) { 
         if (ability_mode == false )
         {
-                
-                Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
-            
+            Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
             ability_mode = true;
         }
         }
@@ -80,7 +55,6 @@ public class Mage : Player {
         {
             if (ability_mode == false )
             {
-               
                 Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim"));
                 ability_mode = true;
             }
@@ -90,7 +64,7 @@ public class Mage : Player {
 
     public override void ThirdAbility()
     {
-        if (a3_level > 0 && !cooldownslider_3.OnCooldown() && gotEnoughtEnergy(30))
+        if (a3_level > 0 && !playerhud.cooldownslider_3.OnCooldown() && gotEnoughtEnergy(30))
         {
             for (int i = 0; i < a3_level; i++)
             {
@@ -99,20 +73,18 @@ public class Mage : Player {
                // go.transform.SetParent();
             }
             useEnergy(30);
-            cooldownslider_3.StartCooldown();
+            playerhud.cooldownslider_3.StartCooldown();
         }
     }
 
     public override void FourthAbility()
     {
-        if (a4_level > 0 && !cooldownslider_4.OnCooldown() && gotEnoughtEnergy(40))
+        if (a4_level > 0 && !playerhud.cooldownslider_4.OnCooldown() && gotEnoughtEnergy(40))
         {
-
             GameObject go = Instantiate(Resources.Load("Abilities/Mage/MageFourthAbility")) as GameObject;
             go.transform.position = transform.position + Vector3.forward * 4;
             useEnergy(40);
-            cooldownslider_4.StartCooldown();
-
+            playerhud.cooldownslider_4.StartCooldown();
         }
     }
 
@@ -133,8 +105,8 @@ public class Mage : Player {
         base.energyreg_speed -= 0.01f;
         base.base_damage += 5;
 
-        updateDamage();
-        updateResist();
-        updateEnergyReg();
+        playerhud.updateDamage();
+        playerhud.updateResist();
+        playerhud.updateEnergyReg();
     }
 }

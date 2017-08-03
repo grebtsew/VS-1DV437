@@ -20,6 +20,7 @@ public class Game_Controller : MonoBehaviour {
     private float time;
     public int score = 0;
 
+    public Transform playerstart;
     private Vector3 center;
     private Vector3 size = new Vector3(28,10,28);
     public float spawnTime;
@@ -39,15 +40,20 @@ public class Game_Controller : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        // get map center
+        center = playerstart.position;
+
+        // get Correct Parent
+        if(enemyParent == null) { 
         enemyParent = GameObject.FindGameObjectWithTag("EnemyParent");
+        }
+
+        // dont do this twice
         Instantiate(Resources.Load("Followers/MouseFollower"));
 
-        
         gamelist = Game_Controller.FindObjectsOfType<Game_Controller>();
 
         spawnTime = Time.time;
-
-        
 
     }
 
@@ -57,9 +63,6 @@ public class Game_Controller : MonoBehaviour {
         Enemy instance = Instantiate(Resources.Load("Enemies/Bat_Green", typeof(Enemy))) as Enemy;
         instance.transform.SetParent(enemyParent.transform);
         instance.transform.position = randomPos;
-
-
-
     }
 
 	

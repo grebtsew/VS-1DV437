@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour {
         
         rb = GetComponent<Rigidbody>();
 
-        
+        // get correct player!
         player = Player.FindObjectOfType<Player>();
         playerpos = player.transform.position;
     }
@@ -88,7 +88,7 @@ public class Enemy : MonoBehaviour {
     public void Dead()
     {
         
-        player.disableTargetMarker();
+        player.player_controller.disableTargetMarker();
         
         isdead = true;
         player.addXP(experience);
@@ -133,7 +133,7 @@ public class Enemy : MonoBehaviour {
                 health_slider.transform.position = new Vector3(0,-2,0);
                 animator.SetBool("isdead", true);
                 animator.SetTrigger("Dead");
-                player.Target_isDead(this);
+                player.player_controller.Target_isDead(this);
                 Dead();
                 return;
         }

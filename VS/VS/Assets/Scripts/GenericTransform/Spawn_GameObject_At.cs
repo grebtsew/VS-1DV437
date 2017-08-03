@@ -9,13 +9,9 @@ public class Spawn_GameObject_At : MonoBehaviour {
     public Player player;
     public float energycost = 30;
     public Buttons ability = Buttons.ability1;
-   
-
     private cooldown_slider cs;
     private string keypress;
    
-
-  
 
     public void Spawn()
     {
@@ -67,7 +63,8 @@ public class Spawn_GameObject_At : MonoBehaviour {
 
             if (player.gotEnoughtEnergy(energycost) && !cs.OnCooldown())
             {
-                player.ability_animation(ability);
+               
+                player.player_controller.ability_animation(ability, true);
 
                 cs.StartCooldown();
                 player.useEnergy(energycost);
