@@ -33,14 +33,18 @@ public class Player_Controller : MonoBehaviour{
 
     private bool hold_animation = false;
 
+    public Transform parent;
+
     private Vector3 mousePos;
 
     // Use this for initialization
     public virtual void Start()
     {
         attackdelay = Time.time;
+        
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
         target_follower = Instantiate(target_follower);
+        target_follower.transform.SetParent(parent);
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -92,6 +96,7 @@ public class Player_Controller : MonoBehaviour{
     }
     public void ability_animation_2()
     {
+        /*
         if (usingabilty && !hold_animation)
         {
             usingabilty = false;
@@ -102,6 +107,7 @@ public class Player_Controller : MonoBehaviour{
             abilityaim = true;
             usingabilty = true;
         }
+        */
     }
     public void ability_animation_3()
     {
@@ -162,13 +168,15 @@ public class Player_Controller : MonoBehaviour{
             
             HandleKeyMovement();
 
+        }
+
         if (target != null)
         {
             rotate_y_towards_transform(target.transform);
         }
 
         autoattack();
-        }
+        
     }
 
     public virtual void LateUpdate()

@@ -48,7 +48,7 @@ public class Enemy : MonoBehaviour {
 
         mainTexture = renderer.material.mainTexture;
 
-        gc = Game_Controller.FindObjectOfType<Game_Controller>();
+       
         animator = GetComponent<Animator>();
 
         animator.SetBool("Withinrange", false);
@@ -57,7 +57,18 @@ public class Enemy : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
 
         // get correct player!
-        player = Player.FindObjectOfType<Player>();
+       // player = Player.FindObjectOfType<Player>();
+       // playerpos = player.transform.position;
+    }
+
+    public void SetMap(Game_Controller g)
+    {
+        gc = g;
+    }
+
+    public void SetTargetPlayer(Player p)
+    {
+        player = p;
         playerpos = player.transform.position;
     }
 
@@ -114,13 +125,17 @@ public class Enemy : MonoBehaviour {
         
         yield return new WaitForSeconds(time);
         Destroy(gameObject);
-        gc.addScore();
+        if(gc != null)
+        {
+            gc.addScore();
+        }
+       
     }
 
     // Each frame, rotate and move towards player, attack
     public virtual void Update()
     {
-
+        if(player != null) { 
         if (!isdead) { 
 
         if (transform.position.y <= -10)
@@ -171,6 +186,7 @@ public class Enemy : MonoBehaviour {
        
         }
     }
+        }
     }
 
 

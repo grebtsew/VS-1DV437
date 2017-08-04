@@ -36,8 +36,6 @@ public class global_game_controller : MonoBehaviour {
 
         // create start question
 
-        // start countdown
-       
     }
 
 

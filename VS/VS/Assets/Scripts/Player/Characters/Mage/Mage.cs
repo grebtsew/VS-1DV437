@@ -13,28 +13,7 @@ public class Mage : Player {
     void Update()
     {
         base.Update();
-        HandleKeyAbilities();
 
-    }
-
-    private void HandleKeyAbilities()
-    {
-        if (Input.GetKeyDown("1"))
-        {
-            FirstAbility();
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            SecondAbility();
-        }
-        if (Input.GetKeyDown("3"))
-        {
-            ThirdAbility();
-        }
-        if (Input.GetKeyDown("4"))
-        {
-            FourthAbility();
-        }
     }
 
 

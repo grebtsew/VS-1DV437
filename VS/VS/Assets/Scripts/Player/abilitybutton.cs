@@ -18,6 +18,14 @@ public class abilitybutton : MonoBehaviour {
     void Start () {
         level_label = GetComponentInChildren<Text>();
 
+        // get player
+        foreach (Player p in FindObjectsOfType<Player>())
+        {
+            if (p.player_controller.controll_mode == Player_Controll.Player)
+            {
+                player = p;
+            }
+        }
     }
 	
     public void MakeActive()

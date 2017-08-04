@@ -17,7 +17,15 @@ public class LevelUpPanel_Controller : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        player = FindObjectOfType<Player>();
+        //get player
+        foreach(Player p in FindObjectsOfType<Player>())
+        {
+            if(p.player_controller.controll_mode == Player_Controll.Player)
+            {
+                player = p;
+            }
+        }
+     
         canvas = GetComponent<Canvas>();
         disable();
         

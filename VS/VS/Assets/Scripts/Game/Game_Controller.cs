@@ -13,9 +13,10 @@ public class Game_Controller : MonoBehaviour {
     private bool ready = false;
 
     public Player player;
-    public int enemies;
 
     public GameObject enemyParent;
+
+    private int MAX_ENEMY = 150;
 
     private float time;
     public int score = 0;
@@ -28,7 +29,10 @@ public class Game_Controller : MonoBehaviour {
 
     private string opponent_text;
 
-    public Game_Controller[] gamelist;
+    private int enemy_on_map = 0;
+    public List<Game_Controller> gamelist;
+
+    private bool isPlayer = false;
 
     public void Ready()
     {
@@ -40,45 +44,64 @@ public class Game_Controller : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-        // get map center
-        center = playerstart.position;
-
-        // get Correct Parent
-        if(enemyParent == null) { 
-        enemyParent = GameObject.FindGameObjectWithTag("EnemyParent");
+        // Is player
+        if(player.player_controller.controll_mode == Player_Controll.Player)
+        {
+            isPlayer = true;
+            Instantiate(Resources.Load("Followers/MouseFollower"));
         }
 
-        // dont do this twice
-        Instantiate(Resources.Load("Followers/MouseFollower"));
+        if (player.player_controller.controll_mode == Player_Controll.Ai)
+        {
+            Ready();
+        }
 
-        gamelist = Game_Controller.FindObjectsOfType<Game_Controller>();
+        // get map center
+        center = playerstart.position;
+        
+        foreach(Game_Controller gc in Game_Controller.FindObjectsOfType<Game_Controller>())
+        {
+            gamelist.Add(gc);
+        }
+
+       
 
         spawnTime = Time.time;
-
     }
 
-    private void spawnEnemy()
+ 
+
+    public void spawnEnemy()
     {
         Vector3 randomPos = center + new Vector3(Random.Range(-size.x / 2, size.x / 2), Random.Range(1, size.y / 2), Random.Range(-size.z / 2, size.z / 2));
         Enemy instance = Instantiate(Resources.Load("Enemies/Bat_Green", typeof(Enemy))) as Enemy;
         instance.transform.SetParent(enemyParent.transform);
         instance.transform.position = randomPos;
+        instance.SetMap(this);
+        instance.SetTargetPlayer(player);
+        enemy_on_map++;
+
+        if (enemy_on_map >= MAX_ENEMY)
+        {
+           // warn and start 10 s timer!
+        }
     }
 
-	
 	// Update is called once per frame
 	void Update () {
 
         if (!gameOver && ready) {
-        
-        updateGameHUD();
 
-        if (spawnTime <= Time.time)
+            if (isPlayer) {
+                updateGameHUD();
+            }
+
+            if (spawnTime <= Time.time)
         {
             spawnTime += spawnDelay;
             spawnEnemy();
 
-                if(spawnDelay > 0.5f) { 
+            if(spawnDelay > 0.5f) { 
             spawnDelay -= 0.02f;
                 }
             }
@@ -88,25 +111,46 @@ public class Game_Controller : MonoBehaviour {
     public void addScore()
     {
         score++;
+        enemy_on_map--;
+
+        // spawn enemy on all other maps
+        foreach(Game_Controller gc in gamelist)
+        {
+            if(gc != this)
+            {
+                gc.spawnEnemy();
+            }
+        }
     }
 
     private void updateGameHUD()
     {
+        // timer and score
         timer_label.text = Mathf.Round(Time.fixedTime - time).ToString();
         score_label.text = score.ToString();
 
-        enemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        enemies_label.text = enemies.ToString();
-      
+        // enemies
+        enemies_label.text = enemy_on_map.ToString();
 
+        if (spawnTime <= Time.time) { 
+            // sort list
+            gamelist.Sort(delegate (Game_Controller a, Game_Controller b)
+        {
+            return (a.score).CompareTo(b.score);
+        });
+        }
+
+        //display
         opponent_text = "";
         foreach (Game_Controller game in gamelist)
         {
-            opponent_text += game.player.name + " "+ game.enemies.ToString() + " " +game.score.ToString() + "\n";
-            opponent_text += game.player.name + " " + game.enemies.ToString() + " " + game.score.ToString() + "\n";
+          
+            opponent_text += game.player.name +"(" + game.player.player_controller.controll_mode.ToString() + ")"+  " "+ game.enemy_on_map.ToString() + " " +game.score.ToString() + "\n";
         }
+
         opponents_label.text = opponent_text;
     }
 
 
 }
+

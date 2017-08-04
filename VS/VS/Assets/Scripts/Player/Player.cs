@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
 
     public global_game_controller global_game_controller;
 
+    public float current_level_xp = 0;
     private bool gameOver = false;
     private bool doonce = false;
     public bool ability_mode = false;
@@ -49,9 +50,30 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     public virtual void Start()
     {
+        if (player_controller.controll_mode == Player_Controll.Player)
+        {
+            playerhud.updateAllLabels();
+        }
+    }
 
-        playerhud.updateAllLabels();
-        
+    private void HandleKeyAbilities()
+    {
+        if (Input.GetKeyDown("1"))
+        {
+            FirstAbility();
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            SecondAbility();
+        }
+        if (Input.GetKeyDown("3"))
+        {
+            ThirdAbility();
+        }
+        if (Input.GetKeyDown("4"))
+        {
+            FourthAbility();
+        }
     }
 
     public void PowerUpTaken(PowerUp bonus, float value)
@@ -61,15 +83,24 @@ public class Player : MonoBehaviour {
         {
             case PowerUp.Energy:
                 energy += value;
-                playerhud.energyslider.value = energy;
+                if (player_controller.controll_mode == Player_Controll.Player)
+                {
+                    playerhud.energyslider.value = energy;
+                }
                 break;
             case PowerUp.Health:
                 health += value;
-                playerhud.healthslider.value = health;
+                if (player_controller.controll_mode == Player_Controll.Player)
+                {
+                    playerhud.healthslider.value = health;
+                }
                 break;
             case PowerUp.Damage:
-               playerhud.updateDamage();
                 base_damage += value;
+                if (player_controller.controll_mode == Player_Controll.Player)
+                {
+                    playerhud.updateDamage();
+                }
                 break;
         }
     }
@@ -78,7 +109,10 @@ public class Player : MonoBehaviour {
     {
      
         health -= damage - (damage/100)*resist*4;
-        playerhud.healthslider.value = health;
+        if (player_controller.controll_mode == Player_Controll.Player)
+        {
+            playerhud.healthslider.value = health;
+        }
         if (!isdead)
         {
            FloatingTextController.CreateFloatingText(damage.ToString(),  transform);
@@ -121,7 +155,10 @@ public class Player : MonoBehaviour {
         }
 
         level_ability_points--;
-        playerhud.updateLevelUpPoints();
+        if (player_controller.controll_mode == Player_Controll.Player)
+        {
+            playerhud.updateLevelUpPoints();
+        }
     }
 
     public bool got_ability_point()
@@ -132,12 +169,20 @@ public class Player : MonoBehaviour {
     public void addXP(float xp)
     {
         experience += xp;
-        playerhud.experienceslider.value = (experience/level_experience)*100;
-
-        if (playerhud.experienceslider.value >= 100)
+        if (player_controller.controll_mode == Player_Controll.Player)
         {
-            //level up
-            levelUp();
+            current_level_xp = (experience / level_experience) * 100;
+
+            if (player_controller.controll_mode == Player_Controll.Player)
+            {
+                playerhud.experienceslider.value = (experience / level_experience) * 100;
+            }
+
+            if (current_level_xp >= 100)
+            {
+                //level up
+                levelUp();
+            }
         }
     }
 
@@ -212,7 +257,12 @@ public class Player : MonoBehaviour {
        
 
             energy++;
-                playerhud.energyslider.value = energy;
+
+                if(player_controller.controll_mode == Player_Controll.Player)
+                {
+                    playerhud.energyslider.value = energy;
+                }
+           
         }
         }
     }
@@ -226,7 +276,10 @@ public class Player : MonoBehaviour {
                 healthtime = Time.time + healthreg_speed;
 
                 health++;
-                playerhud.healthslider.value = health;
+                if (player_controller.controll_mode == Player_Controll.Player)
+                {
+                    playerhud.healthslider.value = health;
+                }
             }
         }
     }
@@ -240,6 +293,7 @@ public class Player : MonoBehaviour {
         checkToMuchResources();
         healthRegeneration();
         energyRegeneration();
+        HandleKeyAbilities();
     }
 
     public bool gotEnoughtEnergy(float cost)
@@ -252,7 +306,10 @@ public class Player : MonoBehaviour {
         if(energy >= useamount)
         {
             energy -= useamount;
-            playerhud.energyslider.value = energy;
+            if (player_controller.controll_mode == Player_Controll.Player)
+            {
+                playerhud.energyslider.value = energy;
+            }
         }
     }
 
