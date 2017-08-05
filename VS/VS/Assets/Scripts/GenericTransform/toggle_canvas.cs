@@ -10,7 +10,7 @@ public class toggle_canvas : MonoBehaviour {
     public float delay = 0.5f;
     private float time;
     private CanvasGroup cg;
-    private Text text;
+    public Text text;
     public bool countdown;
     private int timer = 10;
     private global_game_controller ggc;
@@ -26,8 +26,9 @@ public class toggle_canvas : MonoBehaviour {
             }
         }
 
+        text.text = "";
         ggc = FindObjectOfType<global_game_controller>();
-        text = GetComponent<Text>();
+        
        cg = this.GetComponent<CanvasGroup>();
        cg.alpha = 0;
 
@@ -39,14 +40,17 @@ public class toggle_canvas : MonoBehaviour {
         active = false;
         countdown = false;
         timer = 10;
+        cg.alpha = 0;
+        text.text = "";
     }
 
     public void startCountdown()
     {
         if (!active) {
         active = true;
-        countdown = false;
+        countdown = true;
         timer = 10;
+        text.text = "";
         }
     }
 
@@ -78,6 +82,11 @@ public class toggle_canvas : MonoBehaviour {
         if(timer == 0)
         {
             ggc.GameOver();
+        }
+
+        if(player.health > 20)
+        {
+            cg.alpha = 0;
         }
 
       

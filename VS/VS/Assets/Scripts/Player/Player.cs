@@ -20,6 +20,8 @@ public class Player : MonoBehaviour {
     private float energytime;
     private float healthtime;
 
+    private int textSize = 8;
+
     public bool invulnerable = false;
 
     public global_game_controller global_game_controller;
@@ -129,7 +131,7 @@ public class Player : MonoBehaviour {
         small_healthslider.value = health;
         if (!isdead)
         {
-           FloatingTextController.CreateFloatingText(damage.ToString(),  transform);
+           FloatingTextController.CreateFloatingText(damage.ToString(),  transform, Color.red, textSize);
         }
         }
     }
@@ -215,17 +217,36 @@ public class Player : MonoBehaviour {
 
         playerhud.updateAllLabels();
 
+        FloatingTextController.CreateFloatingText("Level Up", transform, Color.magenta, textSize);
+
+        if(player_controller.controll_mode == Player_Controll.Ai)
+        {
+            player_controller.ai_unlock_ability();
+        }
+
     }
 
     public void potionClicked()
     {
-        if (potion_level > 0 && !playerhud.potioncooldown.OnCooldown())
+        if (player_controller.controll_mode == Player_Controll.Player)
         {
-            playerhud.potioncooldown.StartCooldown();
-            FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform);
-            health += 20 * potion_level;
-            playerhud.healthslider.value = health;
-            small_healthslider.value = health;
+            if (potion_level > 0 && !playerhud.potioncooldown.OnCooldown())
+            {
+                playerhud.potioncooldown.StartCooldown();
+                FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform, Color.green, textSize);
+                health += 20 * potion_level;
+                playerhud.healthslider.value = health;
+                small_healthslider.value = health;
+            }
+        }
+        if (player_controller.controll_mode == Player_Controll.Ai)
+        {
+            if (potion_level > 0)
+            {
+                FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform, Color.green, textSize);
+                health += 20 * potion_level;
+                small_healthslider.value = health;
+            }
         }
     }
 

@@ -22,6 +22,10 @@ public class Camera_Controller : MonoBehaviour {
          Camera.main.transform.LookAt(new Vector3(target.transform.position.x, target.transform.position.y + seePlayerOffset, target.transform.position.z));
     }
 
+    public void updateRotation()
+    {
+        Camera.main.transform.LookAt(new Vector3(target.transform.position.x, target.transform.position.y + seePlayerOffset, target.transform.position.z));
+    }
 
     // Update is called once per frame
     void LateUpdate()

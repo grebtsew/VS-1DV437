@@ -19,14 +19,14 @@ public class FloatingTextController : MonoBehaviour {
         
     }
 
-    public static void CreateFloatingText(string text, Transform location)
+    public static void CreateFloatingText(string text, Transform location, Color c, int size)
     {
 
         Initialize();
 
         FloatingText instance = Instantiate(popupText);
         
-        instance.setText(text);
+        instance.setText(text, c, 4);
         instance.transform.SetParent(canvas.transform, false);
         instance.transform.position = location.position;
   

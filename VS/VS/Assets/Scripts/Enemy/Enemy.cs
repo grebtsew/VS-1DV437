@@ -88,7 +88,7 @@ public class Enemy : MonoBehaviour {
         go.transform.SetParent(gameObject.transform.parent);
 
         if (!isdead) {
-        FloatingTextController.CreateFloatingText(damage.ToString(),  transform);
+        FloatingTextController.CreateFloatingText(damage.ToString(),  transform, Color.cyan, 10);
         }
     }
 
@@ -99,13 +99,15 @@ public class Enemy : MonoBehaviour {
         
         isdead = true;
         player.addXP(experience);
-        FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform);
+        FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform, Color.yellow, 10);
        
         if (Random.Range(0, 100) < powerupspawnchance)
         {
            GameObject gg = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
             PowerUp_Controller pu = gg.GetComponent<PowerUp_Controller>();
             pu.setPlayer(player);
+           
+           // gg.transform.SetParent(parent);
         }
 
         GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));

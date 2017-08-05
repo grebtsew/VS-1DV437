@@ -7,7 +7,6 @@ public class Rotate_Follow_Mouse : MonoBehaviour {
     private float speed = 10;
     public Player player;
 
-
 	// Use this for initialization
 	void Start () {
         player = FindObjectOfType<Player>();	

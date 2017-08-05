@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PowerUp_Controller : MonoBehaviour {
 
-    private Player player;
+    public Player player;
     public PowerUp powerup;
     public float value = 10;
     public float life_time = 5;
@@ -12,6 +12,8 @@ public class PowerUp_Controller : MonoBehaviour {
     private Rigidbody rb;
     private float time;
     private float selfmovespeed = 100;
+
+    private int textSize = 8;
 
     public void setPlayer(Player p)
     {
@@ -21,7 +23,7 @@ public class PowerUp_Controller : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         time = Time.time;
-        player = FindObjectOfType<Player>();
+      
         rb = GetComponent<Rigidbody>();
         rb.AddForce(new Vector3(Random.Range(0,100), 500, Random.Range(0, 100)));
 	}
@@ -53,7 +55,7 @@ public class PowerUp_Controller : MonoBehaviour {
         {
             if(other == player.GetComponent<BoxCollider>()) { 
             player.PowerUpTaken(powerup, value);
-            FloatingTextController.CreateFloatingText("+"+value + " " + powerup.ToString(), transform);
+            FloatingTextController.CreateFloatingText("+"+value + " " + powerup.ToString(), transform, Color.white, textSize);
             Destroy(gameObject);
             }
         }

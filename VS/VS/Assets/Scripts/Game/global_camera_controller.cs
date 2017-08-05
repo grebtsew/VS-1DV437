@@ -39,15 +39,17 @@ public class global_camera_controller : MonoBehaviour
     {
         if (Camera1.GetComponent<Camera>().enabled)
         {
+           
             Camera2.GetComponent<Camera>().enabled = true;
             Camera1.GetComponent<Camera>().enabled = false;
         }
         else if (Camera2.GetComponent<Camera>().enabled)
         {
+           
             Camera1.GetComponent<Camera>().enabled = true;
             Camera2.GetComponent<Camera>().enabled = false;
         }
-
+        
 
         updateLabels();
 

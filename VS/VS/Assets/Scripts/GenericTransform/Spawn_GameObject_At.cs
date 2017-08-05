@@ -12,12 +12,13 @@ public class Spawn_GameObject_At : MonoBehaviour {
     private cooldown_slider cs;
     private string keypress;
    
+    
 
     public void Spawn()
     {
 
-            GameObject temp = Resources.Load(prefab, typeof(GameObject)) as GameObject;
-            Instantiate(temp, transform.position, transform.rotation);
+        GameObject temp = Resources.Load(prefab, typeof(GameObject)) as GameObject;
+        Instantiate(temp, transform.position, transform.rotation);
         player.ability_mode = false;
         Destroy(gameObject);
 

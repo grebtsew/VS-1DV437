@@ -18,8 +18,11 @@ public class FloatingText : MonoBehaviour {
         dmgText = animator.GetComponent<Text>();
 	}
 	
-    public void setText(string text) {
+    public void setText(string text, Color c, int size) {
+
+        dmgText.color = c;
        
+        dmgText.fontSize = size;
         dmgText.text = text;
        
     }

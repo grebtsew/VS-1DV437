@@ -103,10 +103,22 @@ public class Game_Controller : MonoBehaviour {
         }
     }
 
+    public bool allisReady()
+    {
+        foreach (Game_Controller game in gamelist)
+        {
+            if(game.ready == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	// Update is called once per frame
 	void Update () {
 
-        if (!gameOver && ready) {
+        if (!gameOver && allisReady()) {
 
             if (isPlayer) {
                 updateGameHUD();

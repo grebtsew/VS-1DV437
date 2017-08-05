@@ -11,9 +11,10 @@ public class Regeneration_Controller : MonoBehaviour {
     private Player player;
     private float time;
     private bool doonce = false;
+    private int textSize = 8;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         player = FindObjectOfType<Player>();
         time = Time.time;
 	}
@@ -29,10 +30,10 @@ public class Regeneration_Controller : MonoBehaviour {
                 doonce = true;
                 if (health)
                 {
-                    FloatingTextController.CreateFloatingText("+ Health Regeneration", transform);
+                    FloatingTextController.CreateFloatingText("+ Health Regeneration", transform, Color.grey, textSize);
                 } else
                 {
-                    FloatingTextController.CreateFloatingText("+ Energy Regeneration", transform);
+                    FloatingTextController.CreateFloatingText("+ Energy Regeneration", transform, Color.grey, textSize);
                 }
                
             }
