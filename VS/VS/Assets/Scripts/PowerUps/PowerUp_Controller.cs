@@ -13,6 +13,11 @@ public class PowerUp_Controller : MonoBehaviour {
     private float time;
     private float selfmovespeed = 100;
 
+    public void setPlayer(Player p)
+    {
+        player = p;
+    }
+
 	// Use this for initialization
 	void Start () {
         time = Time.time;
@@ -23,6 +28,7 @@ public class PowerUp_Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(player != null) { 
 		if(Time.time >= time + life_time)
         {
             Destroy(gameObject);
@@ -37,7 +43,8 @@ public class PowerUp_Controller : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-	}
+        }
+    }
 
     public void OnTriggerEnter(Collider other)
     {

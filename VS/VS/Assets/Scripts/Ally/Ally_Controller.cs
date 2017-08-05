@@ -51,11 +51,17 @@ public class Ally_Controller : MonoBehaviour {
     }
 
 
+    public void setPlayer(Player p)
+    {
+        player = p;
+        setLevel();
+    }
+
     // Use this for initialization
     void Start () {
-        player = FindObjectOfType<Player>();
+       
 
-        setLevel();
+       
 
         time = Time.time + lifetime;
 	}
@@ -88,7 +94,7 @@ public class Ally_Controller : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        if(player != null) {
         if(Time.time >= time)
         {
             animator.SetBool("isdead", true);
@@ -108,11 +114,13 @@ public class Ally_Controller : MonoBehaviour {
             } else
             {
                     // transform.RotateAround(player.transform.position, Vector3.up, speed * 6 * Time.deltaTime);
-                    if(FindObjectsOfType<Enemy>().Length > 0) { 
-                    Enemy temp = FindObjectsOfType<Enemy>()[Random.Range(0, FindObjectsOfType<Enemy>().Length-1)];
-                    if(temp != null) { 
-                    InRangeEnemyList.Add(FindObjectOfType<Enemy>());
-                    }
+                    
+                    foreach(Enemy e in FindObjectsOfType<Enemy>())
+                    {
+                            if(e.player == player)
+                            {
+                                InRangeEnemyList.Add(e);
+                            }
                     }
                 }
 
@@ -147,4 +155,5 @@ public class Ally_Controller : MonoBehaviour {
         }
         }
     }
+}
 }

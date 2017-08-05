@@ -12,6 +12,8 @@ public class Game_Controller : MonoBehaviour {
     public bool gameOver = false;
     private bool ready = false;
 
+    private toggle_canvas tc;
+
     public Player player;
 
     public GameObject enemyParent;
@@ -41,8 +43,15 @@ public class Game_Controller : MonoBehaviour {
         ready = true;
     }
 
+    public float timer = 10;
+    private bool timer_on = false;
+    private float timer_time;
+    private global_game_controller ggc;
+
     // Use this for initialization
     void Start () {
+        ggc = FindObjectOfType<global_game_controller>();
+        tc = FindObjectOfType<toggle_canvas>();
 
         // Is player
         if(player.player_controller.controll_mode == Player_Controll.Player)
@@ -64,8 +73,8 @@ public class Game_Controller : MonoBehaviour {
             gamelist.Add(gc);
         }
 
-       
 
+        
         spawnTime = Time.time;
     }
 
@@ -83,7 +92,14 @@ public class Game_Controller : MonoBehaviour {
 
         if (enemy_on_map >= MAX_ENEMY)
         {
-           // warn and start 10 s timer!
+            if (player.player_controller.controll_mode == Player_Controll.Player)
+            {
+                tc.startCountdown();
+            }
+            else {
+               
+                StartTimer();
+            }
         }
     }
 
@@ -94,6 +110,14 @@ public class Game_Controller : MonoBehaviour {
 
             if (isPlayer) {
                 updateGameHUD();
+            }
+
+            if (timer_on)
+            {
+                if (timer_time < Time.time)
+                {
+                    ggc.GameOver();
+                }
             }
 
             if (spawnTime <= Time.time)
@@ -108,13 +132,46 @@ public class Game_Controller : MonoBehaviour {
         }
     }
 
+    private void StartTimer()
+    {
+        if (!timer_on) { 
+        timer_time = Time.time + timer;
+        timer_on = true;
+        timer = 10;
+        }
+    }
+
+    private void StopTimer()
+    {
+        timer_on = false;
+        timer = 10;
+    }
+
     public void addScore()
     {
         score++;
         enemy_on_map--;
+        
+        if(enemy_on_map < MAX_ENEMY )
+        {
+            
+            if (player.player_controller.controll_mode == Player_Controll.Player)
+            {
+                if (tc.active) { 
+                tc.stopCountdown();
+                }
+            }
+            else
+            {
+                if (timer_on)
+                {
+                    StopTimer();
+                }
+            }
+        }
 
         // spawn enemy on all other maps
-        foreach(Game_Controller gc in gamelist)
+        foreach (Game_Controller gc in gamelist)
         {
             if(gc != this)
             {
@@ -136,7 +193,7 @@ public class Game_Controller : MonoBehaviour {
             // sort list
             gamelist.Sort(delegate (Game_Controller a, Game_Controller b)
         {
-            return (a.score).CompareTo(b.score);
+            return (b.score).CompareTo(a.score);
         });
         }
 
@@ -145,7 +202,7 @@ public class Game_Controller : MonoBehaviour {
         foreach (Game_Controller game in gamelist)
         {
           
-            opponent_text += game.player.name +"(" + game.player.player_controller.controll_mode.ToString() + ")"+  " "+ game.enemy_on_map.ToString() + " " +game.score.ToString() + "\n";
+            opponent_text += game.player.name +"(" + game.player.player_controller.controll_mode.ToString() + ")"+  "\t"+ game.enemy_on_map.ToString() + "\t\t" + game.score.ToString() + "\n";
         }
 
         opponents_label.text = opponent_text;

@@ -47,9 +47,11 @@ public class Mage : Player {
         {
             for (int i = 0; i < a3_level; i++)
             {
-             GameObject go = Instantiate(Resources.Load("Allies/Mage/Slime_Blue")) as GameObject;
+             Ally_Controller go = Instantiate(Resources.Load("Allies/Mage/Slime_Blue", typeof(Ally_Controller)) ) as Ally_Controller;
+                
                 go.transform.position = transform.position + Vector3.forward * 4;
-               // go.transform.SetParent();
+                go.setPlayer(this);
+                go.transform.SetParent(parent);
             }
             useEnergy(30);
             playerhud.cooldownslider_3.StartCooldown();
@@ -60,8 +62,10 @@ public class Mage : Player {
     {
         if (a4_level > 0 && !playerhud.cooldownslider_4.OnCooldown() && gotEnoughtEnergy(40))
         {
-            GameObject go = Instantiate(Resources.Load("Abilities/Mage/MageFourthAbility")) as GameObject;
+            deathball go = Instantiate(Resources.Load("Abilities/Mage/MageFourthAbility", typeof(deathball))) as deathball;
             go.transform.position = transform.position + Vector3.forward * 4;
+            go.transform.SetParent(parent);
+            go.setPlayer(this);
             useEnergy(40);
             playerhud.cooldownslider_4.StartCooldown();
         }

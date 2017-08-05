@@ -11,16 +11,11 @@ public class Camera_Controller : MonoBehaviour {
     float maxFov = 90f;
     float sensitivity = 10f;
 
-    public Player[] playerarray;
-
     public Player target;
-    private bool istarget = false;
 
     // Use this for initialization
     void Start()
     {
-        playerarray = FindObjectsOfType<Player>();
-        // get player
 
         offset = transform.position;
        
@@ -41,6 +36,6 @@ public class Camera_Controller : MonoBehaviour {
         fov = Mathf.Clamp(fov, minFov, maxFov);
         Camera.main.fieldOfView = fov;
 
-            }
+     }
 
     }

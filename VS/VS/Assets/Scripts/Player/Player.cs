@@ -12,10 +12,15 @@ public class Player : MonoBehaviour {
     private float level_experience = 20;
     public float resist = 0;
 
+    public Slider small_healthslider;
+    public Slider small_energyslider;
+
     public float energyreg_speed = 0.5f;
     public float healthreg_speed = 0.5f;
     private float energytime;
     private float healthtime;
+
+    public bool invulnerable = false;
 
     public global_game_controller global_game_controller;
 
@@ -39,6 +44,8 @@ public class Player : MonoBehaviour {
     public int a4_level = 0;
     public int passive = 0;
     public int potion_level = 0;
+
+    public Transform parent;
 
     private int fontsize = 10;
     public string Name = "The Mage";
@@ -86,7 +93,11 @@ public class Player : MonoBehaviour {
                 if (player_controller.controll_mode == Player_Controll.Player)
                 {
                     playerhud.energyslider.value = energy;
+                  
                 }
+
+                small_energyslider.value = energy;
+
                 break;
             case PowerUp.Health:
                 health += value;
@@ -94,6 +105,8 @@ public class Player : MonoBehaviour {
                 {
                     playerhud.healthslider.value = health;
                 }
+                small_healthslider.value = health;
+
                 break;
             case PowerUp.Damage:
                 base_damage += value;
@@ -107,15 +120,17 @@ public class Player : MonoBehaviour {
 
     public void TakeDamage(float damage)
     {
-     
-        health -= damage - (damage/100)*resist*4;
+       if(!invulnerable) {
+           health -= damage - (damage/100)*resist*4;
         if (player_controller.controll_mode == Player_Controll.Player)
         {
             playerhud.healthslider.value = health;
         }
+        small_healthslider.value = health;
         if (!isdead)
         {
            FloatingTextController.CreateFloatingText(damage.ToString(),  transform);
+        }
         }
     }
 
@@ -169,20 +184,20 @@ public class Player : MonoBehaviour {
     public void addXP(float xp)
     {
         experience += xp;
+        current_level_xp = (experience / level_experience) * 100;
+
         if (player_controller.controll_mode == Player_Controll.Player)
         {
-            current_level_xp = (experience / level_experience) * 100;
-
             if (player_controller.controll_mode == Player_Controll.Player)
             {
-                playerhud.experienceslider.value = (experience / level_experience) * 100;
+                playerhud.experienceslider.value = current_level_xp;
             }
+        }
 
-            if (current_level_xp >= 100)
-            {
-                //level up
-                levelUp();
-            }
+        if (current_level_xp >= 100)
+        {
+            //level up
+            levelUp();
         }
     }
 
@@ -210,6 +225,7 @@ public class Player : MonoBehaviour {
             FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform);
             health += 20 * potion_level;
             playerhud.healthslider.value = health;
+            small_healthslider.value = health;
         }
     }
 
@@ -262,6 +278,7 @@ public class Player : MonoBehaviour {
                 {
                     playerhud.energyslider.value = energy;
                 }
+                small_energyslider.value = energy;
            
         }
         }
@@ -280,6 +297,7 @@ public class Player : MonoBehaviour {
                 {
                     playerhud.healthslider.value = health;
                 }
+                small_healthslider.value = health;
             }
         }
     }
@@ -310,6 +328,7 @@ public class Player : MonoBehaviour {
             {
                 playerhud.energyslider.value = energy;
             }
+            small_energyslider.value = energy;
         }
     }
 

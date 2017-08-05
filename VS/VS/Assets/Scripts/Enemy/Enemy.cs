@@ -34,7 +34,6 @@ public class Enemy : MonoBehaviour {
     private SkinnedMeshRenderer renderer;
 
     private GameObject[] powerups;
-
     private GameObject blooddamage;
     private GameObject blooddead;
 
@@ -56,9 +55,6 @@ public class Enemy : MonoBehaviour {
         
         rb = GetComponent<Rigidbody>();
 
-        // get correct player!
-       // player = Player.FindObjectOfType<Player>();
-       // playerpos = player.transform.position;
     }
 
     public void SetMap(Game_Controller g)
@@ -107,11 +103,11 @@ public class Enemy : MonoBehaviour {
        
         if (Random.Range(0, 100) < powerupspawnchance)
         {
-            Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
+           GameObject gg = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
+            PowerUp_Controller pu = gg.GetComponent<PowerUp_Controller>();
+            pu.setPlayer(player);
         }
 
-        // Random.Range(0,1) > 0.5)
-        
         GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
         go.transform.SetParent(gameObject.transform.parent);
 

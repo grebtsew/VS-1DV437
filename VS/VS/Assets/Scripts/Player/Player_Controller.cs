@@ -18,7 +18,9 @@ public class Player_Controller : MonoBehaviour{
     private Target_Follow_Enemy target_follower;
     private Buttons abilityinusage;
     private bool mouseMovement = false;
-   
+
+    public Canvas smallcanvas;
+
     //Attack
     private bool abilityaim;
     public bool usingabilty = false;
@@ -40,11 +42,20 @@ public class Player_Controller : MonoBehaviour{
     // Use this for initialization
     public virtual void Start()
     {
+        
         attackdelay = Time.time;
         
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
         target_follower = Instantiate(target_follower);
         target_follower.transform.SetParent(parent);
+
+        if(controll_mode == Player_Controll.Player)
+        {
+            smallcanvas.enabled = false;
+        } else
+        {
+            smallcanvas.enabled = true;
+        }
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
@@ -167,7 +178,7 @@ public class Player_Controller : MonoBehaviour{
        if (controll_mode == Player_Controll.Player){
             
             HandleKeyMovement();
-
+            updateCanvas();
         }
 
         if (target != null)
@@ -176,7 +187,22 @@ public class Player_Controller : MonoBehaviour{
         }
 
         autoattack();
+
         
+    }
+
+    private void updateCanvas()
+    {
+        if (Input.GetKeyDown("v"))
+        {
+          if(smallcanvas.enabled)
+            {
+                smallcanvas.enabled = false;
+            } else
+            {
+                smallcanvas.enabled = true;
+            }
+        }
     }
 
     public virtual void LateUpdate()

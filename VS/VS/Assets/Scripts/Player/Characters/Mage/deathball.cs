@@ -11,15 +11,36 @@ public class deathball : MonoBehaviour {
     public Player player;
     public float speed = 4;
 
-    private Enemy[] TargetList;
+    private List<Enemy> TargetList = new List<Enemy>();
     private int index;
+
+    public void setPlayer(Player p)
+    {
+        player = p;
+        setLevel();
+        getEnemies();
+    }
+
+    public void getEnemies()
+    {
+        if(TargetList != null) { 
+        TargetList.Clear();
+        }
+
+        foreach (Enemy e in FindObjectsOfType<Enemy>())
+        {
+
+           
+            if (e.player == player)
+            {
+                TargetList.Add(e);
+            }
+        }
+    }
 
     // Use this for initialization
     void Start () {
-        player = FindObjectOfType<Player>();
-        TargetList = FindObjectsOfType<Enemy>();
-       
-        setLevel();
+ 
 	}
 
     private void setLevel()
@@ -51,7 +72,10 @@ public class deathball : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (index < TargetList.Length) {
+        if(player != null) {
+
+
+        if (index < TargetList.Count) {
             if(TargetList[index] != null)
             {
             Vector3 targetpos = new Vector3(TargetList[index].transform.position.x, transform.position.y, TargetList[index].transform.position.z);
@@ -59,14 +83,15 @@ public class deathball : MonoBehaviour {
                 rotate_towards_transform(TargetList[index].transform);
             } else
             {
-               
                 index++;
             }
         } else
         {
             bool alldead = true;
 
-            for(int i = 0; i < TargetList.Length; i++)
+                getEnemies();
+
+            for (int i = 0; i < TargetList.Count; i++)
             {
                 if(TargetList[i] != null)
                 {
@@ -80,6 +105,7 @@ public class deathball : MonoBehaviour {
             if (alldead) { 
             Destroy(gameObject);
             }
+        }
         }
     }
 
