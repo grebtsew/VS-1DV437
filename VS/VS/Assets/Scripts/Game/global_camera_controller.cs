@@ -59,7 +59,7 @@ public class global_camera_controller : MonoBehaviour
         }
         
 
-      //  updateLabels();
+        updateLabels();
 
     }
 
@@ -86,12 +86,13 @@ public class global_camera_controller : MonoBehaviour
             ChangeCamera();
         }
 
-      //  updateLabels();
+        updateLabels();
         
     }
 
     private void updateLabels()
     {
+        if(player != null && ai != null) { 
         if (currentlyFollowing() == Player_Controll.Player)
         {
             following_level_label.text = player.level.ToString();
@@ -104,5 +105,6 @@ public class global_camera_controller : MonoBehaviour
         }
 
         following_label.text = currentlyFollowing().ToString();
+    }
     }
 }

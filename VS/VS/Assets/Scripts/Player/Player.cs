@@ -62,7 +62,7 @@ public class Player : MonoBehaviour {
     public Map_script map_reference;
 
     public bool initiated = false;
-
+    private global_camera_controller global_camera;
     public static int player_amount = 0;
 
     public Player()
@@ -90,6 +90,9 @@ public class Player : MonoBehaviour {
 
             map_reference = GetComponentInParent<Map_script>();
             map_reference.initiate(this);
+
+            global_camera = FindObjectOfType<global_camera_controller>();
+            global_camera.initiate();
         }
         initiated = true;
     }
@@ -322,7 +325,7 @@ public class Player : MonoBehaviour {
             // game over
             gameOver = true;
 
-            global_game_controller.GameOver();
+            global_game_controller.GameOver(this);
             //Debug.Break();
         }
     }
@@ -382,7 +385,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     public virtual void Update()
     {
-        if (initiated) { 
+        if (initiated && !isdead) { 
         passiveUpdate();
         checkOutOfBounds();
         checkIsDead();

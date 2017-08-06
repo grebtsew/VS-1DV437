@@ -136,10 +136,13 @@ public class CharacterSelector : MonoBehaviour {
     {
 
         // if character unlocked!
-        if(current_character == Player_Character.Mage) { 
+        if(current_character == Player_Character.Mage) {
 
+            int i = 0;
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
 
-        SaveCharacterSelection();
+            SaveCharacterSelection();
         Application.LoadLevel(nextScene);
 
         } else

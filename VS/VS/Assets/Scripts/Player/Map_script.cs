@@ -24,8 +24,8 @@ public class Map_script : MonoBehaviour {
     {
         player = p;
         player.player_controller.initiate();
-        energyregzone.initiate(player);
-        healthregzone.initiate(player);
+        
+       
     }
 
 	void Start () {
@@ -50,11 +50,14 @@ public class Map_script : MonoBehaviour {
             else if (t.tag == "EnergyReg")
             {
                 energyregzone = t.GetComponent<Regeneration_Controller>();
+                energyregzone.initiate(player);
             }
             else if (t.tag == "HealthReg")
             {
                 healthregzone = t.GetComponent<Regeneration_Controller>();
-           
+
+                healthregzone.initiate(player);
+
             }
         }
 

@@ -25,7 +25,7 @@ public class MainMenuScript : MonoBehaviour {
         quitMenu.enabled = false;
 
         // Set Name
-        name_inputfield.text = PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_name, "Player" + Random.Range(1, 100));
+        name_inputfield.text = PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_name(0), "Player" + Random.Range(1, 100));
     }
 
     public void ExitPress()
@@ -47,11 +47,11 @@ public class MainMenuScript : MonoBehaviour {
         // save Name
         if (name_text.text == null || name_text.text == "")
         {
-            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name, ref name, "Player" + Random.Range(1, 100), true);
+            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref name, "Player" + Random.Range(1, 100), true);
         }
         else
         {
-            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name, ref name, name_text.text, true);
+            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref name, name_text.text, true);
         }
     }
 

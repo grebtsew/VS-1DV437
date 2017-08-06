@@ -14,10 +14,12 @@ public class toggle_canvas : MonoBehaviour {
     public bool countdown;
     private int timer = 10;
     private global_game_controller ggc;
+    private bool dead = false;
 
     public void initiate(Player p)
     {
         player = p;
+        
     }
 
         // Use this for initialization
@@ -53,11 +55,14 @@ public class toggle_canvas : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if(player != null) { 
+        if(player != null && !dead) { 
         if (active || player.health <= 20)
         {
             if (Time.time > time)
         {
+                    
+                  
+                    
             time = Time.time + delay;
 
                 if (countdown)
@@ -76,16 +81,17 @@ public class toggle_canvas : MonoBehaviour {
         }
         }
 
-        if(timer == 0)
+        if(timer == 0 )
         {
-            ggc.GameOver();
+            ggc.GameOver(player);
+                dead = true;  
         }
-
-        if(player.health > 20)
+        
+        if(player.health > 20 && !active)
         {
             cg.alpha = 0;
         }
-
+        
         }
     }
 }

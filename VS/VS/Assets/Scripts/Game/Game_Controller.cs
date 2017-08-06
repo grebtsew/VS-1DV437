@@ -138,7 +138,8 @@ public class Game_Controller : MonoBehaviour {
             {
                 if (timer_time < Time.time)
                 {
-                    ggc.GameOver();
+                    gameOver = true;
+                    ggc.GameOver(player);
                 }
             }
 
