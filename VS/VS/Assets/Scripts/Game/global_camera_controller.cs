@@ -15,8 +15,9 @@ public class global_camera_controller : MonoBehaviour
     private Player player;
     private Player ai;
 
-    void Start()
+    public void initiate()
     {
+
         Camera1.GetComponent<Camera>().enabled = true;
         Camera2.GetComponent<Camera>().enabled = false;
 
@@ -31,7 +32,14 @@ public class global_camera_controller : MonoBehaviour
             {
                 ai = p;
             }
+
         }
+    }
+
+    void Start()
+    {
+        
+        
     }
 
 
@@ -51,12 +59,14 @@ public class global_camera_controller : MonoBehaviour
         }
         
 
-        updateLabels();
+      //  updateLabels();
 
     }
 
     public Player_Controll currentlyFollowing()
     {
+        
+      
         if (Camera1.GetComponent<Camera>().enabled)
         {
             return Player_Controll.Player;
@@ -64,16 +74,20 @@ public class global_camera_controller : MonoBehaviour
         {
             return Player_Controll.Ai;
         }
+        
+   
     }
 
     void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.C))
         {
             ChangeCamera();
         }
 
-        updateLabels();
+      //  updateLabels();
+        
     }
 
     private void updateLabels()

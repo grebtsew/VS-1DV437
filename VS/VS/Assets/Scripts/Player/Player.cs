@@ -50,19 +50,47 @@ public class Player : MonoBehaviour {
     public Transform parent;
 
     private int fontsize = 10;
-    public string Name = "The Mage";
-    public string Background = "A combat mage with alot of damage, might be a little squishy tought!";
+
+    public string Name = "mage";
 
     public PlayerHUDController playerhud;
     public Player_Controller player_controller;
 
+
+    private LevelUpPanel_Controller leveluppanel;
+
+    public bool initiated = false;
+
+    public static int player_amount = 0;
+
+    public Player()
+    {
+        player_amount++;
+    }
+
+    public void InitiatePlayer(global_game_controller game, Transform parent){
+        global_game_controller = game;
+        this.parent = parent;
+
+
+        if (player_controller.controll_mode == Player_Controll.Player)
+        {
+            leveluppanel = FindObjectOfType<LevelUpPanel_Controller>();
+            leveluppanel.initiate(this);
+
+            playerhud = FindObjectOfType<PlayerHUDController>();
+            playerhud.initiate(this);
+            playerhud.updateAllLabels();
+        }
+        initiated = true;
+    }
+
     // Use this for initialization
     public virtual void Start()
     {
-        if (player_controller.controll_mode == Player_Controll.Player)
-        {
-            playerhud.updateAllLabels();
-        }
+
+        player_controller = GetComponent<Player_Controller>();
+       
     }
 
     private void HandleKeyAbilities()
@@ -326,6 +354,7 @@ public class Player : MonoBehaviour {
     // Update is called once per frame
     public virtual void Update()
     {
+        if (initiated) { 
         passiveUpdate();
         checkOutOfBounds();
         checkIsDead();
@@ -333,6 +362,7 @@ public class Player : MonoBehaviour {
         healthRegeneration();
         energyRegeneration();
         HandleKeyAbilities();
+        }
     }
 
     public bool gotEnoughtEnergy(float cost)

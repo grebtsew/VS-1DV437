@@ -13,6 +13,7 @@ public class global_game_controller : MonoBehaviour {
     private bool restart = false;
     private bool doonce = true;
 
+    public Camera_Controller cc;
 
     float timeLeft = 5.0f;
     public Text text;
@@ -21,21 +22,40 @@ public class global_game_controller : MonoBehaviour {
 
     Game_Controller[] gamelist;
 
+    public Game_Controller player_game;
+
+    private GameObject player;
+    private global_camera_controller global_camera;
+
     // Use this for initialization
     void Start () {
+
+       
+
+        Time.timeScale = 0;
+
+        // create world
+
+        // spawnPlayer
+        string player_prefab_path = "Players(ingame)/" + PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_character(0), "Mage");
+
+        player = Resources.Load<GameObject>(player_prefab_path);
+        
+        Player p = Instantiate(player, transform.position + transform.up * 2, transform.rotation).GetComponent<Player>();
+        p.InitiatePlayer(this, transform);
+
+        cc.setTarget(p);
+
+        global_camera = FindObjectOfType<global_camera_controller>();
+        global_camera.initiate();
+
+        player_game.initiate(p);
+
+
 
         // init menu
         inGameMenu.enabled = false;
         extraQuestion.enabled = false;
-
-        
-
-            Time.timeScale = 0;
-
-        // create world
-
-        // create start question
-
     }
 
 

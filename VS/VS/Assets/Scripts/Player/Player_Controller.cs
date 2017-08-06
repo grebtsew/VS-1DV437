@@ -41,8 +41,6 @@ public class Player_Controller : MonoBehaviour{
     private bool ai_move = false;
     private Transform ai_move_target;
 
-    public Transform parent;
-
     private Vector3 mousePos;
 
     // Use this for initialization
@@ -53,7 +51,7 @@ public class Player_Controller : MonoBehaviour{
         
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
         target_follower = Instantiate(target_follower);
-        target_follower.transform.SetParent(parent);
+        target_follower.transform.SetParent(player.parent);
 
         if(controll_mode == Player_Controll.Player)
         {

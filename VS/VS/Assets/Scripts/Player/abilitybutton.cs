@@ -9,28 +9,24 @@ public class abilitybutton : MonoBehaviour {
     private Text level_label;
     private float level;
     public LevelUpPanel_Controller lup;
-    public Player player;
+    private Player player;
     public Image active_image;
     private bool active;
 
+    public void initiate(Player p)
+    {
+        player = p;
+    }
 
     // Use this for initialization
     void Start () {
         level_label = GetComponentInChildren<Text>();
 
-        // get player
-        foreach (Player p in FindObjectsOfType<Player>())
-        {
-            if (p.player_controller.controll_mode == Player_Controll.Player)
-            {
-                player = p;
-            }
-        }
+        
     }
 	
     public void MakeActive()
     {
-        
             Color c = active_image.color;
             c.a = 0;
             active_image.color = c;

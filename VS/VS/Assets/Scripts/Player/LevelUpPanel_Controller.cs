@@ -13,18 +13,23 @@ public class LevelUpPanel_Controller : MonoBehaviour {
     private abilitybutton a4;
     private abilitybutton potion;
     private abilitybutton passive;
-    public Player player;
+    private Player player;
+
+    public void initiate(Player p)
+    {
+        player = p;
+        a1.initiate(player);
+        a2.initiate(player);
+        a3.initiate(player);
+        a4.initiate(player);
+        potion.initiate(player);
+        passive.initiate(player);
+
+    }
 
     // Use this for initialization
     void Start () {
-        //get player
-        foreach(Player p in FindObjectsOfType<Player>())
-        {
-            if(p.player_controller.controll_mode == Player_Controll.Player)
-            {
-                player = p;
-            }
-        }
+        
      
         canvas = GetComponent<Canvas>();
         disable();
@@ -79,7 +84,7 @@ public class LevelUpPanel_Controller : MonoBehaviour {
 
     public void toggleLevelUp()
     {
-       
+        if(player != null) {
         if (canvas.enabled)
         {
             canvas.enabled = false;
@@ -103,6 +108,7 @@ public class LevelUpPanel_Controller : MonoBehaviour {
                 potion.MakeActive();
                 passive.MakeActive();
             }
+        }
         }
     }
 

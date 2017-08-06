@@ -56,7 +56,7 @@ public class toggle_canvas : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        if(player != null) { 
         if (active || player.health <= 20)
         {
             if (Time.time > time)
@@ -89,6 +89,6 @@ public class toggle_canvas : MonoBehaviour {
             cg.alpha = 0;
         }
 
-      
+        }
     }
 }

@@ -48,21 +48,32 @@ public class Game_Controller : MonoBehaviour {
     private float timer_time;
     private global_game_controller ggc;
 
+    public void initiate(Player p)
+    {
+        player = p;
+        // Is player
+        if (player.player_controller.controll_mode == Player_Controll.Player)
+        {
+           
+            isPlayer = true;
+            Instantiate(Resources.Load("Followers/MouseFollower"));
+        }
+
+    }
+
     // Use this for initialization
     void Start () {
         ggc = FindObjectOfType<global_game_controller>();
         tc = FindObjectOfType<toggle_canvas>();
 
-        // Is player
-        if(player.player_controller.controll_mode == Player_Controll.Player)
-        {
-            isPlayer = true;
-            Instantiate(Resources.Load("Followers/MouseFollower"));
-        }
+        if (player != null) {
 
-        if (player.player_controller.controll_mode == Player_Controll.Ai)
-        {
-            Ready();
+            if (player.player_controller.controll_mode == Player_Controll.Ai)
+            {
+               
+                Ready();
+            }
+
         }
 
         // get map center
@@ -73,8 +84,6 @@ public class Game_Controller : MonoBehaviour {
             gamelist.Add(gc);
         }
 
-
-        
         spawnTime = Time.time;
     }
 

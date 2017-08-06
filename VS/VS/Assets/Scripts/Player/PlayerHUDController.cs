@@ -27,6 +27,12 @@ public class PlayerHUDController : MonoBehaviour {
     public cooldown_slider cooldownslider_4;
     public cooldown_slider potioncooldown;
 
+    public void initiate(Player p)
+    {
+        player = p;
+    }
+        
+
     // Use this for initialization
     void Start () {
         /*
