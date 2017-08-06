@@ -56,8 +56,10 @@ public class Player : MonoBehaviour {
     public PlayerHUDController playerhud;
     public Player_Controller player_controller;
 
-
+    private toggle_canvas toggle_canvas;
     private LevelUpPanel_Controller leveluppanel;
+
+    public Map_script map_reference;
 
     public bool initiated = false;
 
@@ -72,15 +74,22 @@ public class Player : MonoBehaviour {
         global_game_controller = game;
         this.parent = parent;
 
-
+        // initiate HUD & Map
         if (player_controller.controll_mode == Player_Controll.Player)
         {
+ 
+            toggle_canvas = FindObjectOfType<toggle_canvas>();
+            toggle_canvas.initiate(this);
+
             leveluppanel = FindObjectOfType<LevelUpPanel_Controller>();
             leveluppanel.initiate(this);
 
             playerhud = FindObjectOfType<PlayerHUDController>();
             playerhud.initiate(this);
             playerhud.updateAllLabels();
+
+            map_reference = GetComponentInParent<Map_script>();
+            map_reference.initiate(this);
         }
         initiated = true;
     }
@@ -88,9 +97,9 @@ public class Player : MonoBehaviour {
     // Use this for initialization
     public virtual void Start()
     {
-
+        
         player_controller = GetComponent<Player_Controller>();
-       
+        
     }
 
     private void HandleKeyAbilities()
@@ -173,6 +182,25 @@ public class Player : MonoBehaviour {
     {
         
     }
+
+    public void use_ability(Buttons b)
+    {
+        switch (b)
+        {
+            case Buttons.ability1:
+                FirstAbility();
+                break;
+            case Buttons.ability2:
+                SecondAbility();
+                break;
+            case Buttons.ability3:
+                ThirdAbility();
+                break;
+            case Buttons.ability4:
+                FourthAbility();
+                break;
+        }
+    } 
 
     public void use_ability_point(Buttons b)
     {

@@ -22,6 +22,9 @@ public class global_game_controller : MonoBehaviour {
 
     Game_Controller[] gamelist;
 
+    public Map_script[] map_reference;
+    public Map_script player_map;
+
     public Game_Controller player_game;
 
     private GameObject player;
@@ -30,11 +33,20 @@ public class global_game_controller : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
-       
-
         Time.timeScale = 0;
 
         // create world
+
+        map_reference = FindObjectsOfType<Map_script>();
+        foreach (Map_script map in map_reference)
+        {
+            if(map.id == 0)
+            {
+                player_map = map;
+                break;
+            }
+                    
+        }
 
         // spawnPlayer
         string player_prefab_path = "Players(ingame)/" + PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_character(0), "Mage");
@@ -42,6 +54,7 @@ public class global_game_controller : MonoBehaviour {
         player = Resources.Load<GameObject>(player_prefab_path);
         
         Player p = Instantiate(player, transform.position + transform.up * 2, transform.rotation).GetComponent<Player>();
+        p.transform.SetParent(player_map.transform);
         p.InitiatePlayer(this, transform);
 
         cc.setTarget(p);
@@ -50,8 +63,6 @@ public class global_game_controller : MonoBehaviour {
         global_camera.initiate();
 
         player_game.initiate(p);
-
-
 
         // init menu
         inGameMenu.enabled = false;

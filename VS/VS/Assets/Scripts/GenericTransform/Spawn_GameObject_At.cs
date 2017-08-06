@@ -12,21 +12,24 @@ public class Spawn_GameObject_At : MonoBehaviour {
     private cooldown_slider cs;
     private string keypress;
    
-    
 
     public void Spawn()
     {
-
-        GameObject temp = Resources.Load(prefab, typeof(GameObject)) as GameObject;
-        Instantiate(temp, transform.position, transform.rotation);
+        GameObject temp = Instantiate(Resources.Load(prefab, typeof(GameObject)), transform.position, transform.rotation) as GameObject;
+        temp.transform.SetParent(player.parent);
         player.ability_mode = false;
         Destroy(gameObject);
 
     }
 
+    public void initiate(Player p)
+    {
+        player = p;
+    }
+
     // Use this for initialization
     void Start () {
-        player = FindObjectOfType<Player>();
+        
 
         // get correct slider
         foreach(cooldown_slider c in FindObjectsOfType<cooldown_slider>())
@@ -59,6 +62,7 @@ public class Spawn_GameObject_At : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(player != null) { 
         if (Input.GetKeyDown(keypress) || Input.GetMouseButtonDown(0))
         {
 
@@ -76,6 +80,7 @@ public class Spawn_GameObject_At : MonoBehaviour {
         {
             player.ability_mode = false;
             Destroy(gameObject);
+        }
         }
     }
 }

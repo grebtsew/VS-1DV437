@@ -13,9 +13,14 @@ public class Regeneration_Controller : MonoBehaviour {
     private bool doonce = false;
     private int textSize = 8;
 
+    public void initiate(Player p)
+    {
+        player = p;
+    }
+
     // Use this for initialization
     void Start () {
-        player = FindObjectOfType<Player>();
+        
         time = Time.time;
 	}
 
@@ -23,6 +28,7 @@ public class Regeneration_Controller : MonoBehaviour {
 
         // Update is called once per frame
         void Update () {
+        if(player != null) { 
         if (Vector3.Distance(player.transform.position, transform.position) <= 5)
         {
             if (!doonce)
@@ -53,6 +59,6 @@ public class Regeneration_Controller : MonoBehaviour {
         {
             doonce = false;
         }
-         
-	}
+        }
+    }
 }

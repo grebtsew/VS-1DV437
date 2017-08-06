@@ -56,7 +56,8 @@ public class Game_Controller : MonoBehaviour {
         {
            
             isPlayer = true;
-            Instantiate(Resources.Load("Followers/MouseFollower"));
+         GameObject go =  Instantiate(Resources.Load("Followers/MouseFollower", typeof(GameObject))) as GameObject;
+         go.transform.SetParent(player.parent);
         }
 
     }

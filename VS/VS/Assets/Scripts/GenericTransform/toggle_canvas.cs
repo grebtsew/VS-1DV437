@@ -15,16 +15,13 @@ public class toggle_canvas : MonoBehaviour {
     private int timer = 10;
     private global_game_controller ggc;
 
+    public void initiate(Player p)
+    {
+        player = p;
+    }
+
         // Use this for initialization
         void Start () {
-        // get player
-        foreach (Player p in FindObjectsOfType<Player>())
-        {
-            if (p.player_controller.controll_mode == Player_Controll.Player)
-            {
-                player = p;
-            }
-        }
 
         text.text = "";
         ggc = FindObjectOfType<global_game_controller>();

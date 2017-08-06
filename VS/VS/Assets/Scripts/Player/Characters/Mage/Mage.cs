@@ -26,7 +26,9 @@ public class Mage : Player {
             {
                 if (ability_mode == false)
                 {
-                    Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim"));
+                    GameObject go = Instantiate(Resources.Load("Abilities/Mage/MageFirstAbilityAim", typeof(GameObject))) as GameObject;
+                    go.transform.SetParent(parent);
+                    go.GetComponent<Spawn_GameObject_At>().initiate(this);
                     ability_mode = true;
                 }
             }
@@ -37,8 +39,9 @@ public class Mage : Player {
             // fix cooldown
             player_controller.ability_animation(Buttons.ability1, true);
             useEnergy(40);
-            GameObject temp = Resources.Load("Abilities/Mage/MageFirstAbility", typeof(GameObject)) as GameObject;
-            Instantiate(temp, transform.position, transform.rotation);
+     
+            GameObject temp = Instantiate(Resources.Load("Abilities/Mage/MageFirstAbility", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
+            temp.transform.SetParent(parent);
            
         }
     }
@@ -51,7 +54,9 @@ public class Mage : Player {
             {
                 if (ability_mode == false)
                 {
-                    Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim"));
+                    GameObject go =   Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim", typeof(GameObject))) as GameObject;
+                    go.transform.SetParent(parent);
+                    go.GetComponent<Spawn_GameObject_At>().initiate(this);
                     ability_mode = true;
                 }
             }
@@ -64,7 +69,8 @@ public class Mage : Player {
             useEnergy(40);
            follow_player_rotation temp = Instantiate(Resources.Load("Abilities/Mage/MageSecondAbility_ai", typeof(follow_player_rotation))) as follow_player_rotation;
             temp.setPlayer(this);
-            //Instantiate(temp, transform.position, transform.rotation);
+            temp.transform.SetParent(parent);
+            
         }
     }
 

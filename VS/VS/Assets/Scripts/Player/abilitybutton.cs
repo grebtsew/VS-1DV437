@@ -59,7 +59,15 @@ public class abilitybutton : MonoBehaviour {
             level_label.text = level.ToString();
         player.use_ability_point(b);
             lup.toggleLevelUp();
+        } else
+        {
+            if(!lup.isEnabled() && level > 0)
+            {
+                player.use_ability(b);
+            }
         }
+
+        
     }
 
     public float getAbilityLevel()

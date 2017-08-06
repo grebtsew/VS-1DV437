@@ -35,16 +35,7 @@ public class PlayerHUDController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        /*
-		foreach(Player p in FindObjectsOfType<Player>())
-        {
-            if(p.player_controller.controll_mode == Player_Controll.Player)
-            {
-                player = p;
-                break;
-            }
-        }
-        */
+        
 	}
 
     public void updateAllLabels()
@@ -108,8 +99,5 @@ public class PlayerHUDController : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+ 
 }

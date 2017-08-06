@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour {
     private GameObject blooddamage;
     private GameObject blooddead;
 
+    private Transform extraparent;
+
     public virtual void Start()
     {
         blooddamage = Resources.Load<GameObject>("Enemies/DamageEffects/BloodSprayEffect");
@@ -47,7 +49,10 @@ public class Enemy : MonoBehaviour {
 
         mainTexture = renderer.material.mainTexture;
 
-       
+        
+
+        
+
         animator = GetComponent<Animator>();
 
         animator.SetBool("Withinrange", false);
@@ -66,6 +71,7 @@ public class Enemy : MonoBehaviour {
     {
         player = p;
         playerpos = player.transform.position;
+        extraparent = player.parent;
     }
 
     void OnMouseEnter()
@@ -85,7 +91,7 @@ public class Enemy : MonoBehaviour {
 
 
         GameObject go = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        go.transform.SetParent(gameObject.transform.parent);
+        go.transform.SetParent(extraparent);
 
         if (!isdead) {
         FloatingTextController.CreateFloatingText(damage.ToString(),  transform, Color.cyan, 10);
@@ -106,12 +112,12 @@ public class Enemy : MonoBehaviour {
            GameObject gg = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
             PowerUp_Controller pu = gg.GetComponent<PowerUp_Controller>();
             pu.setPlayer(player);
+            gg.transform.SetParent(extraparent);
            
-           // gg.transform.SetParent(parent);
         }
 
         GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        go.transform.SetParent(gameObject.transform.parent);
+        go.transform.SetParent(extraparent);
 
         StartCoroutine(deathwait(1));
 

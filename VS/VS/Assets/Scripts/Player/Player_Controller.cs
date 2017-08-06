@@ -43,6 +43,12 @@ public class Player_Controller : MonoBehaviour{
 
     private Vector3 mousePos;
 
+    public void initiate()
+    {
+        energyzone = player.map_reference.energyregzone;
+        healthzone = player.map_reference.healthregzone;
+    }
+
     // Use this for initialization
     public virtual void Start()
     {
@@ -56,13 +62,18 @@ public class Player_Controller : MonoBehaviour{
         if(controll_mode == Player_Controll.Player)
         {
             smallcanvas.enabled = false;
-        } else
+        } 
+
+        if(controll_mode == Player_Controll.Ai)
         {
             smallcanvas.enabled = true;
+            
         }
 
         rb = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+
+       
     }
 
     public void disableTargetMarker()
