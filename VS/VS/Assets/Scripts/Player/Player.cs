@@ -134,6 +134,7 @@ public class Player : MonoBehaviour {
                 energy += value;
                 if (player_controller.controll_mode == Player_Controll.Player)
                 {
+                    
                     playerhud.energyslider.value = energy;
                   
                 }
@@ -145,6 +146,7 @@ public class Player : MonoBehaviour {
                 health += value;
                 if (player_controller.controll_mode == Player_Controll.Player)
                 {
+                    
                     playerhud.healthslider.value = health;
                 }
                 small_healthslider.value = health;
@@ -154,10 +156,13 @@ public class Player : MonoBehaviour {
                 base_damage += value;
                 if (player_controller.controll_mode == Player_Controll.Player)
                 {
+                    
                     playerhud.updateDamage();
                 }
                 break;
         }
+
+       
     }
 
     public void TakeDamage(float damage)
@@ -283,7 +288,10 @@ public class Player : MonoBehaviour {
             player_controller.ai_unlock_ability();
         }
 
-    }
+        player_controller.audio.clip = player_controller.levelup;
+        player_controller.audio.Play();
+
+}
 
     public void potionClicked()
     {
@@ -327,7 +335,13 @@ public class Player : MonoBehaviour {
 
             global_game_controller.GameOver(this);
             //Debug.Break();
+
+            //sound
+            player_controller.audio.clip = player_controller.dead;
+            player_controller.audio.Play();
         }
+
+        
     }
 
     private void checkToMuchResources()

@@ -16,7 +16,12 @@ public class settings_script : MonoBehaviour {
     void Start () {
         canvas = GetComponent<Canvas>();
         canvas.enabled = false;
-	}
+
+        int i = 50;
+        string s = "easy";
+        enemies.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.enemy_amount, i).ToString();
+        diff.text = PlayerPrefsHandler.GetPersistentVar<string>(Statics.ai_difficulty, s);
+    }
 
     public void show()
     {

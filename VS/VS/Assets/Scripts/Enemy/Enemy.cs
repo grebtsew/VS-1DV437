@@ -37,10 +37,40 @@ public class Enemy : MonoBehaviour {
     private GameObject blooddamage;
     private GameObject blooddead;
 
+    private AudioClip damage_sound;
+    private AudioClip laugh_sound;
+    private AudioClip take_damage_sound;
+    private AudioClip dead_sound;
+
+    private AudioSource audio;
+
     private Transform extraparent;
 
     public virtual void Start()
     {
+        audio = GetComponent<AudioSource>();
+        damage_sound = Resources.Load("Audio/enemy_damage", typeof(AudioClip)) as AudioClip;
+        laugh_sound = Resources.Load("Audio/enemy_laugh", typeof(AudioClip)) as AudioClip;
+        take_damage_sound = Resources.Load("Audio/enemy_take_damage", typeof(AudioClip)) as AudioClip;
+        dead_sound = Resources.Load("Audio/enemydead", typeof(AudioClip)) as AudioClip;
+
+        if (Random.Range(0, 100) < 50)
+        {
+            if (Random.Range(0, 100) < 50)
+            {
+                audio.clip = damage_sound;
+                audio.Play();
+            }
+            else
+            {
+                audio.clip = laugh_sound;
+                audio.Play();
+            }
+        }
+          
+
+        // l
+
         blooddamage = Resources.Load<GameObject>("Enemies/DamageEffects/BloodSprayEffect");
         blooddead = Resources.Load<GameObject>("Enemies/DamageEffects/BloodStreamEffect");
         powerups = Resources.LoadAll<GameObject>("PowerUps");
@@ -48,10 +78,6 @@ public class Enemy : MonoBehaviour {
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
         mainTexture = renderer.material.mainTexture;
-
-        
-
-        
 
         animator = GetComponent<Animator>();
 
@@ -96,6 +122,12 @@ public class Enemy : MonoBehaviour {
         if (!isdead) {
         FloatingTextController.CreateFloatingText(damage.ToString(),  transform, Color.cyan, 10);
         }
+
+        
+            audio.clip = take_damage_sound;
+            audio.Play();
+        
+
     }
 
     public void Dead()
@@ -119,8 +151,13 @@ public class Enemy : MonoBehaviour {
         GameObject go = Instantiate(blooddead, transform.position+ transform.up*0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
         go.transform.SetParent(extraparent);
 
+        // make sound
+        audio.clip = dead_sound;
+        audio.Play();
+
         StartCoroutine(deathwait(1));
 
+       
     }
 
     IEnumerator deathwait(int time)

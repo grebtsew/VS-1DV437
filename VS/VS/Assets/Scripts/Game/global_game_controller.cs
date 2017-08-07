@@ -37,9 +37,12 @@ public class global_game_controller : MonoBehaviour {
 
     private GameObject player;
     private global_camera_controller global_camera;
+    
 
     // Use this for initialization
     void Start () {
+
+       
 
         Time.timeScale = 0;
 
@@ -207,7 +210,8 @@ public class global_game_controller : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if (ready) { 
+        if (ready) {
+          
         if (!gameOver) { 
             if (Input.GetKeyDown(KeyCode.Escape))
         {

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CharacterSelector : MonoBehaviour {
 
     public List<GameObject> characterList;
-    public int index = 0;
+    private int index = 0;
     private static int previousScene = 0;
     private static int nextScene = 2;
     public Text name;
@@ -20,22 +20,30 @@ public class CharacterSelector : MonoBehaviour {
     public Text matches;
     public Text charwins;
 
+    private int wins_i;
+    private int matches_i;
+
+    public Text unlock_text;
+
     // Use this for initialization
     void Start () {
         Time.timeScale = 1;
 
         initiateSelector();
-
         initiateLabels();
 
+      
     }
 
     private void initiateLabels()
     {
         // total wins
-        PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_wins, Statics.zero);
+        wins_i = PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_wins, Statics.zero);
+        wins.text = wins_i.ToString();
+      
         // total played
-        PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_matches, Statics.zero);
+        matches_i = PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_matches, Statics.zero);
+       matches.text = matches_i.ToString();
     }
 
     private void initiateSelector()
@@ -54,8 +62,12 @@ public class CharacterSelector : MonoBehaviour {
             name.text = characterList[index].name.Replace("(Clone)", "");
             characterList[index].SetActive(true);
             current_character = characterList[index].GetComponent<player_selection_script>().character;
+            charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character),0).ToString();
+            updatelabels();
         }
     }
+
+   
 
     public void Next()
     {
@@ -98,29 +110,183 @@ public class CharacterSelector : MonoBehaviour {
         {
             case Player_Character.Mage:
                 background.text = Mage_statics.Background;
+
+                if (wins_i >= Mage_statics.unlock)
+                {
+                    if (Mage_statics.developed) { 
+                    characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    } else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+
+                } else
+                {
+                    unlock_text.text = "Most win " + Mage_statics.unlock + " matches to unlock this character!";
+                }
+
                 break;
-            case Player_Character.HandTheTank:
-                background.text = "";
+            case Player_Character.HankTheTank:
+                background.text = HankTheTank_statics.Background;
+
+                if (wins_i >= HankTheTank_statics.unlock)
+                {
+                    if (HankTheTank_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + HankTheTank_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.Archer:
-                background.text = "";
+                background.text = Archer_statics.Background;
+
+                if (wins_i >= Archer_statics.unlock)
+                {
+                    if (Archer_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Archer_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.BigSword:
-                background.text = "";
+                background.text = BigSword_statics.Background;
+
+                if (wins_i >= BigSword_statics.unlock)
+                {
+                    if (BigSword_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + BigSword_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.Bow:
-                background.text = "";
+                background.text = Bow_statics.Background;
+
+                if (wins_i >= Bow_statics.unlock)
+                {
+                    if (Bow_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Bow_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.Hammer:
-                background.text = "";
+                background.text = Hammer_statics.Background;
+
+                if (wins_i >= Hammer_statics.unlock)
+                {
+                    if (Hammer_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Hammer_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.Spearman:
-                background.text = "";
+                background.text = Spearman_statics.Background;
+
+                if (wins_i >= Spearman_statics.unlock)
+                {
+                    if (Spearman_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Spearman_statics.unlock + " matches to unlock this character!";
+                }
                 break;
             case Player_Character.Swordsman:
-                background.text = "";
+                background.text = Swordsman_statics.Background;
+
+                if (wins_i >= Swordsman_statics.unlock)
+                {
+                    if (Swordsman_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Swordsman_statics.unlock + " matches to unlock this character!";
+                }
                 break;
-             
+            case Player_Character.Adventurer:
+                background.text = Adventurer_statics.Background;
+
+                if (wins_i >= Adventurer_statics.unlock)
+                {
+                    if (Adventurer_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
+                        unlock_text.text = "";
+                    }
+                    else
+                    {
+                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+                    }
+                }
+                else
+                {
+                    unlock_text.text = "Most win " + Adventurer_statics.unlock + " matches to unlock this character!";
+                }
+                break;
         }
 
         // character wins label
@@ -136,8 +302,9 @@ public class CharacterSelector : MonoBehaviour {
     {
 
         // if character unlocked!
-        if(current_character == Player_Character.Mage) {
+        if(characterList[index].GetComponent<player_selection_script>().unlocked) {
 
+            // reset score for amount of players
             int i = 0;
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);

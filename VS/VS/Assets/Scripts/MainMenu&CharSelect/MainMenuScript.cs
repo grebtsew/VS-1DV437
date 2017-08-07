@@ -16,6 +16,9 @@ public class MainMenuScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+      
+      
+
         // Grab instance of component
         quitMenu = quitMenu.GetComponent<Canvas>();
         startText = startText.GetComponent<Button>();

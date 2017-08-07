@@ -4,7 +4,7 @@ using UnityEngine;
     public enum Player_Character
 {
 
-   None, Mage, Adventurer, HandTheTank, Archer, BigSword, Bow, Hammer, Spearman, Swordsman
+   None, Mage, Adventurer, HankTheTank, Archer, BigSword, Bow, Hammer, Spearman, Swordsman
 
  }
 
@@ -20,7 +20,7 @@ static class Player_Character_Functions
             case "Adventurer":
                 return Player_Character.Adventurer;
             case "HandTheTank":
-                return Player_Character.HandTheTank;
+                return Player_Character.HankTheTank;
             case "Archer":
                 return Player_Character.Archer;
             case "BigSword":

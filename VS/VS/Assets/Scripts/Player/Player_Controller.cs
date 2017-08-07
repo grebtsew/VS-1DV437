@@ -24,6 +24,12 @@ public class Player_Controller : MonoBehaviour{
 
     public Canvas smallcanvas;
 
+    public AudioSource audio;
+  
+    public AudioClip levelup;
+    public AudioClip pickup;
+    public AudioClip dead;
+
     //Attack
     private bool abilityaim;
     public bool usingabilty = false;
@@ -52,7 +58,15 @@ public class Player_Controller : MonoBehaviour{
     // Use this for initialization
     public virtual void Start()
     {
-        
+        audio = GetComponent<AudioSource>();
+
+       
+        levelup = Resources.Load("Audio/levelup", typeof(AudioClip)) as AudioClip;
+        pickup = Resources.Load("Audio/pickup", typeof(AudioClip)) as AudioClip;
+        dead = Resources.Load("Audio/Player_dead", typeof(AudioClip)) as AudioClip;
+
+
+
         attackdelay = Time.time;
         
         target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
