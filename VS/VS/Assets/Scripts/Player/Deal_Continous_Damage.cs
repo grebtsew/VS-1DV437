@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deal_Continous_Damage : MonoBehaviour {
+public class Deal_Continous_Damage : MonoBehaviour
+{
 
     public float damage = 20;
     public float damagedelay = 1;
@@ -12,26 +13,27 @@ public class Deal_Continous_Damage : MonoBehaviour {
 
     private float time;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         time = Time.time + damagedelay;
         setlevel();
-	}
+    }
 
     private void setlevel()
     {
         Player player = FindObjectOfType<Player>();
-        damage = player.base_damage + 2*player.level;
-        range = range + (player.level / 10);
+        damage = player.base_damage + player.level;
+        range = range + (player.level / 20);
         damagedelay *= player.attackspeed;
-        transform.localScale += new Vector3(player.level*0.1f, 0, player.level*0.1f);
+        transform.localScale += new Vector3(player.level * 0.01f, 0, player.level * 0.01f);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Enemy")
+        if (other.tag == "Enemy")
         {
-        InRangeEnemyList.Add(other.GetComponent<Enemy>());
+            InRangeEnemyList.Add(other.GetComponent<Enemy>());
         }
     }
 
@@ -44,21 +46,23 @@ public class Deal_Continous_Damage : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-        if(time <= Time.time)
+    void Update()
+    {
+        if (time <= Time.time)
         {
             time = Time.time + damagedelay;
-       
-        foreach(Enemy e in InRangeEnemyList)
-        {
-            if(e == null)
+
+            foreach (Enemy e in InRangeEnemyList)
             {
-                continue;
-            } else
+                if (e == null)
+                {
+                    continue;
+                }
+                else
                 {
                     e.TakeDamage(damage);
                 }
-        }
+            }
         }
     }
 }

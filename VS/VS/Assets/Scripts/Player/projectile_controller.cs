@@ -8,16 +8,12 @@ public class projectile_controller : MonoBehaviour
     private Enemy target;
     private bool targetIsSet = false;
     public float speed = 100;
+    public float damage = 10f;
 
-    // Use this for initialization
-    void Start()
+
+    public void applyTarget(Enemy enemy)
     {
-
-    }
-
-    public void applyTarget(Enemy go)
-    {
-        target = go;
+        target = enemy;
         targetIsSet = true;
     }
 
@@ -36,9 +32,9 @@ public class projectile_controller : MonoBehaviour
 
         if (other.tag == "Enemy")
         {
-            target.TakeDamage(10f);
-            
-         //   Destroy(this.GameObject);
+            target.TakeDamage(damage);
+
+            Destroy(this);
         }
 
     }

@@ -2,41 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ally_Controller : MonoBehaviour {
+public class Ally_Controller : MonoBehaviour
+{
 
     public Rigidbody rb;
     public Player player;
     public Vector3 playerpos;
-
     public Animator animator;
-    public float damage = 1;
-
-    public float energy_cost = 30f;
 
     public bool attack = false;
-    public float speed = 1f;
     public bool inPlayerRange = false;
-    public float health = 100;
     public bool isdead = false;
 
-    public float attackspeed = 0.5f;
-    public float attackdelay;
-    
+    private int min_player_distance = 8;
+    private int attack_range = 4;
+
+    public float damage = 0;
+    public float energy_cost = 30f;
+    public float speed = 1f;
+    private float attackspeed = 1f;
+    private float attackdelay;
+    private float health;
     public float lifetime = 20;
+    private float time;
 
     private Enemy target;
-   
     private List<Enemy> InRangeEnemyList = new List<Enemy>();
 
-
-    private float time;
+    void Start()
+    {
+        health = Statics.health;
+        time = Time.time + lifetime;
+    }
 
     public virtual void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Enemy")
         {
-            InRangeEnemyList.Add(other.GetComponent<Enemy>());
-                target = other.GetComponent<Enemy>();
+            Enemy temp = other.GetComponent<Enemy>();
+            InRangeEnemyList.Add(temp);
+            target = temp;
+
         }
     }
 
@@ -45,11 +51,9 @@ public class Ally_Controller : MonoBehaviour {
 
         if (other.tag == "Enemy")
         {
-            
             InRangeEnemyList.Remove(other.GetComponent<Enemy>());
         }
     }
-
 
     public void setPlayer(Player p)
     {
@@ -57,28 +61,20 @@ public class Ally_Controller : MonoBehaviour {
         setLevel();
     }
 
-    // Use this for initialization
-    void Start () {
-       
-
-       
-
-        time = Time.time + lifetime;
-	}
-
     private void setLevel()
     {
-        damage += player.a3_level*20;
-        lifetime += player.a3_level * 20;
+        damage += player.a3_level * 20;
+        lifetime += player.a3_level * 5;
         if (player.a3_level > 2 && player.a3_level < 4)
         {
             transform.localScale += new Vector3(50, 50, 50);
-        } else
-        if(player.a3_level >= 4)
+        }
+        else
+        if (player.a3_level >= 4)
         {
             transform.localScale += new Vector3(100, 100, 100);
         }
-        
+
     }
 
     public void rotate_towards_transform(Transform t)
@@ -92,68 +88,90 @@ public class Ally_Controller : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-        if(player != null) {
-        if(Time.time >= time)
+
+    void Update()
+    {
+        if (player != null)
         {
-            animator.SetBool("isdead", true);
-            animator.SetTrigger("Dead");
-            Destroy(gameObject);
-          
-        } else { 
-        
-        if (InRangeEnemyList.Count <= 0)
-        {
-            // Move to player
-            if (Vector3.Distance(player.transform.position, transform.position) > 8) {
-                animator.SetBool("Withinrange", true);
-            rotate_towards_transform(player.transform);
-            playerpos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-            transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
-            } else
+            if (Time.time >= time || isdead)
             {
-                    // transform.RotateAround(player.transform.position, Vector3.up, speed * 6 * Time.deltaTime);
-                    
-                    foreach(Enemy e in FindObjectsOfType<Enemy>())
+                // Destroy Ally (just once)
+                if (!isdead)
+                {
+                    isdead = true;
+                    animator.SetBool("isdead", true);
+                    animator.SetTrigger("Dead");
+                    Destroy(gameObject);
+                }
+
+            }
+            else
+            {
+
+                // got no enemies
+                if (InRangeEnemyList.Count <= 0)
+                {
+                    //if not within range
+                    if (Vector3.Distance(player.transform.position, transform.position) > min_player_distance)
                     {
-                            if(e.player == player)
+                        // move to player
+                        animator.SetBool("Withinrange", true);
+                        rotate_towards_transform(player.transform);
+                        playerpos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+                        transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
+                    }
+                    else
+                    {
+                        // else find new enemies
+                        foreach (Enemy e in FindObjectsOfType<Enemy>())
+                        {
+                            if (e.player == player)
                             {
                                 InRangeEnemyList.Add(e);
                             }
+                        }
                     }
+
                 }
-
-        } else
-        {
-            animator.SetBool("Withinrange", false);
-            //attack target
-
-            if (target != null) {
-                    if(Vector3.Distance(target.transform.position, transform.position) > 4)
-                    {
-                        playerpos = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
-                        transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
-                    } else
-                    {
-                    if(Time.time > attackdelay) { 
-                    attackdelay = Time.time + 0.4f;
-                    animator.SetTrigger("Attack");
-                    target.TakeDamage(damage);
-                    }
-                    }
-                    rotate_towards_transform(target.transform);
-                    
-                } else
-            {
-                InRangeEnemyList.Remove(target);
-                if(InRangeEnemyList.Count > 0)
+                else
                 {
-                    target = InRangeEnemyList[0];
+
+                    animator.SetBool("Withinrange", false);
+
+                    if (target != null)
+                    {
+                        // if not within attackrange
+                        if (Vector3.Distance(target.transform.position, transform.position) > attack_range)
+                        {
+                            // move to target
+                            playerpos = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
+                            transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
+                        }
+                        else
+                        {
+
+                            // Attack target
+                            if (Time.time > attackdelay)
+                            {
+                                attackdelay = Time.time + 0.4f;
+                                animator.SetTrigger("Attack");
+                                target.TakeDamage(damage);
+                            }
+                        }
+                        rotate_towards_transform(target.transform);
+
+                    }
+                    else
+                    {
+                        //set next target
+                        InRangeEnemyList.Remove(target);
+                        if (InRangeEnemyList.Count > 0)
+                        {
+                            target = InRangeEnemyList[0];
+                        }
+                    }
                 }
             }
         }
-        }
     }
-}
 }

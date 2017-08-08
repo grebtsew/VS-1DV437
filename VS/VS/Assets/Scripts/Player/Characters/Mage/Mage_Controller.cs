@@ -14,10 +14,6 @@ public class Mage_Controller : Player_Controller {
         base.FixedUpdate();
     }
 
-    void LateUpdate()
-    {
-        base.LateUpdate();
-    }
 
     // Update is called once per frame
     void Update () {

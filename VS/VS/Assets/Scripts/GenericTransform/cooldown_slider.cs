@@ -16,10 +16,8 @@ public class cooldown_slider : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-       
-        
+  
         shower.enabled = false;
-        
         slider.value = 0;
         
 	}

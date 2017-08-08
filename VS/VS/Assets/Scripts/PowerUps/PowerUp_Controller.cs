@@ -55,7 +55,7 @@ public class PowerUp_Controller : MonoBehaviour {
         {
             if(other == player.GetComponent<BoxCollider>()) { 
             player.PowerUpTaken(powerup, value);
-            FloatingTextController.CreateFloatingText("+"+value + " " + powerup.ToString(), transform, Color.white, textSize);
+            FloatingTextController.CreateFloatingText("+"+value + " " + powerup.ToString(), transform, Color.white);
             Destroy(gameObject);
             }
         }

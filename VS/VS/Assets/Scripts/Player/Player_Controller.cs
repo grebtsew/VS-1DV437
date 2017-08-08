@@ -6,17 +6,18 @@ using System;
 public class Player_Controller : MonoBehaviour{
 
     public Player_Controll controll_mode;
-
     public Player player;
 
-    private float lastFireTime = 0;
-    private bool keymovement = false;
     private Vector3 previousLocation;
     private Vector3 currentLocation;
+    private Vector3 mousePos;
 
+    private bool abilityaim;
+    public bool usingabilty = false;
+    private bool keymovement = false;
     private bool isdead = false;
-    private Target_Follow_Enemy target_follower;
-    private Buttons abilityinusage;
+    private bool hold_animation = false;
+    private bool ai_move = false;
     private bool mouseMovement = false;
 
     public Regeneration_Controller energyzone;
@@ -25,14 +26,12 @@ public class Player_Controller : MonoBehaviour{
     public Canvas smallcanvas;
 
     public AudioSource audio;
-  
     public AudioClip levelup;
     public AudioClip pickup;
     public AudioClip dead;
 
-    //Attack
-    private bool abilityaim;
-    public bool usingabilty = false;
+    private Target_Follow_Enemy target_follower;
+    private Buttons abilityinusage;
     private Rigidbody rb;
     private Animator animator;
     private List<Enemy> InRangeEnemyList = new List<Enemy>();
@@ -41,18 +40,31 @@ public class Player_Controller : MonoBehaviour{
     private float attackdelay = 1;
     private Enemy target;
     private RaycastHit hit;
-
-    private bool hold_animation = false;
-
-    private bool ai_move = false;
+    
     private Transform ai_move_target;
+    public Difficulty difficulty;
 
-    private Vector3 mousePos;
 
     public void initiate()
     {
         energyzone = player.map_reference.energyregzone;
         healthzone = player.map_reference.healthregzone;
+    }
+
+    public void setDifficulty(string s)
+    {
+        switch (s)
+        {
+            case "Easy":
+                difficulty = Difficulty.Easy;
+                break;
+            case "Normal":
+                difficulty = Difficulty.Normal;
+                break;
+            case "Hard":
+                difficulty = Difficulty.Hard;
+                break;
+        }
     }
 
     // Use this for initialization
@@ -420,15 +432,18 @@ public class Player_Controller : MonoBehaviour{
 
     public virtual void FixedUpdate()
     {
+        
         if (controll_mode == Player_Controll.Player)
         {
             HandleMouseMovement();
         }
+        
     }
 
     public virtual void Update()
     {
-       if (controll_mode == Player_Controll.Player){
+       
+            if (controll_mode == Player_Controll.Player){
             
             HandleKeyMovement();
             updateCanvas();
@@ -460,20 +475,6 @@ public class Player_Controller : MonoBehaviour{
             } else
             {
                 smallcanvas.enabled = true;
-            }
-        }
-    }
-
-    public virtual void LateUpdate()
-    {
-        if (autoattacking)
-        {
-
-            if (Time.deltaTime - 1f > lastFireTime)
-            {
-                lastFireTime = Time.deltaTime;
-
-                //make a projectile fly towards him
             }
         }
     }
@@ -589,11 +590,11 @@ public class Player_Controller : MonoBehaviour{
         }
         if (Input.GetKeyDown("3"))
         {
-
+            player.ThirdAbility();
         }
         if (Input.GetKeyDown("4"))
         {
-
+            player.FourthAbility();
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -642,23 +643,6 @@ public class Player_Controller : MonoBehaviour{
 
     private void HandleMouseMovement()
     {
-        if (abilityaim)
-        {
-            
-            Plane playerPlane = new Plane(Vector3.up, transform.position);
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            float hitdist = 0.0f;
-         
-            if (playerPlane.Raycast(ray, out hitdist))
-            {
-               
-                Vector3 targetPoint = ray.GetPoint(hitdist);
-                Quaternion targetRotation = Quaternion.LookRotation(targetPoint - transform.position);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, player.speed * Time.deltaTime);
-            }
-        } else { 
-
         if (!usingabilty)
         {
 
@@ -680,8 +664,8 @@ public class Player_Controller : MonoBehaviour{
                     {
                         mouseMovement = false;
 
-                        updateTarget(hit.collider.GetComponent<Enemy>());
-
+                        updateTarget(hit.transform.GetComponent<Enemy>());
+                        
 
                     }
                     else
@@ -702,8 +686,6 @@ public class Player_Controller : MonoBehaviour{
 
                         }
                     }
-
-                }
             }
 
         }
@@ -770,7 +752,7 @@ public class Player_Controller : MonoBehaviour{
     private void updateTarget(Enemy target)
     {
         autoattacking = true;
-
+        this.target = target;
         target_follower.setCurrentTarget(target);
     }
 

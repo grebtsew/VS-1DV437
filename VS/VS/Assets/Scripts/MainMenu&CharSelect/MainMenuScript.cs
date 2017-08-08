@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
-public class MainMenuScript : MonoBehaviour {
+public class MainMenuScript : MonoBehaviour
+{
 
     public Canvas quitMenu;
     public Button startText;
@@ -14,10 +15,9 @@ public class MainMenuScript : MonoBehaviour {
     public Text name_text;
     public InputField name_inputfield;
 
-	// Use this for initialization
-	void Start () {
-      
-      
+    // Use this for initialization
+    void Start()
+    {
 
         // Grab instance of component
         quitMenu = quitMenu.GetComponent<Canvas>();
@@ -69,5 +69,5 @@ public class MainMenuScript : MonoBehaviour {
     }
 
 
-    
+
 }

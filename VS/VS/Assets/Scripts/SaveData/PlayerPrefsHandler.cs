@@ -6,15 +6,11 @@ using UnityEngine;
 public class PlayerPrefsHandler
 {
 
-
-
     public static void DeleteAll()
     {
         PlayerPrefs.DeleteAll();
 
     }
-
-
 
     /// <summary>
     /// Sets <variable> to <value> based on its type T and additionally

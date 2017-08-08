@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerHUDController : MonoBehaviour {
+public class PlayerHUDController : MonoBehaviour
+{
 
     public Player player;
 
@@ -31,23 +32,19 @@ public class PlayerHUDController : MonoBehaviour {
     {
         player = p;
     }
-        
 
-    // Use this for initialization
-    void Start () {
-        
-	}
 
     public void updateAllLabels()
     {
-        if(player != null) {
-        updateLevel();
-        updateResist();
-        updateDamage();
-        updateAttackdamage();
-        updateHealthReg();
-        updateEnergyReg();
-        updateLevelUpPoints();
+        if (player != null)
+        {
+            updateLevel();
+            updateResist();
+            updateDamage();
+            updateAttackdamage();
+            updateHealthReg();
+            updateEnergyReg();
+            updateLevelUpPoints();
         }
     }
 
@@ -99,5 +96,5 @@ public class PlayerHUDController : MonoBehaviour {
         }
     }
 
- 
+
 }

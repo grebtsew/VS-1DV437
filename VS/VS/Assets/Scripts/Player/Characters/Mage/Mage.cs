@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Mage : Player {
+public class Mage : Player
+{
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         base.Start();
-       
-    }	
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -33,16 +35,21 @@ public class Mage : Player {
                 }
             }
         }
-
-        if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+        else
         {
-            // fix cooldown
-            player_controller.ability_animation(Buttons.ability1, true);
-            useEnergy(40);
-     
-            GameObject temp = Instantiate(Resources.Load("Abilities/Mage/MageFirstAbility", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
-            temp.transform.SetParent(parent);
-           
+
+            if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+            {
+                if (a1_level > 0)
+                {
+                    // fix cooldown
+                    player_controller.ability_animation(Buttons.ability1, true);
+                    useEnergy(40);
+
+                    GameObject temp = Instantiate(Resources.Load("Abilities/Mage/MageFirstAbility", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
+                    temp.transform.SetParent(parent);
+                }
+            }
         }
     }
 
@@ -54,26 +61,33 @@ public class Mage : Player {
             {
                 if (ability_mode == false)
                 {
-                    GameObject go =   Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim", typeof(GameObject))) as GameObject;
+                    GameObject go = Instantiate(Resources.Load("Abilities/Mage/MageSecondAbilityAim", typeof(GameObject))) as GameObject;
                     go.transform.SetParent(parent);
                     go.GetComponent<Spawn_GameObject_At>().initiate(this);
+                    go.GetComponent<Rotate_Follow_Mouse>().setPlayer(this);
                     ability_mode = true;
                 }
             }
         }
-
-        if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+        else
         {
-            // fix cooldown
-            player_controller.ability_animation(Buttons.ability2, true);
-            useEnergy(40);
-           follow_player_rotation temp = Instantiate(Resources.Load("Abilities/Mage/MageSecondAbility_ai", typeof(follow_player_rotation))) as follow_player_rotation;
-            temp.setPlayer(this);
-            temp.transform.SetParent(parent);
-            
+
+
+
+            if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+            {
+                if (a2_level > 0)
+                {
+                    // fix cooldown
+                    player_controller.ability_animation(Buttons.ability2, true);
+                    useEnergy(40);
+                    follow_player_rotation temp = Instantiate(Resources.Load("Abilities/Mage/MageSecondAbility_ai", typeof(follow_player_rotation))) as follow_player_rotation;
+                    temp.setPlayer(this);
+                    temp.transform.SetParent(parent);
+                }
+            }
         }
     }
-
     public override void ThirdAbility()
     {
         if (player_controller.controll_mode == Player_Controll.Player)
@@ -94,20 +108,28 @@ public class Mage : Player {
 
             }
         }
+        else
+        {
 
-        if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(30))
+
+
+            if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(30))
             {
-                // fix cooldown
-                player_controller.ability_animation(Buttons.ability3, true);
-                useEnergy(30);
-                
+                if (a3_level > 0)
+                {
+                    // fix cooldown
+                    player_controller.ability_animation(Buttons.ability3, true);
+                    useEnergy(30);
 
-            Ally_Controller go = Instantiate(Resources.Load("Allies/Mage/Slime_Blue", typeof(Ally_Controller))) as Ally_Controller;
-            go.transform.position = transform.position + Vector3.forward * 4;
-            go.setPlayer(this);
-            go.transform.SetParent(parent);
+
+                    Ally_Controller go = Instantiate(Resources.Load("Allies/Mage/Slime_Blue", typeof(Ally_Controller))) as Ally_Controller;
+                    go.transform.position = transform.position + Vector3.forward * 4;
+                    go.setPlayer(this);
+                    go.transform.SetParent(parent);
+                }
+            }
         }
-        }
+    }
 
     public override void FourthAbility()
     {
@@ -123,18 +145,26 @@ public class Mage : Player {
                 playerhud.cooldownslider_4.StartCooldown();
             }
         }
-
-        if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+        else
         {
-            // fix cooldown
-            player_controller.ability_animation(Buttons.ability4, true);
-            useEnergy(40);
 
 
-            deathball go = Instantiate(Resources.Load("Abilities/Mage/MageFourthAbility", typeof(deathball))) as deathball;
-            go.transform.position = transform.position + Vector3.forward * 4;
-            go.transform.SetParent(parent);
-            go.setPlayer(this);
+
+            if (player_controller.controll_mode == Player_Controll.Ai && gotEnoughtEnergy(40))
+            {
+                if (a4_level > 0)
+                {
+                    // fix cooldown
+                    player_controller.ability_animation(Buttons.ability4, true);
+                    useEnergy(40);
+
+
+                    deathball go = Instantiate(Resources.Load("Abilities/Mage/MageFourthAbility", typeof(deathball))) as deathball;
+                    go.transform.position = transform.position + Vector3.forward * 4;
+                    go.transform.SetParent(parent);
+                    go.setPlayer(this);
+                }
+            }
         }
     }
 
@@ -142,7 +172,7 @@ public class Mage : Player {
     public override void passiveUpdate()
     {
         base.passiveUpdate();
-        
+
 
     }
     public override void passiveStatic()

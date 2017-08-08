@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class player_selection_script : MonoBehaviour {
+public class player_selection_script : MonoBehaviour
+{
 
     public Player_Character character;
     private SkinnedMeshRenderer smr;
@@ -16,7 +17,7 @@ public class player_selection_script : MonoBehaviour {
         temp_material = smr.material;
 
         lock_material = Resources.Load("Materials/Black_transparent_Material", typeof(Material)) as Material;
-       
+
     }
 
     public void lock_character()
@@ -27,6 +28,6 @@ public class player_selection_script : MonoBehaviour {
     public void unlock_character()
     {
         unlocked = true;
-     //   smr.material = temp_material;
+
     }
 }

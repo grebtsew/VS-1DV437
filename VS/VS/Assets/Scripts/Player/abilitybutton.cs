@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class abilitybutton : MonoBehaviour {
+public class abilitybutton : MonoBehaviour
+{
 
     public Buttons b;
     private Text level_label;
@@ -19,17 +20,16 @@ public class abilitybutton : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         level_label = GetComponentInChildren<Text>();
-
-        
     }
-	
+
     public void MakeActive()
     {
-            Color c = active_image.color;
-            c.a = 0;
-            active_image.color = c;
+        Color c = active_image.color;
+        c.a = 0;
+        active_image.color = c;
         active = true;
     }
 
@@ -40,9 +40,9 @@ public class abilitybutton : MonoBehaviour {
 
     public void MakeInActive()
     {
-            Color c = active_image.color;
-            c.a = 0.90f;
-            active_image.color = c;
+        Color c = active_image.color;
+        c.a = 0.90f;
+        active_image.color = c;
         active = false;
     }
 
@@ -50,24 +50,26 @@ public class abilitybutton : MonoBehaviour {
     public void AddLevel()
     {
 
-        if (lup.isEnabled() && player.got_ability_point() && IsActive()) {
-            level++;
-        if (level > 0)
+        if (lup.isEnabled() && player.got_ability_point() && IsActive())
         {
-            MakeActive();
+            level++;
+            if (level > 0)
+            {
+                MakeActive();
             }
             level_label.text = level.ToString();
-        player.use_ability_point(b);
+            player.use_ability_point(b);
             lup.toggleLevelUp();
-        } else
+        }
+        else
         {
-            if(!lup.isEnabled() && level > 0)
+            if (!lup.isEnabled() && level > 0)
             {
                 player.use_ability(b);
             }
         }
 
-        
+
     }
 
     public float getAbilityLevel()
@@ -75,8 +77,4 @@ public class abilitybutton : MonoBehaviour {
         return level;
     }
 
-	// Update is called once per frame
-	void Update () {
-		
-	}
 }

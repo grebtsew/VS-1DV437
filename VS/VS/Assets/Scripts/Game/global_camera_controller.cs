@@ -2,109 +2,102 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class global_camera_controller : MonoBehaviour
 {
-    public GameObject Camera1;
-    public GameObject Camera2;
+    public List<Camera_Controller> cameraList;
 
     public Text following_label;
     public Text following_name_label;
     public Text following_level_label;
 
-    private Player player;
-    private Player ai;
+    private Camera_Controller Active_Camera_Controller;
+
+    private bool initiated = false;
+
+    private void ChangeToPlayerCamera()
+    {
+        foreach(Camera_Controller c in cameraList)
+        {
+
+            if(c.target.player_controller.controll_mode == Player_Controll.Player)
+            {
+                c.GetComponentInChildren<Camera>().enabled = true;
+                c.updateRotation();
+                Active_Camera_Controller = c;
+            } else
+            {
+                c.GetComponentInChildren<Camera>().enabled = false;
+            }
+        }
+    }
 
     public void initiate()
     {
-
-        Camera1.GetComponent<Camera>().enabled = true;
-        Camera2.GetComponent<Camera>().enabled = false;
-
-        //getplayer for info
-        foreach (Player p in FindObjectsOfType<Player>())
+        foreach(Camera_Controller c in FindObjectsOfType<Camera_Controller>())
         {
-            if (p.player_controller.controll_mode == Player_Controll.Player)
-            {
-                player = p;
-            }
-            else
-            {
-                ai = p;
-            }
-
+            cameraList.Add(c);
         }
+        ChangeToPlayerCamera();
+        initiated = true;
     }
-
-    void Start()
-    {
-        
-        
-    }
-
 
     public void ChangeCamera()
     {
-        if (Camera1.GetComponent<Camera>().enabled)
-        {
-           
-            Camera2.GetComponent<Camera>().enabled = true;
-            Camera1.GetComponent<Camera>().enabled = false;
+       int index = cameraList.IndexOf(Active_Camera_Controller);
+
+        cameraList[index].GetComponentInChildren<Camera>().enabled = false;
+
+        if(cameraList.Count > index + 1) {
+        cameraList[index+1].GetComponentInChildren<Camera>().enabled = true;
+            Active_Camera_Controller = cameraList[index + 1];
+            cameraList[index + 1].updateRotation();
+        } else {
+        cameraList[Statics.zero].GetComponentInChildren<Camera>().enabled = true;
+            Active_Camera_Controller = cameraList[Statics.zero];
+            cameraList[Statics.zero].updateRotation();
         }
-        else if (Camera2.GetComponent<Camera>().enabled)
-        {
-           
-            Camera1.GetComponent<Camera>().enabled = true;
-            Camera2.GetComponent<Camera>().enabled = false;
-        }
-        
 
         updateLabels();
-
     }
 
-    public Player_Controll currentlyFollowing()
+    public Player_Controll following_controller()
     {
-        
-      
-        if (Camera1.GetComponent<Camera>().enabled)
-        {
-            return Player_Controll.Player;
-        } else
-        {
-            return Player_Controll.Ai;
-        }
-        
-   
+        return Active_Camera_Controller.target.player_controller.controll_mode;
+    }
+    public string following_name()
+    {
+        return Active_Camera_Controller.target.Name;
+    }
+    public float following_level()
+    {
+        return Active_Camera_Controller.target.level;
     }
 
     void Update()
     {
-        
+        if (initiated) { 
         if (Input.GetKeyDown(KeyCode.C))
         {
             ChangeCamera();
         }
 
-        updateLabels();
-        
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            ChangeToPlayerCamera();
+        }
+
+            updateLabels();
+        }
     }
 
     private void updateLabels()
     {
-        if(player != null && ai != null) { 
-        if (currentlyFollowing() == Player_Controll.Player)
-        {
-            following_level_label.text = player.level.ToString();
-            following_name_label.text = player.Name;
+        if (initiated) {
+            following_level_label.text = following_level().ToString();
+            following_name_label.text = following_name();
+            following_label.text = following_controller().ToString();
         }
-        else
-        {
-            following_level_label.text = ai.level.ToString();
-            following_name_label.text = ai.Name;
-        }
-
-        following_label.text = currentlyFollowing().ToString();
-    }
     }
 }

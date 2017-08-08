@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Map_script : MonoBehaviour {
+public class Map_script : MonoBehaviour
+{
 
     public Game_Controller game_controller;
     public Canvas gamecanvas;
@@ -24,22 +25,24 @@ public class Map_script : MonoBehaviour {
     {
         player = p;
         player.player_controller.initiate();
-        
-       
+
+
     }
 
-	void Start () {
+    void Start()
+    {
         game_controller = GetComponentInChildren<Game_Controller>();
         gamecanvas = GetComponentInChildren<Canvas>();
         camera_controller = GetComponentInChildren<Camera_Controller>();
         camera = camera_controller.GetComponentInChildren<Camera>();
-       
-        foreach(Transform t in GetComponentsInChildren<Transform>())
+
+        foreach (Transform t in GetComponentsInChildren<Transform>())
         {
-            if(t.tag == "EnemyParent")
+            if (t.tag == "EnemyParent")
             {
                 enemy_parent = t;
-            } else if (t.tag == "ExtraParent")
+            }
+            else if (t.tag == "ExtraParent")
             {
                 extra_parent = t;
             }
@@ -55,15 +58,18 @@ public class Map_script : MonoBehaviour {
             else if (t.tag == "HealthReg")
             {
                 healthregzone = t.GetComponent<Regeneration_Controller>();
-
                 healthregzone.initiate(player);
 
             }
         }
 
-       
+        if (player != null)
+        {
+            player.player_controller.initiate();
+        }
+
     }
-	
+
     public void setId(int i)
     {
         id = i;

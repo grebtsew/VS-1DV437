@@ -13,7 +13,7 @@ public class Target_Follow_Enemy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        disable(); 
+        disable();
     }
 
     // Update is called once per frame
@@ -22,7 +22,7 @@ public class Target_Follow_Enemy : MonoBehaviour
         if (enemy != null)
         {
             transform.position = new Vector3(enemy.transform.position.x, y_pos, enemy.transform.position.z);
-         
+
         }
 
         transform.Rotate(0, Time.deltaTime * rotatespeed, 0, Space.World);

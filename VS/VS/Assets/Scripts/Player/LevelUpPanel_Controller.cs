@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LevelUpPanel_Controller : MonoBehaviour {
+public class LevelUpPanel_Controller : MonoBehaviour
+{
 
     private Canvas canvas;
 
@@ -28,13 +29,14 @@ public class LevelUpPanel_Controller : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
-        
-     
+    void Start()
+    {
+
+
         canvas = GetComponent<Canvas>();
         disable();
-        
-        foreach(abilitybutton ab in FindObjectsOfType<abilitybutton>())
+
+        foreach (abilitybutton ab in FindObjectsOfType<abilitybutton>())
         {
             switch (ab.b)
             {
@@ -84,31 +86,34 @@ public class LevelUpPanel_Controller : MonoBehaviour {
 
     public void toggleLevelUp()
     {
-        if(player != null) {
-        if (canvas.enabled)
+        if (player != null)
         {
-            canvas.enabled = false;
+            if (canvas.enabled)
+            {
+                canvas.enabled = false;
 
-            setAbilityActive(a1);
-            setAbilityActive(a2);
-            setAbilityActive(a3);
-            setAbilityActive(a4);
-            setAbilityActive(potion);
-            setAbilityActive(passive);
-          
-        } else
-        {
-            canvas.enabled = true;
+                setAbilityActive(a1);
+                setAbilityActive(a2);
+                setAbilityActive(a3);
+                setAbilityActive(a4);
+                setAbilityActive(potion);
+                setAbilityActive(passive);
 
-            if (player.got_ability_point()) {
-                ability1_tree();
-                ability2_tree();
-                ability3_tree();
-                ability4_tree();
-                potion.MakeActive();
-                passive.MakeActive();
             }
-        }
+            else
+            {
+                canvas.enabled = true;
+
+                if (player.got_ability_point())
+                {
+                    ability1_tree();
+                    ability2_tree();
+                    ability3_tree();
+                    ability4_tree();
+                    potion.MakeActive();
+                    passive.MakeActive();
+                }
+            }
         }
     }
 
@@ -118,15 +123,18 @@ public class LevelUpPanel_Controller : MonoBehaviour {
         if (a1.getAbilityLevel() <= 2)
         {
             a1.MakeActive();
-        } else
+        }
+        else
         if (a1.getAbilityLevel() <= 4 && player.level >= 6)
         {
             a1.MakeActive();
-        } else
+        }
+        else
         if (a1.getAbilityLevel() <= 5 && player.level >= 10)
         {
             a1.MakeActive();
-        } else
+        }
+        else
         {
             a1.MakeInActive();
         }
@@ -137,7 +145,8 @@ public class LevelUpPanel_Controller : MonoBehaviour {
         if (a2.getAbilityLevel() <= 2)
         {
             a2.MakeActive();
-        } else
+        }
+        else
         if (a2.getAbilityLevel() <= 4 && player.level >= 6)
         {
             a2.MakeActive();
@@ -177,11 +186,12 @@ public class LevelUpPanel_Controller : MonoBehaviour {
 
     private void ability4_tree()
     {
-       
+
         if (a4.getAbilityLevel() <= 2 && player.level >= 6)
         {
             a4.MakeActive();
-        }else
+        }
+        else
 
         if (a4.getAbilityLevel() <= 4 && player.level >= 10)
         {
@@ -200,7 +210,8 @@ public class LevelUpPanel_Controller : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 }

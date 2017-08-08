@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class rotate : MonoBehaviour {
+public class rotate : MonoBehaviour
+{
 
     public float x = 0;
     public float y = 1;
@@ -15,40 +16,40 @@ public class rotate : MonoBehaviour {
 
     public bool randomrot = false;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (!randomrot) { 
-        transform.Rotate(rotspeed * x + Time.deltaTime,  rotspeed * y + Time.deltaTime,  rotspeed * z + Time.deltaTime);
-        } else
+    void Update()
+    {
+        if (!randomrot)
         {
-            if(Random.Range(0,1) < 0.5)
+            transform.Rotate(rotspeed * x + Time.deltaTime, rotspeed * y + Time.deltaTime, rotspeed * z + Time.deltaTime);
+        }
+        else
+        {
+            if (Random.Range(0, 1) < 0.5)
             {
                 _x = rotspeed * x;
-            } else
+            }
+            else
             {
                 _x = 0;
             }
             if (Random.Range(0, 1) < 0.5)
             {
                 _y = rotspeed * y;
-            } else
+            }
+            else
             {
                 _y = 0;
             }
             if (Random.Range(0, 1) < 0.5)
             {
                 _z = rotspeed * z;
-            } else
+            }
+            else
             {
                 _z = 0;
             }
             transform.Rotate(_x, _y, _z);
         }
-            
+
     }
 }

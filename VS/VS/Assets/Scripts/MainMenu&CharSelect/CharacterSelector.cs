@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class CharacterSelector : MonoBehaviour {
+public class CharacterSelector : MonoBehaviour
+{
 
     public List<GameObject> characterList;
     private int index = 0;
@@ -26,13 +27,14 @@ public class CharacterSelector : MonoBehaviour {
     public Text unlock_text;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Time.timeScale = 1;
 
         initiateSelector();
         initiateLabels();
 
-      
+
     }
 
     private void initiateLabels()
@@ -40,10 +42,10 @@ public class CharacterSelector : MonoBehaviour {
         // total wins
         wins_i = PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_wins, Statics.zero);
         wins.text = wins_i.ToString();
-      
+
         // total played
         matches_i = PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_matches, Statics.zero);
-       matches.text = matches_i.ToString();
+        matches.text = matches_i.ToString();
     }
 
     private void initiateSelector()
@@ -62,20 +64,21 @@ public class CharacterSelector : MonoBehaviour {
             name.text = characterList[index].name.Replace("(Clone)", "");
             characterList[index].SetActive(true);
             current_character = characterList[index].GetComponent<player_selection_script>().character;
-            charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character),0).ToString();
+            charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character), 0).ToString();
             updatelabels();
         }
     }
 
-   
+
 
     public void Next()
     {
         characterList[index].SetActive(false);
-        if(index == characterList.Count - 1)
+        if (index == characterList.Count - 1)
         {
             index = 0;
-        } else
+        }
+        else
         {
             index++;
         }
@@ -91,7 +94,7 @@ public class CharacterSelector : MonoBehaviour {
         characterList[index].SetActive(false);
         if (index == 0)
         {
-            index = characterList.Count-1;
+            index = characterList.Count - 1;
         }
         else
         {
@@ -113,15 +116,18 @@ public class CharacterSelector : MonoBehaviour {
 
                 if (wins_i >= Mage_statics.unlock)
                 {
-                    if (Mage_statics.developed) { 
-                    characterList[index].GetComponent<player_selection_script>().unlock_character();
+                    if (Mage_statics.developed)
+                    {
+                        characterList[index].GetComponent<player_selection_script>().unlock_character();
                         unlock_text.text = "";
-                    } else
+                    }
+                    else
                     {
                         unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
                     }
 
-                } else
+                }
+                else
                 {
                     unlock_text.text = "Most win " + Mage_statics.unlock + " matches to unlock this character!";
                 }
@@ -302,17 +308,23 @@ public class CharacterSelector : MonoBehaviour {
     {
 
         // if character unlocked!
-        if(characterList[index].GetComponent<player_selection_script>().unlocked) {
+        if (characterList[index].GetComponent<player_selection_script>().unlocked)
+        {
+
+            int player_amount = PlayerPrefsHandler.GetPersistentVar<int>(Statics.ai_amount, 0);
 
             // reset score for amount of players
-            int i = 0;
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
+            for (int i = 0; i < player_amount; i++)
+            {
+                // reset score
+                PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(i), ref i, 0, true);
+            }
 
             SaveCharacterSelection();
-        Application.LoadLevel(nextScene);
+            Application.LoadLevel(nextScene);
 
-        } else
+        }
+        else
         {
             warning.text = "Can't choose this player!";
         }
@@ -334,5 +346,5 @@ public class CharacterSelector : MonoBehaviour {
     {
         PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_character(0), ref character_name, current_character.ToString(), true);
     }
-    
+
 }
