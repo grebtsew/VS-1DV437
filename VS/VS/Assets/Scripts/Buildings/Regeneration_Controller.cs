@@ -13,7 +13,6 @@ public class Regeneration_Controller : MonoBehaviour
     private float time;
 
     private Player player;
-    private int textSize = 8;
     private int regeneration_range = 5;
 
     public void initiate(Player p)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class global_game_controller : MonoBehaviour
 {
@@ -19,8 +20,8 @@ public class global_game_controller : MonoBehaviour
     public Text scoreboard;
     public Text gameOver_text;
     public Text text;
-
-    private Transform map;
+    public Text enemy_limit;
+    public Text diff_value;
 
     private float timeLeft = 5.0f;
 
@@ -40,6 +41,9 @@ public class global_game_controller : MonoBehaviour
 
     void Start()
     {
+       
+        
+
         Time.timeScale = 0;
         string s = "";
         PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_controller(0), ref s, Player_Controll.Player.ToString(), true);
@@ -70,18 +74,22 @@ public class global_game_controller : MonoBehaviour
             // set player name
             p.Name = PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_name(i), "Player1");
 
+
             // set controller
             string controller = PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_controller(i), "Ai");
             if (controller == "Ai")
             {
-                p.player_controller.controll_mode = Player_Controll.Ai;
-                p.player_controller.setDifficulty(PlayerPrefsHandler.GetPersistentVar<string>(Statics.ai_difficulty(i), "Easy"));
-
+                p.setController(Player_Controll.Ai);
+                p.controller.setDifficulty(PlayerPrefsHandler.GetPersistentVar<string>(Statics.ai_difficulty(i), "Easy"));
+            
             }
             else
             {
-                p.player_controller.controll_mode = Player_Controll.Player;
+                p.setController(Player_Controll.Player);
+                p.controller.setDifficulty(PlayerPrefsHandler.GetPersistentVar<string>(Statics.ai_difficulty(i), "Easy"));
+               
             }
+            diff_value.text = p.controller.difficulty.ToString();
 
             // get enemyparent and init player
             foreach (Transform t in map.GetComponentsInChildren<Transform>())
@@ -93,15 +101,14 @@ public class global_game_controller : MonoBehaviour
                 }
             }
 
-            // Debug.Log("init camera");
             // init camera
             camera_controller = map.GetComponentInChildren<Camera_Controller>();
             camera_controller.setTarget(p);
 
-            // Debug.Log("init game");
             // init game
             game_controller = map.GetComponentInChildren<Game_Controller>();
             game_controller.MAX_ENEMY = PlayerPrefsHandler.GetPersistentVar<int>(Statics.enemy_amount, 50);
+            enemy_limit.text = game_controller.MAX_ENEMY.ToString();
             game_controller.initiate(p);
 
             // add to list
@@ -117,8 +124,8 @@ public class global_game_controller : MonoBehaviour
         extraQuestion.enabled = false;
 
         // get score
-        int p1 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(1), 0);
-        int p2 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(0), 0);
+        int p1 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(0), 0);
+        int p2 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(1), 0);
         scoreboard.text = p1 + " : " + p2;
     }
 
@@ -145,12 +152,12 @@ public class global_game_controller : MonoBehaviour
                 PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
                 PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
                 Time.timeScale = 1;
-                Application.LoadLevel(0);
+                SceneManager.LoadScene(0);
             }
             else
             {
                 Time.timeScale = 1;
-                Application.LoadLevel(2);
+                SceneManager.LoadScene(2);
             }
         }
     }
@@ -175,12 +182,12 @@ public class global_game_controller : MonoBehaviour
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
             Time.timeScale = 1;
-            Application.LoadLevel(2);
+            SceneManager.LoadScene(2);
         }
         else
         {
             Time.timeScale = 1;
-            Application.LoadLevel(0);
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -208,7 +215,6 @@ public class global_game_controller : MonoBehaviour
             game.gameOver = true;
         }
 
-
         // check who lost and set text
         string s = "";
         if (player.health <= 0)
@@ -217,38 +223,40 @@ public class global_game_controller : MonoBehaviour
         }
         else
         {
-            s = player.Name + " didn't kill fast enought!";
+            s = player.Name + " didn't kill fast enough!";
         }
 
         // add score
         int i = 0;
-        int p1 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(1), 0);
-        int p2 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(0), 0);
+        int p1 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(0), 0);
+        int p2 = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_score(1), 0);
 
-        if (player.map_reference.id == 1)
+        if (player.map_reference.id == 0)
         {
-            p1++;
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, p1, true);
+            p2++;
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, p2, true);
         }
         else
         {
-            p2++;
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, p2, true);
+            p1++;
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, p1, true);
         }
 
         if (p1 >= match_limit)
         {
-            gameOver_text.text = "Winner is " + player.name + "\n" + " Score: " + p1 + " : " + p2;
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, false);
+            gameOver_text.text = "Winner is " + PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_name(0), s) + "\n" + " Score: " + p1 + " : " + p2;
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
             matchover = true;
 
+            // add player won game and total wins
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.character_wins(player.character), ref i, PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(player.character), 0) + 1, true);
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.total_wins, ref i, PlayerPrefsHandler.GetPersistentVar<int>(Statics.total_wins, 0) + 1, true);
         }
         else if (p2 >= match_limit)
         {
-            gameOver_text.text = "Winner is " + player.name + "\n" + " Score: " + p1 + " : " + p2;
-            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, false);
+            gameOver_text.text = "Winner is " + PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_name(1), s) + "\n" + " Score: " + p1 + " : " + p2;
+            PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref i, 0, true);
             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref i, 0, true);
             matchover = true;
         }

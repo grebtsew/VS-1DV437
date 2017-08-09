@@ -14,14 +14,11 @@ namespace TMPro.Examples
         public Font TextMeshFont;
 
         private TextMeshPro m_textMeshPro;
-        private TextContainer m_textContainer;
         private TextMesh m_textMesh;
 
         private const string label01 = "The <#0050FF>count is: </color>{0}";
         private const string label02 = "The <color=#0050FF>count is: </color>";
 
-        //private string m_string;
-        //private int m_frame;
 
         private Material m_material01;
         private Material m_material02;

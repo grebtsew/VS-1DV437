@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class CharacterSelector : MonoBehaviour
 {
@@ -11,7 +11,7 @@ public class CharacterSelector : MonoBehaviour
     private int index = 0;
     private static int previousScene = 0;
     private static int nextScene = 2;
-    public Text name;
+    public Text selected_name;
     public Text background;
     private Player player;
     private string character_name;
@@ -33,8 +33,6 @@ public class CharacterSelector : MonoBehaviour
 
         initiateSelector();
         initiateLabels();
-
-
     }
 
     private void initiateLabels()
@@ -61,15 +59,14 @@ public class CharacterSelector : MonoBehaviour
             characterList.Add(_char);
             _char.SetActive(false);
 
-            name.text = characterList[index].name.Replace("(Clone)", "");
+            selected_name.text = characterList[index].name.Replace("(Clone)", "");
             characterList[index].SetActive(true);
             current_character = characterList[index].GetComponent<player_selection_script>().character;
-            charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character), 0).ToString();
+           
+            charwins.text =  PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character), 0).ToString();
             updatelabels();
         }
     }
-
-
 
     public void Next()
     {
@@ -82,9 +79,10 @@ public class CharacterSelector : MonoBehaviour
         {
             index++;
         }
-        name.text = characterList[index].name.Replace("(Clone)", "");
+        selected_name.text = characterList[index].name.Replace("(Clone)", "");
         characterList[index].SetActive(true);
         current_character = characterList[index].GetComponent<player_selection_script>().character;
+        charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character), 0).ToString();
         updatelabels();
         warning.text = "";
     }
@@ -100,9 +98,10 @@ public class CharacterSelector : MonoBehaviour
         {
             index--;
         }
-        name.text = characterList[index].name.Replace("(Clone)", "");
+        selected_name.text = characterList[index].name.Replace("(Clone)", "");
         characterList[index].SetActive(true);
         current_character = characterList[index].GetComponent<player_selection_script>().character;
+        charwins.text = PlayerPrefsHandler.GetPersistentVar<int>(Statics.character_wins(current_character), 0).ToString();
         updatelabels();
         warning.text = "";
     }
@@ -301,7 +300,7 @@ public class CharacterSelector : MonoBehaviour
 
     public void BackPressed()
     {
-        Application.LoadLevel(previousScene);
+        SceneManager.LoadScene(previousScene);
     }
 
     public void StartPressed()
@@ -313,15 +312,27 @@ public class CharacterSelector : MonoBehaviour
 
             int player_amount = PlayerPrefsHandler.GetPersistentVar<int>(Statics.ai_amount, 0);
 
+            string s = "";
+
             // reset score for amount of players
             for (int i = 0; i < player_amount; i++)
             {
                 // reset score
                 PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(i), ref i, 0, true);
+                
+
             }
+            
+            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(1), ref s, "Ai_play", false);
+
+            // reset score
+            int j = 0;
+             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(1), ref j, 0, false);
+             PlayerPrefsHandler.SetPersistentVar<int>(Statics.player_score(0), ref j, 0, true);
+
 
             SaveCharacterSelection();
-            Application.LoadLevel(nextScene);
+            SceneManager.LoadScene(nextScene);
 
         }
         else

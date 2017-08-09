@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuScript : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class MainMenuScript : MonoBehaviour
     public Button exitText;
     public int nextScene;
 
-    private string name;
+    private string player_name;
     public Text name_text;
     public InputField name_inputfield;
 
@@ -50,17 +51,17 @@ public class MainMenuScript : MonoBehaviour
         // save Name
         if (name_text.text == null || name_text.text == "")
         {
-            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref name, "Player" + Random.Range(1, 100), true);
+            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref player_name, "Player" + Random.Range(1, 100), true);
         }
         else
         {
-            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref name, name_text.text, true);
+            PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_name(0), ref player_name, name_text.text, true);
         }
     }
 
     public void StartLevel()
     {
-        Application.LoadLevel(nextScene);
+        SceneManager.LoadScene(nextScene);
     }
 
     public void QuitGame()

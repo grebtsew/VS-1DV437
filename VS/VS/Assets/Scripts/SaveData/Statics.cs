@@ -14,8 +14,21 @@ public static class Statics {
     public static float MIN_SCROLL = 15f;
     public static float MAX_SCROLL = 90f;
     public static float SCROLL_SENSITIVITY = 10f;
-
     public static int floating_text_size = 5;
+    public static float potion_cooldown = 4;
+
+    // load objects
+    public static GameObject[] powerups = Resources.LoadAll<GameObject>("PowerUps");
+    public static GameObject blood_spray_effect = Resources.Load("Enemies/DamageEffects/BloodSprayEffect", typeof(GameObject)) as GameObject;
+    public static GameObject blood_flood_effect = Resources.Load("Enemies/DamageEffects/BloodStreamEffect", typeof(GameObject)) as GameObject;
+    public static AudioClip enemy_damage_sound = Resources.Load("Audio/enemy_damage", typeof(AudioClip)) as AudioClip;
+    public static AudioClip enemy_laugh_sound = Resources.Load("Audio/enemy_laugh", typeof(AudioClip)) as AudioClip;
+    public static AudioClip enemy_take_damage_sound = Resources.Load("Audio/enemy_take_damage", typeof(AudioClip)) as AudioClip;
+    public static AudioClip enemy_dead_sound = Resources.Load("Audio/enemydead", typeof(AudioClip)) as AudioClip;
+    public static AudioClip player_levelup = Resources.Load("Audio/levelup", typeof(AudioClip)) as AudioClip;
+    public static AudioClip player_pickup = Resources.Load("Audio/pickup", typeof(AudioClip)) as AudioClip;
+    public static AudioClip player_dead = Resources.Load("Audio/Player_dead", typeof(AudioClip)) as AudioClip;
+    public static Target_Follow_Enemy target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
 
     // Map Statics
     public static int map_x = 60;

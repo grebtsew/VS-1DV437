@@ -2,15 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Mage_statics {
+public static class Mage_statics
+{
 
     public static string Background = "A combat mage with alot of damage, might be a little squishy tought!";
     public static int unlock = 0;
     public static bool developed = true;
+
+    public static float ability_1_cooldown = 5;
+    public static float ability_2_cooldown = 5;
+    public static float ability_3_cooldown = 10;
+    public static float ability_4_cooldown = 20;
+
+    public static float ability_1_energycost = 40;
+    public static float ability_2_energycost = 30;
+    public static float ability_3_energycost = 30;
+    public static float ability_4_energycost = 40;
+
+    public static GameObject firstability = Resources.Load("Abilities/Mage/MageFirstAbility", typeof(GameObject)) as GameObject;
+    public static GameObject secondability = Resources.Load("Abilities/Mage/MageSecondAbility", typeof(GameObject)) as GameObject;
+    public static Ally_Controller thirdability = Resources.Load("Allies/Mage/Slime_Blue", typeof(Ally_Controller)) as Ally_Controller;
+    public static deathball fourthability = Resources.Load("Abilities/Mage/MageFourthAbility", typeof(deathball)) as deathball;
 }
+
 public static class Adventurer_statics
 {
-   
     public static string Background = "The Adventurer knows his path on the map!";
     public static int unlock = 10;
     public static bool developed = false;

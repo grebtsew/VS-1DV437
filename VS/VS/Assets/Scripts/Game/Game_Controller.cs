@@ -54,7 +54,7 @@ public class Game_Controller : MonoBehaviour
     {
         player = p;
         // Is player
-        if (player.player_controller.controll_mode == Player_Controll.Player)
+        if (player.controll == Player_Controll.Player)
         {
 
             isPlayer = true;
@@ -70,6 +70,7 @@ public class Game_Controller : MonoBehaviour
         global_game_controller = FindObjectOfType<global_game_controller>();
         toggle_canvas = FindObjectOfType<toggle_canvas>();
 
+        /* In future make random enemy */
         enemy = Resources.Load("Enemies/Bat_Green", typeof(Enemy)) as Enemy;
 
         // get texts
@@ -95,7 +96,7 @@ public class Game_Controller : MonoBehaviour
         if (player != null)
         {
             // ai is ready
-            if (player.player_controller.controll_mode == Player_Controll.Ai)
+            if (player.controll == Player_Controll.Ai)
             {
                 Ready();
             }
@@ -128,7 +129,7 @@ public class Game_Controller : MonoBehaviour
         // Over MAX_ENEMY start countdown
         if (enemy_on_map >= MAX_ENEMY)
         {
-            if (player.player_controller.controll_mode == Player_Controll.Player)
+            if (player.controll == Player_Controll.Player)
             {
                 toggle_canvas.startCountdown();
             }
@@ -214,7 +215,7 @@ public class Game_Controller : MonoBehaviour
         if (enemy_on_map < MAX_ENEMY)
         {
 
-            if (player.player_controller.controll_mode == Player_Controll.Player)
+            if (player.controll == Player_Controll.Player)
             {
                 if (toggle_canvas.active)
                 {

@@ -5,42 +5,37 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-
     public float health = 100;
     public float energy = 100;
     public float experience = 0;
     public float level = 1;
     private float level_experience = 20;
     public float resist = 0;
-
-    public Slider small_healthslider;
-    public Slider small_energyslider;
-
+    private float LEVEL_MIN_XP = 20f;
+    private float SLIDER_MAX = 100;
     public float energyreg_speed = 0.5f;
     public float healthreg_speed = 0.5f;
     private float energytime;
     private float healthtime;
-
-    private int textSize = 8;
-
-    public bool invulnerable = false;
-
-    public global_game_controller global_game_controller;
-
     public float current_level_xp = 0;
-    private bool gameOver = false;
-    private bool doonce = false;
-    public bool ability_mode = false;
-
-    private bool isdead = false;
-
-    public int level_ability_points = 0;
-
     public float base_damage = 10;
     public float attackRange = 5;
     public float speed = 1;
     public float attackspeed = 1;
+    private float resist_multi = 4;
+    private bool gameOver = false;
 
+    public Slider small_healthslider;
+    public Slider small_energyslider;
+
+    public bool invulnerable = false;
+    public bool ability_mode = false;
+    private bool isdead = false;
+    public bool initiated = false;
+
+    public global_game_controller global_game_controller;
+
+    public int level_ability_points = 0;
     public int a1_level = 0;
     public int a2_level = 0;
     public int a3_level = 0;
@@ -48,39 +43,46 @@ public class Player : MonoBehaviour
     public int passive = 0;
     public int potion_level = 0;
 
+    public static int player_amount = 0;
+
     public Transform parent;
-
-    private int fontsize = 10;
-
-    public string Name = "mage";
-
+    public Player_Controll controll;
     public Player_Character character;
-
     public PlayerHUDController playerhud;
-    public Player_Controller player_controller;
-
+    public Controller controller;
     private toggle_canvas toggle_canvas;
     private LevelUpPanel_Controller leveluppanel;
-
     public Map_script map_reference;
 
-    public bool initiated = false;
-    public static int player_amount = 0;
+    public string Name = "";
 
     public Player()
     {
         player_amount++;
     }
+    public void setController(Player_Controll c)
+    {
+        controll = c;
+        if(controll == Player_Controll.Player)
+        {
+            controller = GetComponent<Player_Controller>();
+            GetComponent<Ai_Controller>().enabled = false;
 
+        } else if(controll == Player_Controll.Ai)
+        {
+            controller = GetComponent<Ai_Controller>();
+            GetComponent<Player_Controller>().enabled = false;
+        }
+       
+    }
     public void InitiatePlayer(global_game_controller game, Transform par)
     {
         global_game_controller = game;
         this.parent = par;
 
         // initiate HUD & Map
-        if (player_controller.controll_mode == Player_Controll.Player)
+        if (controll == Player_Controll.Player)
         {
-
             toggle_canvas = FindObjectOfType<toggle_canvas>();
             toggle_canvas.initiate(this);
 
@@ -90,55 +92,41 @@ public class Player : MonoBehaviour
             playerhud = FindObjectOfType<PlayerHUDController>();
             playerhud.initiate(this);
             playerhud.updateAllLabels();
-
         }
 
         map_reference = GetComponentInParent<Map_script>();
         map_reference.initiate(this);
 
         initiated = true;
+        controller.initiate(this);
+
+        setDifficultDependent(controller.difficulty);
     }
-
-    // Use this for initialization
-    public virtual void Start()
+    private void setDifficultDependent(Difficulty d)
     {
-
-        player_controller = GetComponent<Player_Controller>();
-
-    }
-
-    private void HandleKeyAbilities()
-    {
-        if (Input.GetKeyDown("1"))
+        switch (d)
         {
-            FirstAbility();
-        }
-        if (Input.GetKeyDown("2"))
-        {
-            SecondAbility();
-        }
-        if (Input.GetKeyDown("3"))
-        {
-            ThirdAbility();
-        }
-        if (Input.GetKeyDown("4"))
-        {
-            FourthAbility();
+            case Difficulty.Easy:
+                
+                break;
+            case Difficulty.Normal:
+                base_damage = 30;
+                break;
+            case Difficulty.Hard:
+                base_damage = 20;
+                break;
         }
     }
 
     public void PowerUpTaken(PowerUp bonus, float value)
     {
-
         switch (bonus)
         {
             case PowerUp.Energy:
                 energy += value;
-                if (player_controller.controll_mode == Player_Controll.Player)
+                if (controll == Player_Controll.Player)
                 {
-
                     playerhud.energyslider.value = energy;
-
                 }
 
                 small_energyslider.value = energy;
@@ -146,71 +134,54 @@ public class Player : MonoBehaviour
                 break;
             case PowerUp.Health:
                 health += value;
-                if (player_controller.controll_mode == Player_Controll.Player)
-                {
 
+                if (controll == Player_Controll.Player)
+                {
                     playerhud.healthslider.value = health;
                 }
+
                 small_healthslider.value = health;
 
                 break;
             case PowerUp.Damage:
                 base_damage += value;
-                if (player_controller.controll_mode == Player_Controll.Player)
+                if (controll == Player_Controll.Player)
                 {
-
                     playerhud.updateDamage();
                 }
                 break;
         }
-
-
     }
-
     public void TakeDamage(float damage)
     {
         if (!invulnerable)
         {
-            health -= damage - (damage / 100) * resist * 4;
-            if (player_controller.controll_mode == Player_Controll.Player)
+            health -= damage - (damage / 100) * resist * resist_multi;
+
+            if (controll == Player_Controll.Player)
             {
                 playerhud.healthslider.value = health;
             }
+
             small_healthslider.value = health;
+
             if (!isdead)
             {
                 FloatingTextController.CreateFloatingText(damage.ToString(), transform, Color.red);
             }
         }
     }
+    public virtual void Start()
+    {
 
+    }
     public virtual void passiveStatic()
     {
 
     }
-
     public virtual void passiveUpdate()
     {
 
-    }
-
-    public void use_ability(Buttons b)
-    {
-        switch (b)
-        {
-            case Buttons.ability1:
-                FirstAbility();
-                break;
-            case Buttons.ability2:
-                SecondAbility();
-                break;
-            case Buttons.ability3:
-                ThirdAbility();
-                break;
-            case Buttons.ability4:
-                FourthAbility();
-                break;
-        }
     }
 
     public void use_ability_point(Buttons b)
@@ -239,12 +210,11 @@ public class Player : MonoBehaviour
         }
 
         level_ability_points--;
-        if (player_controller.controll_mode == Player_Controll.Player)
+        if (controll == Player_Controll.Player)
         {
             playerhud.updateLevelUpPoints();
         }
     }
-
     public bool got_ability_point()
     {
         return level_ability_points > 0;
@@ -253,19 +223,16 @@ public class Player : MonoBehaviour
     public void addXP(float xp)
     {
         experience += xp;
-        current_level_xp = (experience / level_experience) * 100;
+        current_level_xp = (experience / level_experience) * SLIDER_MAX;
 
-        if (player_controller.controll_mode == Player_Controll.Player)
-        {
-            if (player_controller.controll_mode == Player_Controll.Player)
+            if (controll == Player_Controll.Player)
             {
                 playerhud.experienceslider.value = current_level_xp;
             }
-        }
 
-        if (current_level_xp >= 100)
+        if (current_level_xp >= SLIDER_MAX)
         {
-            //level up
+            
             levelUp();
         }
     }
@@ -275,12 +242,12 @@ public class Player : MonoBehaviour
 
         level++;
         level_ability_points++;
-        level_experience = level * 20f;
+        level_experience = level * LEVEL_MIN_XP;
         experience = 0;
         resist++;
         base_damage++;
 
-        if (player_controller.controll_mode == Player_Controll.Player)
+        if (controll == Player_Controll.Player)
         {
             playerhud.experienceslider.value = 0;
             playerhud.updateAllLabels();
@@ -288,38 +255,9 @@ public class Player : MonoBehaviour
 
         FloatingTextController.CreateFloatingText("Level Up", transform, Color.magenta);
 
-        if (player_controller.controll_mode == Player_Controll.Ai)
-        {
-            player_controller.ai_unlock_ability();
-        }
+        controller.audio_source.clip = controller.levelup;
+        controller.audio_source.Play();
 
-        player_controller.audio.clip = player_controller.levelup;
-        player_controller.audio.Play();
-
-    }
-
-    public void potionClicked()
-    {
-        if (player_controller.controll_mode == Player_Controll.Player)
-        {
-            if (potion_level > 0 && !playerhud.potioncooldown.OnCooldown())
-            {
-                playerhud.potioncooldown.StartCooldown();
-                FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform, Color.green);
-                health += 20 * potion_level;
-                playerhud.healthslider.value = health;
-                small_healthslider.value = health;
-            }
-        }
-        if (player_controller.controll_mode == Player_Controll.Ai)
-        {
-            if (potion_level > 0)
-            {
-                FloatingTextController.CreateFloatingText(("+ " + (20 * potion_level).ToString() + " health"), transform, Color.green);
-                health += 20 * potion_level;
-                small_healthslider.value = health;
-            }
-        }
     }
 
     private void checkOutOfBounds()
@@ -339,11 +277,10 @@ public class Player : MonoBehaviour
             gameOver = true;
 
             global_game_controller.GameOver(this);
-            //Debug.Break();
 
             //sound
-            player_controller.audio.clip = player_controller.dead;
-            player_controller.audio.Play();
+            controller.audio_source.clip = controller.dead;
+            controller.audio_source.Play();
         }
 
 
@@ -373,10 +310,11 @@ public class Player : MonoBehaviour
 
                 energy++;
 
-                if (player_controller.controll_mode == Player_Controll.Player)
+                if (controll == Player_Controll.Player)
                 {
                     playerhud.energyslider.value = energy;
                 }
+
                 small_energyslider.value = energy;
 
             }
@@ -392,7 +330,7 @@ public class Player : MonoBehaviour
                 healthtime = Time.time + healthreg_speed;
 
                 health++;
-                if (player_controller.controll_mode == Player_Controll.Player)
+                if (controll == Player_Controll.Player)
                 {
                     playerhud.healthslider.value = health;
                 }
@@ -401,8 +339,6 @@ public class Player : MonoBehaviour
         }
     }
 
-
-    // Update is called once per frame
     public virtual void Update()
     {
         if (initiated && !isdead)
@@ -413,7 +349,6 @@ public class Player : MonoBehaviour
             checkToMuchResources();
             healthRegeneration();
             energyRegeneration();
-            HandleKeyAbilities();
         }
     }
 
@@ -427,28 +362,13 @@ public class Player : MonoBehaviour
         if (energy >= useamount)
         {
             energy -= useamount;
-            if (player_controller.controll_mode == Player_Controll.Player)
+
+            if (controll == Player_Controll.Player)
             {
                 playerhud.energyslider.value = energy;
             }
             small_energyslider.value = energy;
         }
-    }
-
-    public virtual void FirstAbility()
-    {
-    }
-
-    public virtual void SecondAbility()
-    {
-    }
-
-    public virtual void ThirdAbility()
-    {
-    }
-
-    public virtual void FourthAbility()
-    {
     }
 
 }

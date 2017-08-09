@@ -28,11 +28,8 @@ public class Enemy : MonoBehaviour
 
     public Game_Controller game_controller;
 
-    // for hover
-    private Texture normTexture;
     private Texture mainTexture;
-    private Color startcolor;
-    private SkinnedMeshRenderer renderer;
+    private SkinnedMeshRenderer skin_renderer;
 
     private GameObject[] powerups;
     private GameObject blooddamage;
@@ -42,7 +39,9 @@ public class Enemy : MonoBehaviour
     private AudioClip laugh_sound;
     private AudioClip take_damage_sound;
     private AudioClip dead_sound;
-    private AudioSource audio;
+    private AudioSource audio_source;
+
+    private GameObject temp_gameobject;
 
     private Transform extraparent;
 
@@ -57,8 +56,8 @@ public class Enemy : MonoBehaviour
         attackdelay = Time.time;
 
         // on hover init
-        renderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        mainTexture = renderer.material.mainTexture;
+        skin_renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        mainTexture = skin_renderer.material.mainTexture;
 
         animator = GetComponent<Animator>();
         animator.SetBool("Withinrange", false);
@@ -66,33 +65,33 @@ public class Enemy : MonoBehaviour
 
     private void initiateEffects()
     {
-        powerups = Resources.LoadAll<GameObject>("PowerUps");
-        blooddamage = Resources.Load("Enemies/DamageEffects/BloodSprayEffect", typeof(GameObject)) as GameObject;
-        blooddead = Resources.Load("Enemies/DamageEffects/BloodStreamEffect", typeof(GameObject)) as GameObject;
+        powerups = Statics.powerups;
+        blooddamage = Statics.blood_spray_effect;
+        blooddead = Statics.blood_flood_effect;
 
     }
 
     private void initiateSound()
     {
         // load 
-        audio = GetComponent<AudioSource>();
-        damage_sound = Resources.Load("Audio/enemy_damage", typeof(AudioClip)) as AudioClip;
-        laugh_sound = Resources.Load("Audio/enemy_laugh", typeof(AudioClip)) as AudioClip;
-        take_damage_sound = Resources.Load("Audio/enemy_take_damage", typeof(AudioClip)) as AudioClip;
-        dead_sound = Resources.Load("Audio/enemydead", typeof(AudioClip)) as AudioClip;
+        audio_source = GetComponent<AudioSource>();
+        damage_sound = Statics.enemy_damage_sound;
+        laugh_sound = Statics.enemy_laugh_sound;
+        take_damage_sound = Statics.enemy_take_damage_sound;
+        dead_sound = Statics.enemy_dead_sound;
 
         // 50% play sound on creation
         if (Random.Range(0, 100) < 50)
         {
             if (Random.Range(0, 100) < 50)
             {
-                audio.clip = damage_sound;
-                audio.Play();
+                audio_source.clip = damage_sound;
+                audio_source.Play();
             }
             else
             {
-                audio.clip = laugh_sound;
-                audio.Play();
+                audio_source.clip = laugh_sound;
+                audio_source.Play();
             }
         }
     }
@@ -112,10 +111,10 @@ public class Enemy : MonoBehaviour
 
     private void setDifficulty()
     {
-        switch (player.player_controller.difficulty)
+        switch (player.controller.difficulty)
         {
             case Difficulty.Easy:
-
+                health = 60;
                 break;
             case Difficulty.Normal:
                 damage = 2;
@@ -128,12 +127,12 @@ public class Enemy : MonoBehaviour
 
     void OnMouseEnter()
     {
-        renderer.material.mainTexture = normTexture;
+        skin_renderer.material.mainTexture = null;
     }
 
     void OnMouseExit()
     {
-        renderer.material.mainTexture = mainTexture;
+        skin_renderer.material.mainTexture = mainTexture;
     }
 
     public void TakeDamage(float damage)
@@ -142,8 +141,8 @@ public class Enemy : MonoBehaviour
         health_slider.value = health;
 
         //Create small blood animation
-        GameObject go = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        go.transform.SetParent(extraparent);
+        temp_gameobject = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
+        temp_gameobject.transform.SetParent(extraparent);
 
         //Show damage text
         if (!isdead)
@@ -152,8 +151,8 @@ public class Enemy : MonoBehaviour
         }
 
         // start sound
-        audio.clip = take_damage_sound;
-        audio.Play();
+        audio_source.clip = take_damage_sound;
+        audio_source.Play();
     }
 
     public void Dead()
@@ -161,7 +160,7 @@ public class Enemy : MonoBehaviour
         isdead = true;
 
         // remove marker
-        player.player_controller.disableTargetMarker();
+        player.controller.disableTargetMarker();
 
         // add xp
         player.addXP(experience);
@@ -172,20 +171,20 @@ public class Enemy : MonoBehaviour
         // spawn powerup
         if (Random.Range(0, 100) < powerupspawnchance)
         {
-            GameObject gg = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
-            PowerUp_Controller pu = gg.GetComponent<PowerUp_Controller>();
+            temp_gameobject = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
+            PowerUp_Controller pu = temp_gameobject.GetComponent<PowerUp_Controller>();
             pu.setPlayer(player);
-            gg.transform.SetParent(extraparent);
+            temp_gameobject.transform.SetParent(extraparent);
 
         }
 
         // spawn larger blood animation
-        GameObject go = Instantiate(blooddead, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        go.transform.SetParent(extraparent);
+        temp_gameobject = Instantiate(blooddead, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
+        temp_gameobject.transform.SetParent(extraparent);
 
         // start sound
-        audio.clip = dead_sound;
-        audio.Play();
+        audio_source.clip = dead_sound;
+        audio_source.Play();
 
         // death animation wait
         StartCoroutine(deathwait(1));
@@ -232,7 +231,7 @@ public class Enemy : MonoBehaviour
                     animator.SetBool("isdead", true);
                     animator.SetTrigger("Dead");
 
-                    player.player_controller.Target_isDead(this);
+                    player.controller.Target_isDead(this);
                     Dead();
                     return;
                 }
@@ -285,7 +284,6 @@ public class Enemy : MonoBehaviour
         }
 
     }
-
     public virtual void OnTriggerExit(Collider other)
     {
 
