@@ -10,7 +10,7 @@ public class Controller : MonoBehaviour
 
     public float potion_base = 10;
     public float attackdelay = 1;
-    private float wait_attack_time = 0.5f;
+    public float wait_attack_time = 0.5f;
 
     public bool abilityaim;
     public bool usingabilty = false;
@@ -64,9 +64,14 @@ public class Controller : MonoBehaviour
         attackdelay = Time.time;
         attackdelay += player.attackspeed;
         yield return new WaitForSeconds(time);
-        if (target != null)
+        deal_damage(target);
+    }
+
+    public virtual void deal_damage(Enemy _target)
+    {
+        if (_target != null)
         {
-            target.TakeDamage(player.base_damage);
+            _target.TakeDamage(player.base_damage);
         }
     }
 
@@ -97,7 +102,7 @@ public class Controller : MonoBehaviour
     {
         if (autoattacking && Time.time >= attackdelay && !usingabilty)
         {
-            if (target == null)
+            if (target == null || target.isdead)
             {
                 InRangeEnemyList.Remove(target);
 
@@ -140,15 +145,17 @@ public class Controller : MonoBehaviour
         if (t == null)
         {
             InRangeEnemyList.Remove(t);
-
-            if (InRangeEnemyList.Count > 0)
+            if (!usingabilty)
             {
-                target = InRangeEnemyList[0];
-                updateTarget(target);
-            }
-            else
-            {
-                autoattacking = false;
+                if (InRangeEnemyList.Count > 0)
+                {
+                    target = InRangeEnemyList[0];
+                    updateTarget(target);
+                }
+                else
+                {
+                    autoattacking = false;
+                }
             }
         }
     }
@@ -187,11 +194,13 @@ public class Controller : MonoBehaviour
     }
     public virtual void OnTriggerEnter(Collider other)
     {
+
         if (other.tag == "Enemy")
         {
             InRangeEnemyList.Add(other.GetComponent<Enemy>());
-            if (!autoattacking)
+            if (!autoattacking && !usingabilty)
             {
+
                 target = other.GetComponent<Enemy>();
                 updateTarget(target);
             }

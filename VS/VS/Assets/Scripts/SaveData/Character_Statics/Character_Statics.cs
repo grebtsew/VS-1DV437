@@ -77,6 +77,21 @@ public static class Swordsman_statics
 {
 
     public static string Background = "Fast sword magician!";
-    public static int unlock = 5;
-    public static bool developed = false;
+    public static int unlock = 0;
+    public static bool developed = true;
+
+    public static float ability_1_cooldown = 0;
+    public static float ability_2_cooldown = 5;
+    public static float ability_3_cooldown = 10;
+    public static float ability_4_cooldown = 20;
+
+    public static float ability_1_energycost = 2;
+    public static float ability_2_energycost = 30;
+    public static float ability_3_energycost = 30;
+    public static float ability_4_energycost = 40;
+
+    public static GameObject firstability = Resources.Load("Abilities/Swordman/spiral1", typeof(GameObject)) as GameObject;
+    public static GameObject secondability = null;
+    public static GameObject thirdability = Resources.Load("Abilities/Swordman/third_ability", typeof(GameObject)) as GameObject;
+    public static GameObject fourthability = null;
 }

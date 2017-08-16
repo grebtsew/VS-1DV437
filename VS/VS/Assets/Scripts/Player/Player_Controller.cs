@@ -7,10 +7,14 @@ public class Player_Controller : Controller
 {
     private Vector3 previousLocation;
     private Vector3 currentLocation;
-    private Vector3 mousePos;
+    public Vector3 mousePos;
 
     private bool mouseMovement = false;
     private bool keymovement = false;
+
+    public float hitdist;
+    public Plane playerPlane;
+    public Ray ray;
 
     // Use this for initialization
     public override void Start()
@@ -110,11 +114,10 @@ public class Player_Controller : Controller
         }
 
     }
-    private void HandleKeyAbilities()
+    public virtual void HandleKeyAbilities()
     {
         if (Input.GetKeyDown("1"))
         {
-            Debug.Log("hej");
             FirstAbility();
         }
         if (Input.GetKeyDown("2"))
@@ -139,14 +142,14 @@ public class Player_Controller : Controller
             {
                 mouseMovement = true;
 
-                Plane playerPlane2 = new Plane(Vector3.up, transform.position);
-                Ray ray2 = Camera.main.ScreenPointToRay(Input.mousePosition);
+                 playerPlane = new Plane(Vector3.up, transform.position);
+                ray  = Camera.main.ScreenPointToRay(Input.mousePosition);
 
 
 
-                float hitdist2 = 0.0f;
+                hitdist = 0.0f;
 
-                if (Physics.Raycast(ray2, out hit))
+                if (Physics.Raycast(ray, out hit))
                 {
 
                     if (hit.transform.tag == "Enemy")
@@ -159,10 +162,10 @@ public class Player_Controller : Controller
                     }
                     else
                     {
-                        if (playerPlane2.Raycast(ray2, out hitdist2))
+                        if (playerPlane.Raycast(ray, out hitdist))
                         {
 
-                            mousePos = ray2.GetPoint(hitdist2);
+                            mousePos = ray.GetPoint(hitdist);
                             if (Vector3.Distance(mousePos, transform.position) > 1)
                             {
 

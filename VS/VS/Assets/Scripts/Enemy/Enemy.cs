@@ -137,6 +137,7 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (!isdead) { 
         health -= damage;
         health_slider.value = health;
 
@@ -153,10 +154,12 @@ public class Enemy : MonoBehaviour
         // start sound
         audio_source.clip = take_damage_sound;
         audio_source.Play();
+        }
     }
 
     public void Dead()
     {
+        if (!isdead) { 
         isdead = true;
 
         // remove marker
@@ -188,7 +191,7 @@ public class Enemy : MonoBehaviour
 
         // death animation wait
         StartCoroutine(deathwait(1));
-
+        }
 
     }
 

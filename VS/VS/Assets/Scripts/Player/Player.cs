@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         if (!invulnerable)
         {

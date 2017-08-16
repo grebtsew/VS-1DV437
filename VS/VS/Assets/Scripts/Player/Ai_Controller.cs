@@ -25,13 +25,9 @@ public class Ai_Controller : Controller
    
         energyzone = player.map_reference.energyregzone;
         healthzone = player.map_reference.healthregzone;
+
        
-        ai_cooldown_ability_1 = new cooldown(Mage_statics.ability_1_cooldown);
-        ai_cooldown_ability_2 = new cooldown(Mage_statics.ability_2_cooldown);
-        ai_cooldown_ability_3 = new cooldown(Mage_statics.ability_3_cooldown);
-        ai_cooldown_ability_4 = new cooldown(Mage_statics.ability_4_cooldown);
-        ai_cooldown_potion = new cooldown(Statics.potion_cooldown);
-        
+
     }
     public override void Start()
     {

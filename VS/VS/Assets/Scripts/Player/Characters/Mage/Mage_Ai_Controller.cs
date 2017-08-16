@@ -4,8 +4,22 @@ using UnityEngine;
 
 public class Mage_Ai_Controller : Ai_Controller {
 
+    public override void initiate(Player p)
+    {
+        base.initiate(p);
+
+        player = p;
+
+        ai_cooldown_ability_1 = new cooldown(Mage_statics.ability_1_cooldown);
+        ai_cooldown_ability_2 = new cooldown(Mage_statics.ability_2_cooldown);
+        ai_cooldown_ability_3 = new cooldown(Mage_statics.ability_3_cooldown);
+        ai_cooldown_ability_4 = new cooldown(Mage_statics.ability_4_cooldown);
+        ai_cooldown_potion = new cooldown(Statics.potion_cooldown);
+
+    }
+
     // Use this for initialization
-   public override void Start()
+    public override void Start()
     {
         base.Start();
     }
