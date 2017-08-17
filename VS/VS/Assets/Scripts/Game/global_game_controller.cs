@@ -64,6 +64,7 @@ public class global_game_controller : MonoBehaviour
 
             // spawn and instantiate Player 
             string player_prefab_path = "Players(ingame)/" + PlayerPrefsHandler.GetPersistentVar<string>(Statics.player_character(i), "Mage");
+            Debug.Log(player_prefab_path);
             player = Resources.Load<GameObject>(player_prefab_path);
             Player p = Instantiate(player, map.transform.position + transform.up * 2, transform.rotation).GetComponent<Player>();
 

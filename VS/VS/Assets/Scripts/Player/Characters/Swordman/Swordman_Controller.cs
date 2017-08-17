@@ -175,8 +175,15 @@ public class Swordman_Controller : Player_Controller {
         base.FourthAbility();
         if (player.a4_level > 0 && !player.playerhud.cooldownslider_4.OnCooldown() && player.gotEnoughtEnergy(Swordsman_statics.ability_4_energycost))
         {
-           // spawn mini me, fix ai first!
+            for (int i = 0; i < player.a4_level; i++)
+            {
+                // spawn mini me, fix ai first!
+                Ally_Controller go = Instantiate(Swordsman_statics.fourthability) as Ally_Controller;
+                go.transform.position = transform.position + Vector3.forward * 4; // fix better spawn
+                go.setPlayer(player);
+                go.transform.SetParent(player.parent);
 
+            }
             player.useEnergy(Swordsman_statics.ability_4_energycost);
             player.playerhud.cooldownslider_4.StartCooldown();
         }

@@ -93,5 +93,5 @@ public static class Swordsman_statics
     public static GameObject firstability = Resources.Load("Abilities/Swordman/spiral1", typeof(GameObject)) as GameObject;
     public static GameObject secondability = null;
     public static GameObject thirdability = Resources.Load("Abilities/Swordman/third_ability", typeof(GameObject)) as GameObject;
-    public static GameObject fourthability = null;
+    public static Ally_Controller fourthability = Resources.Load("Allies/Swordman/Swordsman_ally", typeof(Ally_Controller)) as Ally_Controller;
 }
