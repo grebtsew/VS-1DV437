@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Ally_Controller : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class Ally_Controller : MonoBehaviour
     private float health;
     public float lifetime = 20;
     private float time;
+    public float resist = 0;
+
+    public Slider health_slider;
 
     private Enemy target;
     private List<Enemy> InRangeEnemyList = new List<Enemy>();
@@ -37,6 +41,7 @@ public class Ally_Controller : MonoBehaviour
 
         health = Statics.health;
         time = Time.time + lifetime;
+        health_slider.enabled = true;
     }
 
     public virtual void OnTriggerEnter(Collider other)
@@ -67,7 +72,7 @@ public class Ally_Controller : MonoBehaviour
 
     public virtual void setLevel()
     {
-        
+
 
     }
 
@@ -87,7 +92,7 @@ public class Ally_Controller : MonoBehaviour
 
     public virtual void deadAnimation()
     {
-       
+
     }
     public virtual void walkStartAnimation()
     {
@@ -101,8 +106,19 @@ public class Ally_Controller : MonoBehaviour
     {
 
     }
-  
-    void Update()
+    public void Take_Damage(float damage)
+    {
+
+        health -= damage - resist;
+        FloatingTextController.CreateFloatingText((damage - resist).ToString(), transform, Color.red);
+
+        if (health <= 0)
+        {
+            isdead = true;
+        }
+    }
+
+    public void ai_auto_attack()
     {
         if (player != null)
         {
@@ -149,8 +165,8 @@ public class Ally_Controller : MonoBehaviour
                 }
                 else
                 {
-                   
-                 
+
+
                     if (target != null)
                     {
                         // if not within attackrange
@@ -169,7 +185,7 @@ public class Ally_Controller : MonoBehaviour
                             {
                                 attackdelay = Time.time + attackspeed;
                                 attackAnimation();
-                               
+
                                 target.TakeDamage(damage);
                             }
                         }
@@ -188,5 +204,31 @@ public class Ally_Controller : MonoBehaviour
                 }
             }
         }
+
+    }
+
+    private void checkOutOfBounds()
+    {
+        if (transform.position.y < -10)
+        {
+            isdead = true;
+        }
+    }
+
+    private void updateHealthSlider()
+    {
+        if(health > 100)
+        {
+            health = 100;
+        }
+
+        health_slider.value = health;
+    }
+
+    void Update()
+    {
+        ai_auto_attack();
+        checkOutOfBounds();
+        updateHealthSlider();
     }
 }

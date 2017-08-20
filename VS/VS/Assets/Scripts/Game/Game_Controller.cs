@@ -39,7 +39,7 @@ public class Game_Controller : MonoBehaviour
     public float timer = 10;
     private float timer_time;
     private float LOWEST_SPAWN_TIME = 0.3f;
-
+    private Map_script map;
 
     private string opponent_text;
 
@@ -67,11 +67,11 @@ public class Game_Controller : MonoBehaviour
 
     void Start()
     {
+      
         global_game_controller = FindObjectOfType<global_game_controller>();
         toggle_canvas = FindObjectOfType<toggle_canvas>();
 
-        /* In future make random enemy */
-        enemy = Resources.Load("Enemies/Bat_Green", typeof(Enemy)) as Enemy;
+       
 
         // get texts
         foreach (Text text in FindObjectOfType<game_panel>().GetComponentsInChildren<Text>())
@@ -111,6 +111,22 @@ public class Game_Controller : MonoBehaviour
         }
         updateGameHUD();
         spawnTime = Time.time;
+
+        /* Get random enemy */
+        switch ((Enemies)Random.Range(0, 2))
+        {
+            case Enemies.Bat:
+                enemy = Statics.enemy_bat;
+                break;
+            case Enemies.Ghost:
+                enemy = Statics.enemy_ghost;
+                break;
+            case Enemies.Rabbit:
+                enemy = Statics.enemy_rabbit;
+                break;
+        }
+       
+
     }
 
     public void spawnEnemy()

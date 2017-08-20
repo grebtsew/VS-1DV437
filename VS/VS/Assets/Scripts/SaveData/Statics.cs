@@ -29,6 +29,9 @@ public static class Statics {
     public static AudioClip player_pickup = Resources.Load("Audio/pickup", typeof(AudioClip)) as AudioClip;
     public static AudioClip player_dead = Resources.Load("Audio/Player_dead", typeof(AudioClip)) as AudioClip;
     public static Target_Follow_Enemy target_follower = Resources.Load("Followers/TargetPicker", typeof(Target_Follow_Enemy)) as Target_Follow_Enemy;
+    public static Enemy enemy_bat = Resources.Load("Enemies/Bat_Green", typeof(Enemy)) as Enemy;
+    public static Enemy enemy_rabbit = Resources.Load("Enemies/Rabbit_Cyan", typeof(Enemy)) as Enemy;
+    public static Enemy enemy_ghost = Resources.Load("Enemies/Ghost_White", typeof(Enemy)) as Enemy;
 
     // Map Statics
     public static int map_x = 60;

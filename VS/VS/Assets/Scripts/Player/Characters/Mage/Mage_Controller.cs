@@ -30,6 +30,41 @@ public class Mage_Controller : Player_Controller {
         base.OnTriggerExit(other);
     }
 
+    private Vector3 GetSpawnPositionWithinBounds(Transform t)
+    {
+        Vector3 map_center = player.map_reference.transform.position;
+        Vector3 up_left = new Vector3(map_center.x - Statics.map_x / 2, map_center.y, map_center.z - Statics.map_z / 2);
+        Vector3 down_right = new Vector3(map_center.x + Statics.map_x / 2, map_center.y, map_center.z + Statics.map_z / 2);
+
+        float spawn_distance = 4;
+
+        Vector3 result = t.position + Vector3.forward * spawn_distance;
+        if (result.z < up_left.z)
+        {
+
+            return result;
+        }
+        result = transform.position + Vector3.back * spawn_distance;
+        if (result.z > down_right.z)
+        {
+
+            return result;
+        }
+
+        result = transform.position + Vector3.left * spawn_distance;
+        if (result.x > up_left.x)
+        {
+            return result;
+        }
+
+        result = transform.position + Vector3.right * spawn_distance;
+        if (result.x < down_right.x)
+        {
+            return result;
+        }
+
+        return Vector3.zero;
+    }
 
     public override void FirstAbility()
     {
@@ -71,7 +106,7 @@ public class Mage_Controller : Player_Controller {
             for (int i = 0; i < player.a3_level; i++)
             {
                 Ally_Controller go = Instantiate(Mage_statics.thirdability) as Ally_Controller;
-                go.transform.position = transform.position + Vector3.forward * 4;
+                go.transform.position = GetSpawnPositionWithinBounds(transform);
                 go.setPlayer(player);
                 go.transform.SetParent(player.parent);
             }

@@ -41,6 +41,8 @@ public class Enemy : MonoBehaviour
     private AudioClip dead_sound;
     private AudioSource audio_source;
 
+    private GameObject target;
+
     private GameObject temp_gameobject;
 
     private Transform extraparent;
@@ -70,7 +72,6 @@ public class Enemy : MonoBehaviour
         blooddead = Statics.blood_flood_effect;
 
     }
-
     private void initiateSound()
     {
         // load 
@@ -95,12 +96,10 @@ public class Enemy : MonoBehaviour
             }
         }
     }
-
     public void SetMap(Game_Controller game)
     {
         game_controller = game;
     }
-
     public void SetTargetPlayer(Player p)
     {
         player = p;
@@ -108,7 +107,6 @@ public class Enemy : MonoBehaviour
         extraparent = player.parent;
         setDifficulty();
     }
-
     private void setDifficulty()
     {
         switch (player.controller.difficulty)
@@ -137,60 +135,62 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if (!isdead) { 
-        health -= damage;
-        health_slider.value = health;
-
-        //Create small blood animation
-        temp_gameobject = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        temp_gameobject.transform.SetParent(extraparent);
-
-        //Show damage text
         if (!isdead)
         {
-            FloatingTextController.CreateFloatingText(damage.ToString(), transform, Color.cyan);
-        }
+            health -= damage;
+            health_slider.value = health;
 
-        // start sound
-        audio_source.clip = take_damage_sound;
-        audio_source.Play();
+            //Create small blood animation
+            temp_gameobject = Instantiate(blooddamage, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
+            temp_gameobject.transform.SetParent(extraparent);
+
+            //Show damage text
+            if (!isdead)
+            {
+                FloatingTextController.CreateFloatingText(damage.ToString(), transform, Color.cyan);
+            }
+
+            // start sound
+            audio_source.clip = take_damage_sound;
+            audio_source.Play();
         }
     }
 
     public void Dead()
     {
-        if (!isdead) { 
-        isdead = true;
-
-        // remove marker
-        player.controller.disableTargetMarker();
-
-        // add xp
-        player.addXP(experience);
-
-        // show xp text
-        FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform, Color.yellow);
-
-        // spawn powerup
-        if (Random.Range(0, 100) < powerupspawnchance)
+        if (!isdead)
         {
-            temp_gameobject = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
-            PowerUp_Controller pu = temp_gameobject.GetComponent<PowerUp_Controller>();
-            pu.setPlayer(player);
+            isdead = true;
+
+            // remove marker
+            player.controller.disableTargetMarker();
+
+            // add xp
+            player.addXP(experience);
+
+            // show xp text
+            FloatingTextController.CreateFloatingText("+ " + experience.ToString() + " xp", transform, Color.yellow);
+
+            // spawn powerup
+            if (Random.Range(0, 100) < powerupspawnchance)
+            {
+                temp_gameobject = Instantiate(powerups[Random.Range(0, powerups.Length)], transform.position + transform.up * 2, transform.rotation);
+                PowerUp_Controller pu = temp_gameobject.GetComponent<PowerUp_Controller>();
+                pu.setPlayer(player);
+                temp_gameobject.transform.SetParent(extraparent);
+
+            }
+
+            // spawn larger blood animation
+            temp_gameobject = Instantiate(blooddead, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
             temp_gameobject.transform.SetParent(extraparent);
 
-        }
+            // start sound
+            audio_source.clip = dead_sound;
+            audio_source.Play();
 
-        // spawn larger blood animation
-        temp_gameobject = Instantiate(blooddead, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
-        temp_gameobject.transform.SetParent(extraparent);
-
-        // start sound
-        audio_source.clip = dead_sound;
-        audio_source.Play();
-
-        // death animation wait
-        StartCoroutine(deathwait(1));
+            // death animation wait
+            StartCoroutine(deathwait(1));
         }
 
     }
@@ -203,7 +203,6 @@ public class Enemy : MonoBehaviour
         {
             game_controller.addScore();
         }
-
     }
 
     private void fallenOutOfBounds()
@@ -213,7 +212,6 @@ public class Enemy : MonoBehaviour
             TakeDamage(100);
         }
     }
-
     public virtual void Update()
     {
         if (player != null)
@@ -239,33 +237,72 @@ public class Enemy : MonoBehaviour
                     return;
                 }
 
-                transform.LookAt(player.transform);
-
-                if (attack)
+                if(target != null) { 
+                attackTarget(target);
+                } else
                 {
-                    if (Time.time >= attackdelay && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-                    {
-                        animator.SetTrigger("Attack");
-                        attackdelay = Time.time;
-                        attackdelay += attackspeed;
-                        player.TakeDamage(damage);
-                    }
+                    target = FindClosestEnemy();
                 }
 
-                // Move to player
-                if (!isPlayerInRange())
-                {
-                    playerpos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
-                    transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
-
-                }
             }
         }
     }
 
-    private bool isPlayerInRange()
+    public GameObject FindClosestEnemy()
     {
-        if (Vector3.Distance(transform.position, player.transform.position) <= attackRange)
+        GameObject[] gos;
+        gos = GameObject.FindGameObjectsWithTag("Player");
+        GameObject closest = null;
+        float distance = Mathf.Infinity;
+        Vector3 position = transform.position;
+        foreach (GameObject go in gos)
+        {
+            Vector3 diff = go.transform.position - position;
+            float curDistance = diff.sqrMagnitude;
+            if (curDistance < distance)
+            {
+                closest = go;
+                distance = curDistance;
+            }
+        }
+        return closest;
+    }
+
+    private void attackTarget(GameObject target)
+    {
+        transform.LookAt(target.transform);
+
+        if (attack)
+        {
+            if (Time.time >= attackdelay && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            {
+                animator.SetTrigger("Attack");
+                attackdelay = Time.time;
+                attackdelay += attackspeed;
+                
+                // player or ally
+                if (target.GetComponent<Player>())
+                {
+                    target.GetComponent<Player>().TakeDamage(damage);
+                } else
+                {
+                    target.GetComponent<Ally_Controller>().Take_Damage(damage);
+                }
+               
+            }
+        }
+
+        // Move to target
+        if (!isTargetInRange(target))
+        {
+            playerpos = new Vector3(target.transform.position.x, transform.position.y, target.transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, playerpos, speed * Time.deltaTime);
+        }
+    }
+
+    private bool isTargetInRange(GameObject target)
+    {
+        if (Vector3.Distance(transform.position, target.transform.position) <= attackRange)
         {
             attack = true;
             return true;
@@ -275,6 +312,7 @@ public class Enemy : MonoBehaviour
             return false;
         }
     }
+
     public virtual void OnTriggerEnter(Collider other)
     {
 

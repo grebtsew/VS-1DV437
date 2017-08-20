@@ -64,6 +64,7 @@ public class Mage_Ai_Controller : Ai_Controller {
     public override void SecondAbility()
     {
         base.SecondAbility();
+        
         if (player.gotEnoughtEnergy(Mage_statics.ability_2_energycost) && !ai_cooldown_ability_2.OnCooldown())
         {
             if (player.a2_level > 0)

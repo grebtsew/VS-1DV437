@@ -19,6 +19,8 @@ public class Map_script : MonoBehaviour
     public Transform enemy_parent;
     public Transform extra_parent;
 
+  
+
     public int id;
 
     public void initiate(Player p)
@@ -27,7 +29,8 @@ public class Map_script : MonoBehaviour
         
         player.controller.initiate(p);
 
-
+        
+ 
     }
 
     void Start()

@@ -106,191 +106,59 @@ public class CharacterSelector : MonoBehaviour
         warning.text = "";
     }
 
+    private void updatelabels_help(string background_, float unlock, bool developed) 
+    {
+        background.text = background_;
+
+        if (wins_i >= unlock)
+        {
+            if (developed)
+            {
+                characterList[index].GetComponent<player_selection_script>().unlock_character();
+                unlock_text.text = "";
+            }
+            else
+            {
+                unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
+            }
+
+        }
+        else
+        {
+            unlock_text.text = "Must win " + unlock + " matches to unlock this character!";
+        }
+    }
+
     private void updatelabels()
     {
         switch (current_character)
         {
             case Player_Character.Mage:
-                background.text = Mage_statics.Background;
-
-                if (wins_i >= Mage_statics.unlock)
-                {
-                    if (Mage_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Mage_statics.unlock + " matches to unlock this character!";
-                }
-
+                updatelabels_help(Mage_statics.Background, Mage_statics.unlock, Mage_statics.developed);
                 break;
             case Player_Character.HankTheTank:
-                background.text = HankTheTank_statics.Background;
-
-                if (wins_i >= HankTheTank_statics.unlock)
-                {
-                    if (HankTheTank_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + HankTheTank_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(HankTheTank_statics.Background, HankTheTank_statics.unlock, HankTheTank_statics.developed);
                 break;
             case Player_Character.Archer:
-                background.text = Archer_statics.Background;
-
-                if (wins_i >= Archer_statics.unlock)
-                {
-                    if (Archer_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Archer_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Archer_statics.Background, Archer_statics.unlock, Archer_statics.developed);
                 break;
             case Player_Character.BigSword:
-                background.text = BigSword_statics.Background;
-
-                if (wins_i >= BigSword_statics.unlock)
-                {
-                    if (BigSword_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + BigSword_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(BigSword_statics.Background, BigSword_statics.unlock, BigSword_statics.developed);
                 break;
             case Player_Character.Bow:
-                background.text = Bow_statics.Background;
-
-                if (wins_i >= Bow_statics.unlock)
-                {
-                    if (Bow_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Bow_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Bow_statics.Background, Bow_statics.unlock, Bow_statics.developed);
                 break;
             case Player_Character.Hammer:
-                background.text = Hammer_statics.Background;
-
-                if (wins_i >= Hammer_statics.unlock)
-                {
-                    if (Hammer_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Hammer_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Hammer_statics.Background, Hammer_statics.unlock, Hammer_statics.developed);
                 break;
             case Player_Character.Spearman:
-                background.text = Spearman_statics.Background;
-
-                if (wins_i >= Spearman_statics.unlock)
-                {
-                    if (Spearman_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Spearman_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Spearman_statics.Background, Spearman_statics.unlock, Spearman_statics.developed);
                 break;
             case Player_Character.Swordsman:
-                background.text = Swordsman_statics.Background;
-
-                if (wins_i >= Swordsman_statics.unlock)
-                {
-                    if (Swordsman_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Swordsman_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Swordsman_statics.Background, Swordsman_statics.unlock, Swordsman_statics.developed);
                 break;
             case Player_Character.Adventurer:
-                background.text = Adventurer_statics.Background;
-
-                if (wins_i >= Adventurer_statics.unlock)
-                {
-                    if (Adventurer_statics.developed)
-                    {
-                        characterList[index].GetComponent<player_selection_script>().unlock_character();
-                        unlock_text.text = "";
-                    }
-                    else
-                    {
-                        unlock_text.text = "It appears this character is not completely developed at this moment. Please select another one!";
-                    }
-                }
-                else
-                {
-                    unlock_text.text = "Most win " + Adventurer_statics.unlock + " matches to unlock this character!";
-                }
+                updatelabels_help(Adventurer_statics.Background, Adventurer_statics.unlock, Adventurer_statics.developed);
                 break;
         }
 
