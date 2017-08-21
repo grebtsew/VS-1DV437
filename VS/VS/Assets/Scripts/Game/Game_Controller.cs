@@ -113,7 +113,7 @@ public class Game_Controller : MonoBehaviour
         spawnTime = Time.time;
 
         /* Get random enemy */
-        switch ((Enemies)Random.Range(0, 2))
+        switch ((Enemies)Random.Range(0, 3))
         {
             case Enemies.Bat:
                 enemy = Statics.enemy_bat;
