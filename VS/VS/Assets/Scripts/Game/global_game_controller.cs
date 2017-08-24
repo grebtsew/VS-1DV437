@@ -51,7 +51,7 @@ public class global_game_controller : MonoBehaviour
         int player_amount = PlayerPrefsHandler.GetPersistentVar<int>(Statics.player_amount, 2);
 
         // Game Mode (only have one)
-        string game_mode = PlayerPrefsHandler.GetPersistentVar<string>(Statics.game_mode, "1vs1");
+      //  string game_mode = PlayerPrefsHandler.GetPersistentVar<string>(Statics.game_mode, "1vs1");
 
         // Create entire gameworld
         for (int i = 0; i < player_amount; i++)

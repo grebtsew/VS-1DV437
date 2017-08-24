@@ -42,7 +42,7 @@ public class Slime_Ally_Controller : Ally_Controller{
         animator.SetBool("Withinrange", false);
     }
 
-    public virtual void attackAnimation()
+    public override void attackAnimation()
     {
         base.attackAnimation();
         animator.SetTrigger("Attack");

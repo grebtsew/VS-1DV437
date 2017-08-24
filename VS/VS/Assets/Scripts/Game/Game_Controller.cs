@@ -39,7 +39,7 @@ public class Game_Controller : MonoBehaviour
     public float timer = 10;
     private float timer_time;
     private float LOWEST_SPAWN_TIME = 0.3f;
-    private Map_script map;
+  
 
     private string opponent_text;
 

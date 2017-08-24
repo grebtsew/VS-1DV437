@@ -1,4 +1,4 @@
-Initialize engine version: 5.5.4f1 (8ffd0efd98b1)
+Initialize engine version: 2017.1.0f3 (472613c02cf7)
 GfxDevice: creating device client; threaded=1
 Direct3D:
     Version:  Direct3D 11.0 [level 11.1]
@@ -15,54 +15,37 @@ Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed
 Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
 Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\TextMeshPro-1.0.55.55.0b11.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\TextMeshPro-1.0.55.55.0b11.dll into Unity Child Domain
-- Completed reload, in  0.159 seconds
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.dll (this message is harmless)
-desktop: 3840x2160 60Hz; virtual: 12000x2160 at -2400,0
+Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.204 seconds
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.947712 ms
-Setting up 2 worker threads for Enlighten.
-  Thread -> id: 219c -> priority: 1 
-  Thread -> id: cfc -> priority: 1 
+UnloadTime: 0.871424 ms
+Setting up 4 worker threads for Enlighten.
+  Thread -> id: 1038 -> priority: 1 
+  Thread -> id: 2aa4 -> priority: 1 
+  Thread -> id: ce0 -> priority: 1 
+  Thread -> id: 36f4 -> priority: 1 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 7.126023 ms
+UnloadTime: 2.695682 ms
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 1307.
-Total: 2.646274 ms (FindLiveObjects: 0.228864 ms CreateObjectMapping: 0.182528 ms MarkObjects: 2.168834 ms  DeleteObjects: 0.063744 ms)
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 1288.
+Total: 0.762880 ms (FindLiveObjects: 0.053760 ms CreateObjectMapping: 0.038400 ms MarkObjects: 0.647424 ms  DeleteObjects: 0.023040 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.864256 ms
+UnloadTime: 1.045761 ms
 
-Unloading 1189 unused Assets to reduce memory usage. Loaded Objects now: 1819.
-Total: 1.911297 ms (FindLiveObjects: 0.079104 ms CreateObjectMapping: 0.080640 ms MarkObjects: 0.701952 ms  DeleteObjects: 1.049345 ms)
-
-The referenced script on this Behaviour (Game Object 'Swordsman') is missing!
- 
-(Filename:  Line: 1755)
-
-The referenced script on this Behaviour (Game Object '<null>') is missing!
- 
-(Filename:  Line: 1755)
-
-The referenced script on this Behaviour (Game Object 'Swordsman') is missing!
- 
-(Filename:  Line: 1755)
-
-The referenced script on this Behaviour (Game Object 'Swordsman') is missing!
- 
-(Filename:  Line: 1755)
+Unloading 1189 unused Assets to reduce memory usage. Loaded Objects now: 1801.
+Total: 1.787393 ms (FindLiveObjects: 0.120832 ms CreateObjectMapping: 0.098304 ms MarkObjects: 0.862976 ms  DeleteObjects: 0.705024 ms)
 
 Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.466369 ms
+UnloadTime: 8.104200 ms
 
-Unloading 493 unused Assets to reduce memory usage. Loaded Objects now: 1272.
-Total: 1.449217 ms (FindLiveObjects: 0.060416 ms CreateObjectMapping: 0.049664 ms MarkObjects: 0.512512 ms  DeleteObjects: 0.826368 ms)
+Unloading 901 unused Assets to reduce memory usage. Loaded Objects now: 1270.
+Total: 2.043138 ms (FindLiveObjects: 0.113920 ms CreateObjectMapping: 0.083200 ms MarkObjects: 0.510720 ms  DeleteObjects: 1.335041 ms)
 

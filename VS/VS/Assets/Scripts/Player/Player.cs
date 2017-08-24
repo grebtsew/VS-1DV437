@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
     }
     public virtual void Start()
     {
-
+        gameOver = false;
     }
     public virtual void passiveStatic()
     {
