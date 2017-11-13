@@ -35,7 +35,7 @@ public class Game_Controller : MonoBehaviour
     public float spawnaccelaration = 0.02f;
     private float spawnDelay = 3;
     private float time;
-    public static float COUNTDOWN = 10;
+    public const float COUNTDOWN = 10;
     public float timer = 10;
     private float timer_time;
     private float LOWEST_SPAWN_TIME = 0.3f;

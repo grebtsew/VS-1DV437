@@ -27,9 +27,9 @@ public class Swordman : Player
 
     }
 
-    public override void passiveUpdate()
+    public override void PassiveUpdate()
     {
-        base.passiveUpdate();
+        base.PassiveUpdate();
 
 
     }

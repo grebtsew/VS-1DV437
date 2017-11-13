@@ -9,13 +9,13 @@ public static class Statics {
     public static string sound = "sound";
 
     // Camera Statics
-    public static Vector3 camera_offset = new Vector3(9,8,-13);
-    public static int CameraRotationOffset = 1;
-    public static float MIN_SCROLL = 15f;
-    public static float MAX_SCROLL = 90f;
-    public static float SCROLL_SENSITIVITY = 10f;
-    public static int floating_text_size = 5;
-    public static float potion_cooldown = 4;
+    public static  Vector3 camera_offset = new Vector3(9,8,-13);
+    public const int CameraRotationOffset = 1;
+    public const float MIN_SCROLL = 15f;
+    public const float MAX_SCROLL = 90f;
+    public const float SCROLL_SENSITIVITY = 10f;
+    public const int floating_text_size = 5;
+    public const float potion_cooldown = 4;
 
     // load objects
     public static GameObject[] powerups = Resources.LoadAll<GameObject>("PowerUps");
@@ -34,15 +34,15 @@ public static class Statics {
     public static Enemy enemy_ghost = Resources.Load("Enemies/Ghost_White", typeof(Enemy)) as Enemy;
 
     // Map Statics
-    public static int map_x = 60;
-    public static int map_z = 60;
-    public static int map_space = 10;
+    public const int map_x = 60;
+    public const int map_z = 60;
+    public const int map_space = 10;
 
     // Number Statics
-    public static int zero = 0;
+    public const int zero = 0;
 
     // Player
-    public static float health = 100;
+    public const float health = 100;
 
     // Save & Load Statics
     public static string ai_difficulty(int i)
@@ -61,24 +61,24 @@ public static class Statics {
     {
         return "player_" + i + "_team";
     }
-    public static string player_amount = "player_amount";
+    public const string player_amount = "player_amount";
     public static string player_score(int i)
     {
         return "player_" + i + "_score";
     }
-    public static string game_mode = "game_mode";
-    public static string ai_amount = "ai_amount";
-    public static string enemy_amount = "enemy_amount";
+    public const string game_mode = "game_mode";
+    public const string ai_amount = "ai_amount";
+    public const string enemy_amount = "enemy_amount";
     public static string player_character(int i)
     {
         return "player_" + i + "_character";
     }
-    public static string total_wins = "total_wins";
-    public static string total_matches = "total_matches";
+    public const string total_wins = "total_wins";
+    public const string total_matches = "total_matches";
     public static string character_wins(Player_Character character)
     {
         return character.ToString() + "_wins";
     }
-    public static string team_amounts = "team_amount";
+    public const string team_amounts = "team_amount";
 
 }

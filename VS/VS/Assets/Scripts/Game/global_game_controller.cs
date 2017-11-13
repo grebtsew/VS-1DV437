@@ -42,7 +42,6 @@ public class global_game_controller : MonoBehaviour
     void Start()
     {
        
-
         Time.timeScale = 0;
         string s = "";
         PlayerPrefsHandler.SetPersistentVar<string>(Statics.player_controller(0), ref s, Player_Controll.Player.ToString(), true);

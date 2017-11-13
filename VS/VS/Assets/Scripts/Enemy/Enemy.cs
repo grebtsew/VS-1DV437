@@ -181,7 +181,7 @@ public class Enemy : MonoBehaviour
 
             }
 
-            // spawn larger blood animation
+            // spawn larger blood animation - should create an death animation spawn position!
             temp_gameobject = Instantiate(blooddead, transform.position + transform.up * 0.8f, Quaternion.Euler(transform.rotation.x, Random.Range(0.0f, 360.0f), transform.rotation.z));
             temp_gameobject.transform.SetParent(extraparent);
 

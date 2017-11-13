@@ -20,9 +20,9 @@ public class Mage : Player
 
     }
 
-    public override void passiveUpdate()
+    public override void PassiveUpdate()
     {
-        base.passiveUpdate();
+        base.PassiveUpdate();
 
 
     }

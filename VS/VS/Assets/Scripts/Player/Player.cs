@@ -179,7 +179,7 @@ public class Player : MonoBehaviour
     {
 
     }
-    public virtual void passiveUpdate()
+    public virtual void PassiveUpdate()
     {
 
     }
@@ -343,7 +343,7 @@ public class Player : MonoBehaviour
     {
         if (initiated && !isdead)
         {
-            passiveUpdate();
+            PassiveUpdate();
             checkOutOfBounds();
             checkIsDead();
             checkToMuchResources();

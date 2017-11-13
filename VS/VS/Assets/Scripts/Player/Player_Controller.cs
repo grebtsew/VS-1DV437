@@ -27,6 +27,7 @@ public class Player_Controller : Controller
     {
         HandleMouseMovement();
     }
+
     public override void Update()
     {
         HandleKeyMovement();
@@ -34,6 +35,7 @@ public class Player_Controller : Controller
         HandleKeyAbilities();
         base.Update();
     }
+ 
 
     private void updateCanvas()
     {
