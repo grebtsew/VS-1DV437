@@ -1,87 +1,46 @@
 Initialize engine version: 2017.1.0f3 (472613c02cf7)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.1]
-    Renderer: NVIDIA GeForce GTX 970 (ID=0x13c2)
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GT 555M (ID=0x1247)
     Vendor:   NVIDIA
-    VRAM:     3072 MB
-    Driver:   22.21.13.8253
+    VRAM:     1974 MB
+    Driver:   23.21.13.9135
 Begin MonoManager ReloadAssembly
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
-Loading D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.dll (this message is harmless)
-Platform assembly: D:\Programmering\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.Core.dll (this message is harmless)
-- Completed reload, in  0.017 seconds
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Timeline.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.dll (this message is harmless)
+Platform assembly: C:\Users\Daniel\Documents\GitHub\VS-1DV437\VS\VS\Build\VS_Data\Managed\System.Core.dll (this message is harmless)
+- Completed reload, in  0.030 seconds
 <RI> Initializing input.
+XInput1_3.dll not found. Trying XInput9_1_0.dll instead...
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 0.904960 ms
+UnloadTime: 1.387078 ms
 Setting up 4 worker threads for Enlighten.
-  Thread -> id: 1ee0 -> priority: 1 
-  Thread -> id: 1460 -> priority: 1 
-  Thread -> id: 1634 -> priority: 1 
-  Thread -> id: 2724 -> priority: 1 
+  Thread -> id: 27fc -> priority: 1 
+  Thread -> id: 998 -> priority: 1 
+  Thread -> id: 27d0 -> priority: 1 
+  Thread -> id: 11f4 -> priority: 1 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 2.653186 ms
+UnloadTime: 5.473905 ms
 
 Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 1288.
-Total: 0.643840 ms (FindLiveObjects: 0.055296 ms CreateObjectMapping: 0.048128 ms MarkObjects: 0.523776 ms  DeleteObjects: 0.016384 ms)
+Total: 1.211576 ms (FindLiveObjects: 0.062092 ms CreateObjectMapping: 0.085698 ms MarkObjects: 1.030430 ms  DeleteObjects: 0.032842 ms)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.052673 ms
+UnloadTime: 1.307025 ms
 
-Unloading 1182 unused Assets to reduce memory usage. Loaded Objects now: 1795.
-Total: 1.618945 ms (FindLiveObjects: 0.069632 ms CreateObjectMapping: 0.090880 ms MarkObjects: 0.765952 ms  DeleteObjects: 0.692224 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 4.854020 ms
-
-Unloading 725 unused Assets to reduce memory usage. Loaded Objects now: 1264.
-Total: 1.550593 ms (FindLiveObjects: 0.052224 ms CreateObjectMapping: 0.057344 ms MarkObjects: 0.451840 ms  DeleteObjects: 0.989185 ms)
-
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.416768 ms
-
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 1657.
-Total: 1.026561 ms (FindLiveObjects: 0.085504 ms CreateObjectMapping: 0.047360 ms MarkObjects: 0.870656 ms  DeleteObjects: 0.022528 ms)
-
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.961536 ms
-
-Unloading 1185 unused Assets to reduce memory usage. Loaded Objects now: 1806.
-Total: 1.329921 ms (FindLiveObjects: 0.050688 ms CreateObjectMapping: 0.089344 ms MarkObjects: 0.697344 ms  DeleteObjects: 0.492032 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 10.636810 ms
-
-Unloading 805 unused Assets to reduce memory usage. Loaded Objects now: 1264.
-Total: 3.559683 ms (FindLiveObjects: 0.148224 ms CreateObjectMapping: 0.139776 ms MarkObjects: 0.998145 ms  DeleteObjects: 2.273026 ms)
-
-Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.772864 ms
-
-Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 1657.
-Total: 2.751746 ms (FindLiveObjects: 0.141312 ms CreateObjectMapping: 0.130048 ms MarkObjects: 2.406402 ms  DeleteObjects: 0.073216 ms)
-
-Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 1.163521 ms
-
-Unloading 1189 unused Assets to reduce memory usage. Loaded Objects now: 1812.
-Total: 1.476865 ms (FindLiveObjects: 0.088320 ms CreateObjectMapping: 0.092416 ms MarkObjects: 0.730112 ms  DeleteObjects: 0.566016 ms)
-
-Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 5.058309 ms
-
-Unloading 543 unused Assets to reduce memory usage. Loaded Objects now: 1270.
-Total: 1.743361 ms (FindLiveObjects: 0.090624 ms CreateObjectMapping: 0.057088 ms MarkObjects: 0.583168 ms  DeleteObjects: 1.011201 ms)
+Unloading 1189 unused Assets to reduce memory usage. Loaded Objects now: 1795.
+Total: 2.623287 ms (FindLiveObjects: 0.172935 ms CreateObjectMapping: 0.149330 ms MarkObjects: 1.223892 ms  DeleteObjects: 1.075588 ms)
 
